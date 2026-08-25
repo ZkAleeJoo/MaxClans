@@ -1,0 +1,16 @@
+main: org.zkaleejoo.OnlyClans
+version: ${project.version}
+name: OnlyClans
+author: ZkAleeJoo
+api-version: '1.13'
+folia-supported: true
+
+commands:
+  onlyclans:
+    description: Main command
+    permission: onlyclans.admin
+
+permissions:
+  onlyclans.admin:
+    description: Full access to admin commands.
+    default: op

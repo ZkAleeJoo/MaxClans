@@ -1,0 +1,12 @@
+messages:
+  no-permission: '&cYou do not have permission to execute this command.'
+  plugin-reload: '&aPlugin successfully reloaded.'
+  message-console: '&cThis command can only be executed by players.'
+  subcommand-invalid: '&cInvalid subcommand.'
+  command-help-title: '&8&m---------------- &6OnlyClans v{version} &8&m----------------'
+  command-help-list:
+    - '&9> &a/onlyclans reload &7- Reload settings'
+    - '&9> &a/onlyclans help &7- View list of commands'
+  update-available: '&eA new version is available! (&b{version}&e)'
+  update-current: '&7Your current version: &c{version}'
+  update-download: '&eDownload it to get improvements and fixes.'
