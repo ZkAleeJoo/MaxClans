@@ -9,6 +9,7 @@ public class MainConfigManager {
 
     private CustomConfig configFile;
     private CustomConfig langFile;
+    private CustomConfig menusFile;
     private OnlyClans plugin;
 
     private String selectedLanguage;
@@ -30,6 +31,10 @@ public class MainConfigManager {
         this.plugin = plugin;
         configFile = new CustomConfig("config.yml", null, plugin, false);
         configFile.registerConfig();
+        
+        menusFile = new CustomConfig("menus.yml", null, plugin, false);
+        menusFile.registerConfig();
+        
         loadConfig();
     }
 
@@ -63,6 +68,7 @@ public class MainConfigManager {
 
     public void reloadConfig() {
         configFile.reloadConfig();
+        menusFile.reloadConfig();
         loadConfig();
     }
 
@@ -112,5 +118,9 @@ public class MainConfigManager {
 
     public String getMsgUpdateDownload() {
         return msgUpdateDownload;
+    }
+
+    public FileConfiguration getMenusConfig() {
+        return menusFile.getConfig();
     }
 }
