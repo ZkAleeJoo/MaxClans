@@ -1,0 +1,27 @@
+menus:
+#--------------------------------
+#         Main Menu 
+#--------------------------------
+  main:
+    title: "&8Clan Menu"
+    size: 27
+    items:
+      '1':
+        slot: 13
+        material: PLAYER_HEAD
+        name: "&aYour Clan"
+        lore:
+          - "&7Click to view your clan stats."
+#--------------------------------
+#        Create Menu 
+#--------------------------------
+  create:
+    title: "&8Create a Clan"
+    size: 9
+    items:
+      '1':
+        slot: 4
+        material: NAME_TAG
+        name: "&aCreate Clan"
+        lore:
+          - "&7Click to type the clan name."
