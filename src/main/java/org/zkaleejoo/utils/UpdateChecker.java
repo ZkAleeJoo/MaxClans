@@ -12,8 +12,7 @@ import java.util.function.Consumer;
 
 public class UpdateChecker {
 
-    // IMPORTANT: Change this URL to the new plugin's gist later!
-    private static final String GITHUB_VERSION_URL = "https://gist.githubusercontent.com/ZkAleeJoo/be4bcf6afd0f4981de630ac0c48af74a/raw/AxionStaff";
+    private static final String GITHUB_VERSION_URL = "https://gist.githubusercontent.com/ZkAleeJoo/662b5f1c4bcfebb6b10871a482c924ef/raw/OnlyClans";
 
     private final OnlyClans plugin;
 
