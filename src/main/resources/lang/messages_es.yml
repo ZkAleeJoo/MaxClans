@@ -5,8 +5,7 @@ messages:
   subcommand-invalid: '&cSubcomando inválido.'
   command-help-title: '&8&m---------------- &6OnlyClans v{version} &8&m----------------'
   command-help-list:
-    - '&9> &a/onlyclans reload &7- Recargar configuración'
-    - '&9> &a/onlyclans help &7- Ver lista de comandos'
+    - '&#2D47F7> https://github.com/ZkAleeJoo/OnlyClans/blob/main/README.md' 
   update-available: '&e¡Hay una nueva versión disponible! (&b{version}&e)'
   update-current: '&7Tu versión actual: &c{version}'
   update-download: '&eDescárgala para obtener mejoras y correcciones.'
