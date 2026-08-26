@@ -10,13 +10,12 @@ public class MainConfigManager {
     private CustomConfig configFile;
     private CustomConfig langFile;
     private OnlyClans plugin;
-    
+
     private String selectedLanguage;
     private String prefix;
     private boolean updateCheckEnabled;
     private boolean bStatsEnabled;
-    
-    // Messages
+
     private String noPermission;
     private String pluginReload;
     private String subcommandInvalid;
@@ -47,7 +46,7 @@ public class MainConfigManager {
         prefix = config.getString("general.prefix", "&#8727F5&lOnlyClans &8» ");
         updateCheckEnabled = config.getBoolean("general.update-check", true);
         bStatsEnabled = config.getBoolean("general.bstats", true);
-        
+
         noPermission = lang.getString("messages.no-permission", "&cYou do not have permission.");
         pluginReload = lang.getString("messages.plugin-reload", "&aPlugin reloaded.");
         msgConsole = lang.getString("messages.message-console", "&cOnly players!");
@@ -66,18 +65,52 @@ public class MainConfigManager {
         configFile.reloadConfig();
         loadConfig();
     }
-    
-    public String getPrefix() { return prefix; }
-    public boolean isUpdateCheckEnabled() { return updateCheckEnabled; }
-    public boolean isBStatsEnabled() { return bStatsEnabled; }
-    
-    public String getNoPermission() { return noPermission; }
-    public String getPluginReload() { return pluginReload; }
-    public String getMsgConsole() { return msgConsole; }
-    public String getSubcommandInvalid() { return subcommandInvalid; }
-    public String getHelpTitle() { return helpTitle; }
-    public List<String> getHelpLines() { return helpLines; }
-    public String getMsgUpdateAvailable() { return msgUpdateAvailable; }
-    public String getMsgUpdateCurrent() { return msgUpdateCurrent; }
-    public String getMsgUpdateDownload() { return msgUpdateDownload; }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public boolean isUpdateCheckEnabled() {
+        return updateCheckEnabled;
+    }
+
+    public boolean isBStatsEnabled() {
+        return bStatsEnabled;
+    }
+
+    public String getNoPermission() {
+        return noPermission;
+    }
+
+    public String getPluginReload() {
+        return pluginReload;
+    }
+
+    public String getMsgConsole() {
+        return msgConsole;
+    }
+
+    public String getSubcommandInvalid() {
+        return subcommandInvalid;
+    }
+
+    public String getHelpTitle() {
+        return helpTitle;
+    }
+
+    public List<String> getHelpLines() {
+        return helpLines;
+    }
+
+    public String getMsgUpdateAvailable() {
+        return msgUpdateAvailable;
+    }
+
+    public String getMsgUpdateCurrent() {
+        return msgUpdateCurrent;
+    }
+
+    public String getMsgUpdateDownload() {
+        return msgUpdateDownload;
+    }
 }
