@@ -112,7 +112,7 @@ public class OnlyClans extends JavaPlugin {
             metrics = null;
         }
 
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&5&lOnlyClans &8» &cPlugin Disabled!"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&9&lOnlyClans &8» &cPlugin Disabled!"));
     }
 
     public MainConfigManager getMainConfigManager() {
