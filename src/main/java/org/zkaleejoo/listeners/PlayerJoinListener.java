@@ -28,7 +28,8 @@ public class PlayerJoinListener implements Listener {
                 player.sendMessage(MessageUtils.getColoredMessage(
                         config.getPrefix() + config.getMsgUpdateAvailable().replace("{version}", latest)));
                 player.sendMessage(MessageUtils.getColoredMessage(
-                        config.getPrefix() + config.getMsgUpdateCurrent().replace("{version}", plugin.getPluginMeta().getVersion())));
+                        config.getPrefix() + config.getMsgUpdateCurrent().replace("{version}",
+                                plugin.getPluginMeta().getVersion())));
                 player.sendMessage(MessageUtils.getColoredMessage(config.getPrefix() + config.getMsgUpdateDownload()));
                 player.sendMessage(" ");
             }
