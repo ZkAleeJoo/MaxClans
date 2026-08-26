@@ -13,7 +13,7 @@ import org.zkaleejoo.utils.FoliaCompat.WrappedTask;
 
 public class OnlyClans extends JavaPlugin {
 
-    private static final int BSTATS_PLUGIN_ID = 33594;
+    private static final int BSTATS_PLUGIN_ID = 33651;
     private static final long UPDATE_CHECK_INTERVAL_TICKS = 20L * 60L * 60L * 5L;
 
     private MainConfigManager mainConfigManager;
@@ -32,7 +32,19 @@ public class OnlyClans extends JavaPlugin {
 
         startUpdateChecks();
 
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&5&lOnlyClans &8» &aPlugin Enabled!"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&9&lOnlyClans &8» &fPlugin Enabled!"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                "&9&lOnlyClans &8» &9________         .__         _________ .__                        "));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                "&9&lOnlyClans &8» &9\\_____  \\   ____ |  | ___.__.\\_   ___ \\|  | _____    ____   ______"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                "&9&lOnlyClans &8» &9 /   |   \\ /    \\|  |<   |  |/    \\  \\/|  | \\__  \\  /    \\ /  ___/"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                "&9&lOnlyClans &8» &9/    |    \\   |  \\  |_\\___  |\\     \\___|  |__/ __ \\|   |  \\\\___ \\ "));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                "&9&lOnlyClans &8» &9\\_______  /___|  /____/ ____| \\______  /____(____  /___|  /____  >"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                "&9&lOnlyClans &8» &9        \\/     \\/     \\/             \\/          \\/     \\/     \\/ "));
     }
 
     private void checkUpdates() {
@@ -47,7 +59,10 @@ public class OnlyClans extends JavaPlugin {
             } else {
                 this.latestVersion = version;
                 Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
-                        "&5&lOnlyClans &8» &f&lNEW VERSION: &7" + version));
+                        "&9&lOnlyClans &8» &f&lNEW VERSION: &7" + version));
+                Bukkit.getConsoleSender().sendMessage(
+                        MessageUtils.getColoredMessage(
+                                "&9&lOnlyClans &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/onlyclans"));
             }
         });
     }
