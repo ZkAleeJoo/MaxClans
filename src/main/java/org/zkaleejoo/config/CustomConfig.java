@@ -27,16 +27,15 @@ public class CustomConfig {
         this.newFile = newFile;
     }
 
-    public String getPath(){
+    public String getPath() {
         return this.fileName;
     }
-
 
     public void registerConfig() {
         if (folderName != null) {
             File folder = new File(plugin.getDataFolder(), folderName);
             if (!folder.exists()) {
-                folder.mkdirs(); 
+                folder.mkdirs();
             }
             file = new File(folder, fileName);
         } else {
@@ -74,11 +73,13 @@ public class CustomConfig {
         try {
             String resourcePath = (folderName != null) ? folderName + "/" + fileName : fileName;
             InputStream resourceStream = plugin.getResource(Objects.requireNonNull(resourcePath));
-            
-            if (resourceStream == null) return;
 
-            YamlConfiguration jarConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(resourceStream, StandardCharsets.UTF_8));
-            
+            if (resourceStream == null)
+                return;
+
+            YamlConfiguration jarConfig = YamlConfiguration
+                    .loadConfiguration(new InputStreamReader(resourceStream, StandardCharsets.UTF_8));
+
             boolean changed = false;
             for (String key : jarConfig.getKeys(true)) {
                 if (!fileConfiguration.contains(key)) {
@@ -90,7 +91,7 @@ public class CustomConfig {
                     }
                 }
             }
-            
+
             if (changed) {
                 saveConfig();
             }
@@ -99,7 +100,6 @@ public class CustomConfig {
         }
     }
 
- 
     static boolean shouldSkipMissingBundledKey(String key, FileConfiguration fileConfiguration) {
         if (!isInsideProtectedSection(key)) {
             return false;
@@ -114,7 +114,6 @@ public class CustomConfig {
                 || key.equals("database.status-servers")
                 || key.startsWith("database.status-servers.");
     }
-
 
     private static String getProtectedParent(String key) {
         String[] parts = key.split("\\.");
@@ -140,7 +139,7 @@ public class CustomConfig {
     }
 
     public boolean reloadConfig() {
-        if(folderName != null){
+        if (folderName != null) {
             file = new File(plugin.getDataFolder() + File.separator + folderName, fileName);
         } else {
             file = new File(plugin.getDataFolder(), fileName);
@@ -150,13 +149,13 @@ public class CustomConfig {
 
         String resourcePath = (folderName != null) ? folderName + "/" + fileName : fileName;
         InputStream resourceStream = plugin.getResource(Objects.requireNonNull(resourcePath));
-        
+
         if (resourceStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(resourceStream, StandardCharsets.UTF_8));
+            YamlConfiguration defConfig = YamlConfiguration
+                    .loadConfiguration(new InputStreamReader(resourceStream, StandardCharsets.UTF_8));
             fileConfiguration.setDefaults(defConfig);
         }
-        
+
         return true;
     }
 }
-
