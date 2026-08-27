@@ -1,27 +1,240 @@
+#=================================#
+#       OnlyClans - Menus         #
+#=================================#
+# Available placeholders:
+#   {player}       - Player name
+#   {clan_name}    - Clan name
+#   {clan_tag}     - Clan tag
+#   {clan_members} - Member count
+#   {clan_ff}      - Friendly Fire status (ON/OFF)
+#
+# Available actions:
+#   open:<menu_id>         - Opens another menu
+#   action:create_clan     - Starts clan creation (chat input)
+#   action:toggle_ff       - Toggles friendly fire
+#   action:disband         - Opens disband confirmation
+#   action:confirm_disband - Confirms clan disbandment
+#   action:leave           - Leave the clan
+#   close                  - Closes the menu
+
 menus:
-#--------------------------------
-#         Main Menu 
-#--------------------------------
+  #--------------------------------#
+  #          Main Menu             #
+  #--------------------------------#
   main:
-    title: "&8Clan Menu"
+    title: "&8&lClan Menu"
     size: 27
+    filler: "GRAY_STAINED_GLASS_PANE"
+    items:
+      '1':
+        slot: 11
+        material: EMERALD
+        name: "&a&lCreate Clan"
+        lore:
+          - ""
+          - "&7Click to create a new clan."
+          - ""
+        action: "open:create"
+      '2':
+        slot: 13
+        material: PLAYER_HEAD
+        name: "&b&lYour Clan"
+        lore:
+          - ""
+          - "&7Clan: &f{clan_name}"
+          - "&7Tag: &f{clan_tag}"
+          - "&7Members: &f{clan_members}"
+          - ""
+          - "&eClick to view details."
+        action: "open:info"
+      '3':
+        slot: 15
+        material: BOOK
+        name: "&6&lHelp"
+        lore:
+          - ""
+          - "&7View all available commands."
+          - ""
+        action: "close"
+  #--------------------------------#
+  #        Create Menu             #
+  #--------------------------------#
+  create:
+    title: "&8&lCreate a Clan"
+    size: 27
+    filler: "GRAY_STAINED_GLASS_PANE"
+    items:
+      '1':
+        slot: 13
+        material: NAME_TAG
+        name: "&a&lCreate Clan"
+        lore:
+          - ""
+          - "&7Click to type your clan"
+          - "&7name in chat."
+          - ""
+          - "&eRequirements:"
+          - "&8- &73 to 16 characters"
+          - "&8- &7Letters, numbers, underscores"
+          - ""
+        action: "action:create_clan"
+      '2':
+        slot: 22
+        material: BARRIER
+        name: "&c&lCancel"
+        lore:
+          - ""
+          - "&7Go back to the main menu."
+          - ""
+        action: "open:main"
+  #--------------------------------#
+  #         Info Menu              #
+  #--------------------------------#
+  info:
+    title: "&8&l{clan_name} - Info"
+    size: 27
+    filler: "GRAY_STAINED_GLASS_PANE"
+    items:
+      '1':
+        slot: 10
+        material: PLAYER_HEAD
+        name: "&b&l{clan_name}"
+        lore:
+          - ""
+          - "&7Tag: &f[{clan_tag}]"
+          - "&7Members: &f{clan_members}"
+          - "&7Friendly Fire: {clan_ff}"
+          - ""
+      '2':
+        slot: 12
+        material: SKELETON_SKULL
+        name: "&e&lMembers"
+        lore:
+          - ""
+          - "&7View all clan members."
+          - ""
+        action: "open:members"
+      '3':
+        slot: 14
+        material: COMPARATOR
+        name: "&6&lSettings"
+        lore:
+          - ""
+          - "&7Manage clan settings."
+          - "&8(Leader only)"
+          - ""
+        action: "open:settings"
+      '4':
+        slot: 16
+        material: IRON_DOOR
+        name: "&c&lLeave Clan"
+        lore:
+          - ""
+          - "&7Leave your current clan."
+          - ""
+        action: "action:leave"
+      '5':
+        slot: 22
+        material: ARROW
+        name: "&7&lBack"
+        lore:
+          - ""
+          - "&7Return to main menu."
+          - ""
+        action: "open:main"
+  #--------------------------------#
+  #       Members Menu             #
+  #--------------------------------#
+  members:
+    title: "&8&l{clan_name} - Members"
+    size: 27
+    filler: "GRAY_STAINED_GLASS_PANE"
     items:
       '1':
         slot: 13
         material: PLAYER_HEAD
-        name: "&aYour Clan"
+        name: "&b&lClan Members"
         lore:
-          - "&7Click to view your clan stats."
-#--------------------------------
-#        Create Menu 
-#--------------------------------
-  create:
-    title: "&8Create a Clan"
-    size: 9
+          - ""
+          - "&7Total: &f{clan_members}"
+          - ""
+          - "&eUse commands to manage:"
+          - "&7/clan invite <player>"
+          - "&7/clan kick <player>"
+          - "&7/clan promote <player>"
+          - "&7/clan demote <player>"
+          - ""
+      '2':
+        slot: 22
+        material: ARROW
+        name: "&7&lBack"
+        lore:
+          - ""
+          - "&7Return to clan info."
+          - ""
+        action: "open:info"
+  #--------------------------------#
+  #       Settings Menu            #
+  #--------------------------------#
+  settings:
+    title: "&8&l{clan_name} - Settings"
+    size: 27
+    filler: "GRAY_STAINED_GLASS_PANE"
     items:
       '1':
-        slot: 4
-        material: NAME_TAG
-        name: "&aCreate Clan"
+        slot: 11
+        material: IRON_SWORD
+        name: "&e&lFriendly Fire"
         lore:
-          - "&7Click to type the clan name."
+          - ""
+          - "&7Status: {clan_ff}"
+          - ""
+          - "&eClick to toggle."
+          - ""
+        action: "action:toggle_ff"
+      '2':
+        slot: 15
+        material: TNT
+        name: "&c&lDisband Clan"
+        lore:
+          - ""
+          - "&7Permanently disband your clan."
+          - "&cThis action cannot be undone!"
+          - ""
+        action: "action:disband"
+      '3':
+        slot: 22
+        material: ARROW
+        name: "&7&lBack"
+        lore:
+          - ""
+          - "&7Return to clan info."
+          - ""
+        action: "open:info"
+  #--------------------------------#
+  #    Confirm Disband Menu        #
+  #--------------------------------#
+  confirm-disband:
+    title: "&4&lConfirm Disband"
+    size: 27
+    filler: "RED_STAINED_GLASS_PANE"
+    items:
+      '1':
+        slot: 11
+        material: LIME_WOOL
+        name: "&a&lConfirm"
+        lore:
+          - ""
+          - "&7Yes, disband &f{clan_name}&7."
+          - "&cThis is permanent!"
+          - ""
+        action: "action:confirm_disband"
+      '2':
+        slot: 15
+        material: RED_WOOL
+        name: "&c&lCancel"
+        lore:
+          - ""
+          - "&7No, go back."
+          - ""
+        action: "open:settings"

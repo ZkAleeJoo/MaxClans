@@ -9,3 +9,49 @@ messages:
   update-available: '&e¡Hay una nueva versión disponible! (&b{version}&e)'
   update-current: '&7Tu versión actual: &c{version}'
   update-download: '&eDescárgala para obtener mejoras y correcciones.'
+  usage-chat: '&cUso: /c <mensaje>'
+  usage-chat-clan: '&cUso: /clan chat <mensaje>'
+  usage-invite: '&cUso: /clan invite <jugador>'
+  usage-kick: '&cUso: /clan kick <jugador>'
+  usage-promote: '&cUso: /clan promote <jugador>'
+  usage-demote: '&cUso: /clan demote <jugador>'
+  player-not-found: '&cJugador no encontrado o desconectado.'
+  not-in-clan: '&cNo estás en ningún clan.'
+  already-in-clan: '&cYa perteneces a un clan.'
+  name-exists: '&cYa existe un clan con ese nombre.'
+  invalid-length: '&cEl nombre del clan debe tener entre 3 y 16 caracteres.'
+  invalid-characters: '&cEl nombre del clan solo puede contener letras, números y guiones bajos.'
+  type-clan-name: "&eEscribe el nombre del clan en el chat. Escribe &c'cancel' &epara cancelar."
+  creation-cancelled: '&cCreación de clan cancelada.'
+  clan-created: "&a¡El clan '&f{clan}&a' fue creado exitosamente!"
+  clan-disbanded: "&cEl clan '&f{clan}&c' ha sido disuelto."
+  only-leader-disband: '&cSolo el líder puede disolver el clan.'
+  clan-not-exists: '&cEse clan ya no existe.'
+  no-invite-permission: "&cNo tienes permiso para invitar jugadores."
+  target-already-in-clan: '&cEse jugador ya pertenece a un clan.'
+  target-has-invite: '&cEse jugador ya tiene una invitación pendiente.'
+  invite-sent: "&aInvitación enviada a &f{player}&a."
+  invite-received: "&aHas sido invitado a unirte a &f{clan}&a. Usa &e/clan accept &apara unirte o &c/clan deny &apara rechazar."
+  no-pending-invites: "&cNo tienes invitaciones pendientes."
+  invite-denied: "&cInvitación rechazada."
+  joined-clan: "&a¡Te has unido al clan '&f{clan}&a'!"
+  player-joined: "&a¡{player} se ha unido al clan!"
+  cannot-leave-leader: "&cNo puedes salir del clan siendo el líder. Transfiere el liderazgo o disuelve el clan."
+  left-clan: "&eHas salido del clan '&f{clan}&e'."
+  player-left: "&e{player} ha salido del clan."
+  no-kick-permission: "&cNo tienes permiso para expulsar jugadores."
+  cannot-kick-higher: "&cNo puedes expulsar a alguien con tu mismo o mayor rango."
+  kicked-from-clan: "&cHas sido expulsado de '&f{clan}&c'."
+  player-kicked: "&c{player} ha sido expulsado del clan."
+  player-not-in-clan: "&cEse jugador no pertenece a tu clan."
+  promote-leader-only: "&cSolo el líder puede ascender miembros."
+  already-moderator: "&cEse jugador ya es Moderador."
+  promoted-other: "&a{player} ha sido ascendido a Moderador."
+  promoted-self: "&a¡Has sido ascendido a Moderador!"
+  demote-leader-only: "&cSolo el líder puede degradar miembros."
+  already-member: "&cEse jugador ya es Miembro."
+  demoted-other: "&e{player} ha sido degradado a Miembro."
+  demoted-self: "&cHas sido degradado a Miembro."
+  friendly-fire-disabled: "&cEl fuego amigo está desactivado en tu clan."
+  friendly-fire-toggled: "&eFuego amigo: {status}&e."
+  clan-chat-format: "&b[Chat de Clan] &f{player}&7: &f{message}"

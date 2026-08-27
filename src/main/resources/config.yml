@@ -3,3 +3,13 @@ general:
   language: 'en'
   update-check: true
   bstats: true
+
+database:
+  # Type: 'sqlite' or 'mysql'
+  type: 'sqlite'
+  # MySQL settings (only used if type is 'mysql')
+  host: 'localhost'
+  port: 3306
+  name: 'onlyclans'
+  username: 'root'
+  password: ''

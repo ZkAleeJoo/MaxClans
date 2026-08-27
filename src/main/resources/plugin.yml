@@ -7,10 +7,16 @@ folia-supported: true
 
 commands:
   onlyclans:
-    description: Main command
-    permission: onlyclans.admin
+    description: Main command for OnlyClans
+    aliases: [clan, clans]
+  clanchat:
+    description: Send a message to your clan chat
+    aliases: [c, cc]
 
 permissions:
   onlyclans.admin:
     description: Full access to admin commands.
     default: op
+  onlyclans.use:
+    description: Access to basic clan commands.
+    default: true

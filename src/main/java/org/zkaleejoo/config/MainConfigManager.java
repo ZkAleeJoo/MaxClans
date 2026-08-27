@@ -17,6 +17,13 @@ public class MainConfigManager {
     private boolean updateCheckEnabled;
     private boolean bStatsEnabled;
 
+    private String databaseType;
+    private String databaseHost;
+    private int databasePort;
+    private String databaseName;
+    private String databaseUsername;
+    private String databasePassword;
+
     private String noPermission;
     private String pluginReload;
     private String subcommandInvalid;
@@ -31,10 +38,10 @@ public class MainConfigManager {
         this.plugin = plugin;
         configFile = new CustomConfig("config.yml", null, plugin, false);
         configFile.registerConfig();
-        
+
         menusFile = new CustomConfig("menus.yml", null, plugin, false);
         menusFile.registerConfig();
-        
+
         loadConfig();
     }
 
@@ -52,6 +59,13 @@ public class MainConfigManager {
         updateCheckEnabled = config.getBoolean("general.update-check", true);
         bStatsEnabled = config.getBoolean("general.bstats", true);
 
+        databaseType = config.getString("database.type", "sqlite");
+        databaseHost = config.getString("database.host", "localhost");
+        databasePort = config.getInt("database.port", 3306);
+        databaseName = config.getString("database.name", "onlyclans");
+        databaseUsername = config.getString("database.username", "root");
+        databasePassword = config.getString("database.password", "");
+
         noPermission = lang.getString("messages.no-permission", "&cYou do not have permission.");
         pluginReload = lang.getString("messages.plugin-reload", "&aPlugin reloaded.");
         msgConsole = lang.getString("messages.message-console", "&cOnly players!");
@@ -59,7 +73,7 @@ public class MainConfigManager {
         helpTitle = lang.getString("messages.command-help-title", "&6OnlyClans Help");
         helpLines = lang.getStringList("messages.command-help-list");
         if (helpLines == null || helpLines.isEmpty()) {
-            helpLines = Arrays.asList("&a/onlyclans reload", "&a/onlyclans help");
+            helpLines = Arrays.asList("&a/clan help", "&a/clan create <name>", "&a/clan invite <player>");
         }
         msgUpdateAvailable = lang.getString("messages.update-available", "&eNew version: {version}");
         msgUpdateCurrent = lang.getString("messages.update-current", "&7Current: {version}");
@@ -82,6 +96,30 @@ public class MainConfigManager {
 
     public boolean isBStatsEnabled() {
         return bStatsEnabled;
+    }
+
+    public String getDatabaseType() {
+        return databaseType;
+    }
+
+    public String getDatabaseHost() {
+        return databaseHost;
+    }
+
+    public int getDatabasePort() {
+        return databasePort;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
+    public String getDatabaseUsername() {
+        return databaseUsername;
+    }
+
+    public String getDatabasePassword() {
+        return databasePassword;
     }
 
     public String getNoPermission() {
@@ -122,5 +160,14 @@ public class MainConfigManager {
 
     public FileConfiguration getMenusConfig() {
         return menusFile.getConfig();
+    }
+
+    public String getMessage(String path, String def) {
+        String msg = langFile.getConfig().getString("messages." + path, def);
+        return msg;
+    }
+
+    public String getMessage(String path) {
+        return getMessage(path, "&cMessage not found: " + path);
     }
 }

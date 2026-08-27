@@ -3,13 +3,21 @@ package org.zkaleejoo;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
+import org.zkaleejoo.commands.ChatCommand;
 import org.zkaleejoo.commands.MainCommand;
 import org.zkaleejoo.config.MainConfigManager;
-import org.zkaleejoo.utils.UpdateChecker;
+import org.zkaleejoo.database.ClanStorage;
+import org.zkaleejoo.database.DatabaseManager;
+import org.zkaleejoo.gui.MenuBuilder;
+import org.zkaleejoo.listeners.ClanChatListener;
+import org.zkaleejoo.listeners.ClanDamageListener;
+import org.zkaleejoo.listeners.MenuListener;
 import org.zkaleejoo.listeners.PlayerJoinListener;
-import org.zkaleejoo.utils.MessageUtils;
+import org.zkaleejoo.managers.ClanManager;
 import org.zkaleejoo.utils.FoliaCompat;
 import org.zkaleejoo.utils.FoliaCompat.WrappedTask;
+import org.zkaleejoo.utils.MessageUtils;
+import org.zkaleejoo.utils.UpdateChecker;
 
 public class OnlyClans extends JavaPlugin {
 
@@ -17,18 +25,45 @@ public class OnlyClans extends JavaPlugin {
     private static final long UPDATE_CHECK_INTERVAL_TICKS = 20L * 60L * 60L * 5L;
 
     private MainConfigManager mainConfigManager;
+    private DatabaseManager databaseManager;
+    private ClanStorage clanStorage;
+    private ClanManager clanManager;
+    private MenuBuilder menuBuilder;
     private String latestVersion;
     private Metrics metrics;
     private WrappedTask updateCheckTask;
 
     @Override
     public void onEnable() {
+        // Config
         mainConfigManager = new MainConfigManager(this);
         syncMetricsState();
 
-        getCommand("onlyclans").setExecutor(new MainCommand(this));
+        // Database
+        databaseManager = new DatabaseManager(this);
+        databaseManager.initialize();
 
+        // Storage & Manager
+        clanStorage = new ClanStorage(this, databaseManager);
+        clanManager = new ClanManager(this, clanStorage);
+        clanManager.loadClans();
+
+        // GUI
+        menuBuilder = new MenuBuilder(this);
+
+        // Commands
+        getCommand("onlyclans").setExecutor(new MainCommand(this));
+        getCommand("onlyclans").setTabCompleter(new MainCommand(this));
+
+        ChatCommand chatCommand = new ChatCommand(this);
+        getCommand("clanchat").setExecutor(chatCommand);
+        getCommand("clanchat").setTabCompleter(chatCommand);
+
+        // Listeners
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new MenuListener(this), this);
+        getServer().getPluginManager().registerEvents(new ClanDamageListener(this), this);
+        getServer().getPluginManager().registerEvents(new ClanChatListener(this), this);
 
         startUpdateChecks();
 
@@ -112,11 +147,27 @@ public class OnlyClans extends JavaPlugin {
             metrics = null;
         }
 
+        if (databaseManager != null) {
+            databaseManager.close();
+        }
+
         Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&9&lOnlyClans &8» &cPlugin Disabled!"));
     }
 
     public MainConfigManager getMainConfigManager() {
         return mainConfigManager;
+    }
+
+    public ClanManager getClanManager() {
+        return clanManager;
+    }
+
+    public MenuBuilder getMenuBuilder() {
+        return menuBuilder;
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 
     public void reloadPluginState() {
