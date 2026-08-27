@@ -35,23 +35,18 @@ public class OnlyClans extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Config
         mainConfigManager = new MainConfigManager(this);
         syncMetricsState();
 
-        // Database
         databaseManager = new DatabaseManager(this);
         databaseManager.initialize();
 
-        // Storage & Manager
         clanStorage = new ClanStorage(this, databaseManager);
         clanManager = new ClanManager(this, clanStorage);
         clanManager.loadClans();
 
-        // GUI
         menuBuilder = new MenuBuilder(this);
 
-        // Commands
         getCommand("onlyclans").setExecutor(new MainCommand(this));
         getCommand("onlyclans").setTabCompleter(new MainCommand(this));
 
@@ -59,7 +54,6 @@ public class OnlyClans extends JavaPlugin {
         getCommand("clanchat").setExecutor(chatCommand);
         getCommand("clanchat").setTabCompleter(chatCommand);
 
-        // Listeners
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new MenuListener(this), this);
         getServer().getPluginManager().registerEvents(new ClanDamageListener(this), this);

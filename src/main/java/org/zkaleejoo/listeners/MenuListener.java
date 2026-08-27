@@ -13,9 +13,6 @@ import org.zkaleejoo.managers.ClanManager;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
 
-/**
- * Handles all click events inside OnlyClans GUI menus.
- */
 public class MenuListener implements Listener {
 
     private final OnlyClans plugin;
@@ -26,7 +23,8 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player)) return;
+        if (!(event.getWhoClicked() instanceof Player player))
+            return;
 
         Inventory inventory = event.getInventory();
         String title = PlainTextComponentSerializer.plainText().serialize(
@@ -37,30 +35,31 @@ public class MenuListener implements Listener {
                 MessageUtils.getColoredMessage(
                         PlainTextComponentSerializer.plainText().serialize(event.getView().title())));
 
-        // Try to find it by scanning known menus
         if (menuId == null) {
-            // Check if this is one of our menus by looking at the title
             menuId = findMenuIdByTitle(title);
         }
 
-        if (menuId == null) return;
+        if (menuId == null)
+            return;
 
-        // Cancel the event to prevent item stealing
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null) return;
+        if (event.getCurrentItem() == null)
+            return;
 
         int slot = event.getRawSlot();
         String action = menuBuilder.getAction(menuId, slot);
 
-        if (action == null || action.isEmpty()) return;
+        if (action == null || action.isEmpty())
+            return;
 
         handleAction(player, action);
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
+        if (!(event.getWhoClicked() instanceof Player))
+            return;
 
         String title = PlainTextComponentSerializer.plainText().serialize(
                 event.getView().title());
@@ -70,13 +69,11 @@ public class MenuListener implements Listener {
         }
     }
 
-    /**
-     * Finds a menu ID by matching the plain-text title against menus.yml.
-     */
     private String findMenuIdByTitle(String plainTitle) {
         var menusConfig = plugin.getMainConfigManager().getMenusConfig();
         var menusSection = menusConfig.getConfigurationSection("menus");
-        if (menusSection == null) return null;
+        if (menusSection == null)
+            return null;
 
         for (String menuId : menusSection.getKeys(false)) {
             String rawTitle = menusSection.getString(menuId + ".title", "");
@@ -88,9 +85,6 @@ public class MenuListener implements Listener {
         return null;
     }
 
-    /**
-     * Executes the action bound to a clicked item.
-     */
     private void handleAction(Player player, String action) {
         ClanManager clanManager = plugin.getClanManager();
 
@@ -106,7 +100,8 @@ public class MenuListener implements Listener {
                     plugin.getMenuBuilder().openMenu(player, "info", clan);
                 } else {
                     player.sendMessage(MessageUtils.getColoredMessage(
-                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMessage("not-in-clan", "&cYou are not in a clan.")));
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("not-in-clan", "&cYou are not in a clan.")));
                 }
             }
             case "open:members" -> {
@@ -132,7 +127,8 @@ public class MenuListener implements Listener {
                 player.closeInventory();
                 player.sendMessage(MessageUtils.getColoredMessage(
                         plugin.getMainConfigManager().getPrefix()
-                                + plugin.getMainConfigManager().getMessage("type-clan-name", "&eType the clan name in chat. Type &c'cancel' &eto cancel.")));
+                                + plugin.getMainConfigManager().getMessage("type-clan-name",
+                                        "&eType the clan name in chat. Type &c'cancel' &eto cancel.")));
                 clanManager.addPendingCreation(player.getUniqueId());
             }
             case "action:toggle_ff" -> {

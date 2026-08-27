@@ -88,9 +88,6 @@ public class Clan {
         members.remove(uuid);
     }
 
-    /**
-     * Gets all members with the specified role.
-     */
     public List<ClanPlayer> getMembersByRole(ClanRole role) {
         List<ClanPlayer> result = new ArrayList<>();
         for (ClanPlayer cp : members.values()) {
@@ -100,8 +97,6 @@ public class Clan {
         }
         return result;
     }
-
-    // --- Invite Management ---
 
     public Set<UUID> getPendingInvites() {
         return Collections.unmodifiableSet(pendingInvites);

@@ -113,7 +113,6 @@ public class ClanStorage {
         Map<String, Clan> clans = new HashMap<>();
 
         try {
-            // Load clans
             try (Statement stmt = databaseManager.getConnection().createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT * FROM clans")) {
 
