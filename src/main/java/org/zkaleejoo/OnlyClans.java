@@ -59,6 +59,12 @@ public class OnlyClans extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ClanDamageListener(this), this);
         getServer().getPluginManager().registerEvents(new ClanChatListener(this), this);
 
+        FoliaCompat.runGlobalTimer(this, new org.zkaleejoo.gui.MenuUpdateTask(this), 1L, 1L);
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new org.zkaleejoo.hooks.PlaceholderAPIHook(this).register();
+        }
+
         startUpdateChecks();
 
         Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&9&lOnlyClans &8» &fPlugin Enabled!"));

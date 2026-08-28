@@ -137,8 +137,25 @@ public class ClanManager {
         target.sendMessage(MessageUtils.getColoredMessage(
                 plugin.getMainConfigManager().getPrefix()
                         + plugin.getMainConfigManager().getMessage("invite-received",
-                                "&aYou have been invited to join &f{clan}&a. Type &e/clan accept &ato join or &c/clan deny &ato decline.")
+                                "&aYou have been invited to join &f{clan}&a.")
                                 .replace("{clan}", clan.getName())));
+                                
+        net.kyori.adventure.text.Component acceptButton = net.kyori.adventure.text.Component.text(" [ACCEPT] ")
+                .color(net.kyori.adventure.text.format.NamedTextColor.GREEN)
+                .decorate(net.kyori.adventure.text.format.TextDecoration.BOLD)
+                .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/clan accept"))
+                .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(net.kyori.adventure.text.Component.text("Click to join " + clan.getName())));
+
+        net.kyori.adventure.text.Component denyButton = net.kyori.adventure.text.Component.text(" [DENY] ")
+                .color(net.kyori.adventure.text.format.NamedTextColor.RED)
+                .decorate(net.kyori.adventure.text.format.TextDecoration.BOLD)
+                .clickEvent(net.kyori.adventure.text.event.ClickEvent.runCommand("/clan deny"))
+                .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(net.kyori.adventure.text.Component.text("Click to decline")));
+
+        target.sendMessage(net.kyori.adventure.text.Component.text("   ")
+                .append(acceptButton)
+                .append(net.kyori.adventure.text.Component.text("   "))
+                .append(denyButton));
     }
 
     public void acceptInvite(Player player) {

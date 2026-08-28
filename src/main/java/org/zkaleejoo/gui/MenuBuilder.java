@@ -1,11 +1,15 @@
 package org.zkaleejoo.gui;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class MenuBuilder {
 
@@ -28,12 +33,6 @@ public class MenuBuilder {
         this.plugin = plugin;
     }
 
-    /**
-     *
-     * @param player
-     * @param menuId
-     * @param clan
-     */
     public void openMenu(Player player, String menuId, Clan clan) {
         FileConfiguration menusConfig = plugin.getMainConfigManager().getMenusConfig();
         ConfigurationSection menuSection = menusConfig.getConfigurationSection("menus." + menuId);
@@ -52,11 +51,23 @@ public class MenuBuilder {
             size = 27;
         }
 
-        Inventory inventory = Bukkit.createInventory(null, size,
-                MessageUtils.toComponent(title));
+        Inventory inventory = Bukkit.createInventory(null, size, MessageUtils.toComponent(title));
 
         String coloredTitle = MessageUtils.getColoredMessage(title);
         openMenuTitles.put(coloredTitle, menuId);
+
+        updateInventory(inventory, menuId, player, clan);
+
+        player.openInventory(inventory);
+    }
+
+    public void updateInventory(Inventory inventory, String menuId, Player player, Clan clan) {
+        FileConfiguration menusConfig = plugin.getMainConfigManager().getMenusConfig();
+        ConfigurationSection menuSection = menusConfig.getConfigurationSection("menus." + menuId);
+        if (menuSection == null)
+            return;
+
+        int size = inventory.getSize();
 
         ConfigurationSection itemsSection = menuSection.getConfigurationSection("items");
         if (itemsSection != null) {
@@ -66,12 +77,7 @@ public class MenuBuilder {
                     continue;
 
                 int slot = itemConfig.getInt("slot", 0);
-                String materialName = itemConfig.getString("material", "STONE");
-                String name = itemConfig.getString("name", "");
-                List<String> lore = itemConfig.getStringList("lore");
-                String action = itemConfig.getString("action", "");
-
-                ItemStack item = createItem(materialName, name, lore, player, clan);
+                ItemStack item = createItem(itemConfig, player, clan);
 
                 if (slot >= 0 && slot < size) {
                     inventory.setItem(slot, item);
@@ -87,6 +93,11 @@ public class MenuBuilder {
                 ItemMeta fillerMeta = fillerItem.getItemMeta();
                 if (fillerMeta != null) {
                     fillerMeta.displayName(MessageUtils.toComponent(" "));
+                    // Option for glowing filler
+                    if (menuSection.getBoolean("filler_glow", false)) {
+                        fillerMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
+                        fillerMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    }
                     fillerItem.setItemMeta(fillerMeta);
                 }
                 for (int i = 0; i < size; i++) {
@@ -96,12 +107,10 @@ public class MenuBuilder {
                 }
             }
         }
-
-        player.openInventory(inventory);
     }
 
-    private ItemStack createItem(String materialName, String name, List<String> lore,
-            Player player, Clan clan) {
+    private ItemStack createItem(ConfigurationSection itemConfig, Player player, Clan clan) {
+        String materialName = itemConfig.getString("material", "STONE");
         Material material = Material.matchMaterial(materialName);
         if (material == null) {
             material = Material.STONE;
@@ -112,9 +121,11 @@ public class MenuBuilder {
         if (meta == null)
             return item;
 
+        String name = itemConfig.getString("name", "");
         String processedName = replacePlaceholders(name, player, clan);
         meta.displayName(MessageUtils.legacyToComponentNoItalic(processedName));
 
+        List<String> lore = itemConfig.getStringList("lore");
         if (lore != null && !lore.isEmpty()) {
             List<net.kyori.adventure.text.Component> loreComponents = new ArrayList<>();
             for (String line : lore) {
@@ -125,7 +136,26 @@ public class MenuBuilder {
         }
 
         if (material == Material.PLAYER_HEAD && meta instanceof SkullMeta skullMeta) {
-            skullMeta.setOwningPlayer(player);
+            String base64 = itemConfig.getString("base64");
+            if (base64 != null && !base64.isEmpty()) {
+                PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
+                profile.setProperty(new ProfileProperty("textures", base64));
+                skullMeta.setPlayerProfile(profile);
+            } else {
+                skullMeta.setOwningPlayer(player);
+            }
+        }
+
+        if (itemConfig.getBoolean("glow", false)) {
+            meta.addEnchant(Enchantment.UNBREAKING, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+        if (itemConfig.contains("custom_model_data")) {
+            org.bukkit.inventory.meta.components.CustomModelDataComponent component = meta
+                    .getCustomModelDataComponent();
+            component.setFloats(java.util.List.of((float) itemConfig.getInt("custom_model_data")));
+            meta.setCustomModelDataComponent(component);
         }
 
         item.setItemMeta(meta);
@@ -144,7 +174,7 @@ public class MenuBuilder {
             text = text.replace("{clan_members}", String.valueOf(clan.getMemberCount()));
             text = text.replace("{clan_ff}", clan.isFriendlyFire() ? "&aON" : "&cOFF");
         } else {
-            text = text.replace("{clan_name}", "None");
+            text = text.replace("{clan_name}", "Ninguno");
             text = text.replace("{clan_tag}", "N/A");
             text = text.replace("{clan_members}", "0");
             text = text.replace("{clan_ff}", "&7N/A");
