@@ -38,7 +38,8 @@ public class ClanDamageListener implements Listener {
                 event.setCancelled(true);
                 attacker.sendMessage(MessageUtils.getColoredMessage(
                         plugin.getMainConfigManager().getPrefix()
-                                + plugin.getMainConfigManager().getMessage("friendly-fire-disabled", "&cFriendly fire is disabled in your clan.")));
+                                + plugin.getMainConfigManager().getMessage("friendly-fire-disabled",
+                                        "&cFriendly fire is disabled in your clan.")));
             }
         }
     }
