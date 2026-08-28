@@ -1,0 +1,262 @@
+#=================================#
+#       OnlyClans - Menus         #
+#=================================#
+# Available placeholders:
+#   {player}       - Player name
+#   {clan_name}    - Clan name
+#   {clan_tag}     - Clan tag
+#   {clan_members} - Member count
+#   {clan_ff}      - Friendly Fire status (ON/OFF)
+#
+# Available actions:
+#   open:<menu_id>         - Opens another menu
+#   action:create_clan     - Starts clan creation (chat input)
+#   action:toggle_ff       - Toggles friendly fire
+#   action:disband         - Opens disband confirmation
+#   action:confirm_disband - Confirms clan disbandment
+#   action:leave           - Leave the clan
+#   close                  - Closes the menu
+
+menus:
+  #--------------------------------#
+  #          Main Menu             #
+  #--------------------------------#
+  main:
+    title: "&#FF5555&lO&#FF6666&ln&#FF7777&ll&#FF8888&ly&#FF9999&lC&#FFAAaa&ll&#FFBBbb&la&#FFCCcc&ln&#FFDDdd&ls"
+    size: 27
+    filler: "BLACK_STAINED_GLASS_PANE"
+    filler_glow: true
+    update_interval: 20
+    items:
+      '1':
+        slot: 11
+        material: PLAYER_HEAD
+        base64: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ=="
+        name: "&#55FF55&lCreate Clan"
+        lore:
+          - ""
+          - "&#AAAAAAStart your own legacy"
+          - "&#AAAAAAand invite your friends."
+          - ""
+          - "&#55FF55▶ Click to create!"
+        glow: true
+        action: "open:create"
+      '2':
+        slot: 13
+        material: PLAYER_HEAD
+        name: "&#55FFFF&lYour Clan"
+        lore:
+          - ""
+          - "&#AAAAAAClan: &#FFFFFF{clan_name}"
+          - "&#AAAAAATag: &#FFFFFF{clan_tag}"
+          - "&#AAAAAAMembers: &#FFFFFF{clan_members}"
+          - ""
+          - "&#55FFFF▶ Click to view details!"
+        action: "open:info"
+      '3':
+        slot: 15
+        material: PLAYER_HEAD
+        base64: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA1NmJjMTI0NGZjZmY5OTM0NGYxMmFiYTQyYWZmYjYxZTViZWEwZTE1OGZiNWUyMWQxZjFhMWE4NjJiYmJhNiJ9fX0="
+        name: "&#FFAA00&lHelp & Info"
+        lore:
+          - ""
+          - "&#AAAAAAView all available"
+          - "&#AAAAAAcommands and info."
+          - ""
+          - "&#FFAA00▶ Click to close!"
+        action: "close"
+  #--------------------------------#
+  #        Create Menu             #
+  #--------------------------------#
+  create:
+    title: "&#55FF55&lCreate a Clan"
+    size: 27
+    filler: "LIME_STAINED_GLASS_PANE"
+    items:
+      '1':
+        slot: 13
+        material: NAME_TAG
+        name: "&#55FF55&lStart Creation"
+        lore:
+          - ""
+          - "&#AAAAAAYou will be prompted to"
+          - "&#AAAAAAtype your clan name in chat."
+          - ""
+          - "&#FFAA00Requirements:"
+          - "&#555555- &#AAAAAA3 to 16 characters"
+          - "&#555555- &#AAAAAALetters, numbers, underscores"
+          - ""
+          - "&#55FF55▶ Click to begin!"
+        glow: true
+        action: "action:create_clan"
+      '2':
+        slot: 22
+        material: BARRIER
+        name: "&#FF5555&lCancel"
+        lore:
+          - ""
+          - "&#AAAAAAGo back to the main menu."
+          - ""
+        action: "open:main"
+  #--------------------------------#
+  #         Info Menu              #
+  #--------------------------------#
+  info:
+    title: "&#55FFFF&l{clan_name} &#AAAAAA- Info"
+    size: 27
+    filler: "LIGHT_BLUE_STAINED_GLASS_PANE"
+    update_interval: 20
+    items:
+      '1':
+        slot: 10
+        material: PLAYER_HEAD
+        name: "&#55FFFF&l{clan_name}"
+        lore:
+          - ""
+          - "&#AAAAAATag: &#FFFFFF[{clan_tag}]"
+          - "&#AAAAAAMembers: &#FFFFFF{clan_members}"
+          - "&#AAAAAAFriendly Fire: {clan_ff}"
+          - ""
+      '2':
+        slot: 12
+        material: PLAYER_HEAD
+        base64: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMThhN2RmMTMzZTU4ODQzNTViNmY4Yjg2NTIzNGE4Y2E4OWQ5OGFmYzI1NzBkNzFlOGFkMzVmZTY1NGViMmNjNyJ9fX0="
+        name: "&#FFFF55&lMembers"
+        lore:
+          - ""
+          - "&#AAAAAAView and manage all"
+          - "&#AAAAAAclan members."
+          - ""
+          - "&#FFFF55▶ Click to open!"
+        action: "open:members"
+      '3':
+        slot: 14
+        material: COMMAND_BLOCK
+        name: "&#FFAA00&lSettings"
+        lore:
+          - ""
+          - "&#AAAAAAManage clan settings."
+          - "&#555555(Leader only)"
+          - ""
+          - "&#FFAA00▶ Click to open!"
+        action: "open:settings"
+      '4':
+        slot: 16
+        material: OAK_DOOR
+        name: "&#FF5555&lLeave Clan"
+        lore:
+          - ""
+          - "&#AAAAAALeave your current clan."
+          - ""
+          - "&#FF5555▶ Click to leave!"
+        action: "action:leave"
+      '5':
+        slot: 22
+        material: ARROW
+        name: "&#AAAAAA&lBack"
+        lore:
+          - ""
+          - "&#AAAAAAReturn to main menu."
+          - ""
+        action: "open:main"
+  #--------------------------------#
+  #       Members Menu             #
+  #--------------------------------#
+  members:
+    title: "&#FFFF55&l{clan_name} &#AAAAAA- Members"
+    size: 27
+    filler: "YELLOW_STAINED_GLASS_PANE"
+    items:
+      '1':
+        slot: 13
+        material: PLAYER_HEAD
+        name: "&#55FFFF&lClan Members"
+        lore:
+          - ""
+          - "&#AAAAAATotal: &#FFFFFF{clan_members}"
+          - ""
+          - "&#FFAA00Use commands to manage:"
+          - "&#AAAAAA/clan invite <player>"
+          - "&#AAAAAA/clan kick <player>"
+          - "&#AAAAAA/clan promote <player>"
+          - "&#AAAAAA/clan demote <player>"
+          - ""
+      '2':
+        slot: 22
+        material: ARROW
+        name: "&#AAAAAA&lBack"
+        lore:
+          - ""
+          - "&#AAAAAAReturn to clan info."
+          - ""
+        action: "open:info"
+  #--------------------------------#
+  #       Settings Menu            #
+  #--------------------------------#
+  settings:
+    title: "&#FFAA00&l{clan_name} &#AAAAAA- Settings"
+    size: 27
+    filler: "ORANGE_STAINED_GLASS_PANE"
+    update_interval: 20
+    items:
+      '1':
+        slot: 11
+        material: GOLDEN_SWORD
+        name: "&#FFFF55&lFriendly Fire"
+        lore:
+          - ""
+          - "&#AAAAAAStatus: {clan_ff}"
+          - ""
+          - "&#FFFF55▶ Click to toggle!"
+          - ""
+        glow: true
+        action: "action:toggle_ff"
+      '2':
+        slot: 15
+        material: TNT
+        name: "&#FF5555&lDisband Clan"
+        lore:
+          - ""
+          - "&#AAAAAAPermanently disband your clan."
+          - "&#FF0000&lThis action cannot be undone!"
+          - ""
+          - "&#FF5555▶ Click to disband!"
+        action: "action:disband"
+      '3':
+        slot: 22
+        material: ARROW
+        name: "&#AAAAAA&lBack"
+        lore:
+          - ""
+          - "&#AAAAAAReturn to clan info."
+          - ""
+        action: "open:info"
+  #--------------------------------#
+  #    Confirm Disband Menu        #
+  #--------------------------------#
+  confirm-disband:
+    title: "&#FF0000&lConfirm Disband"
+    size: 27
+    filler: "RED_STAINED_GLASS_PANE"
+    items:
+      '1':
+        slot: 11
+        material: LIME_WOOL
+        name: "&#55FF55&lConfirm"
+        lore:
+          - ""
+          - "&#AAAAAAYes, disband &#FFFFFF{clan_name}&#AAAAAA."
+          - "&#FF0000This is permanent!"
+          - ""
+          - "&#55FF55▶ Click to confirm!"
+        action: "action:confirm_disband"
+      '2':
+        slot: 15
+        material: RED_WOOL
+        name: "&#FF5555&lCancel"
+        lore:
+          - ""
+          - "&#AAAAAANo, go back."
+          - ""
+          - "&#FF5555▶ Click to cancel!"
+        action: "open:settings"
