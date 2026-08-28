@@ -33,7 +33,7 @@ OnlyClans is designed to be a lightweight, highly customizable, and easy-to-use 
 
 ---
 
-## 💻 Commands & Permissions
+## Commands & Permissions
 
 ### Player Commands
 Basic commands accessible to all players by default (`onlyclans.use`).
