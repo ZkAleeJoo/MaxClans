@@ -73,24 +73,37 @@ Commands reserved for server administrators (`onlyclans.admin`).
 
 ## Placeholders
 
-OnlyClans integrates with **PlaceholderAPI** and provides internal placeholders for menus and chat.
+OnlyClans integrates with **PlaceholderAPI** and provides internal placeholders for menus and chat. Placeholders dynamically adapt according to `general.language` in `config.yml`, and can also be queried with an explicit language suffix (`_en`, `_es`) or prefix (`en_`, `es_`).
 
 ### PlaceholderAPI Expansion (`%onlyclans_<placeholder>%`)
 You can use these placeholders in plugins like TAB, EssentialsX Chat, DecentHolograms, or scoreboard plugins:
 
-| Placeholder | Output |
-|-------------|--------|
-| `%onlyclans_name%` | The name of the player's clan. |
-| `%onlyclans_tag%` | The 3-letter tag of the player's clan. |
-| `%onlyclans_tag_formatted%` | Formatted colored tag (e.g., `&#8727F5[TAG]`). |
-| `%onlyclans_role%` | Raw role name (`LEADER`, `MODERATOR`, `MEMBER`). |
-| `%onlyclans_role_formatted%` | Role badge with icon (`★ Líder`, `◆ Moderador`, `● Miembro`). |
-| `%onlyclans_members_count%` | Total member count in the player's clan. |
-| `%onlyclans_members_online%` | Number of currently online clan members. |
-| `%onlyclans_leader%` | Username of the clan leader. |
-| `%onlyclans_ff%` | Friendly Fire status (`ON` / `OFF`). |
-| `%onlyclans_ff_badge%` | Friendly Fire badge (`HABILITADO` / `DESHABILITADO`). |
-| `%onlyclans_created%` | Clan founding date (`dd/MM/yyyy`). |
+| Placeholder | Description | Example (EN) | Example (ES) |
+|-------------|-------------|--------------|--------------|
+| `%onlyclans_name%` | Clan name | `Vikings` | `Vikings` |
+| `%onlyclans_tag%` | 3-letter clan tag | `VIK` | `VIK` |
+| `%onlyclans_tag_formatted%` | Formatted colored tag | `&#8727F5[VIK]` | `&#8727F5[VIK]` |
+| `%onlyclans_role%` | Localized role name | `Leader` / `Moderator` / `Member` | `Líder` / `Moderador` / `Miembro` |
+| `%onlyclans_role_raw%` | Raw role enum name | `LEADER` / `MODERATOR` / `MEMBER` | `LEADER` / `MODERATOR` / `MEMBER` |
+| `%onlyclans_role_formatted%` | Role badge with icon | `&#FFD700★ Leader` | `&#FFD700★ Líder` |
+| `%onlyclans_members_count%` | Total clan member count | `8` | `8` |
+| `%onlyclans_members_online%` | Number of currently online members | `3` | `3` |
+| `%onlyclans_leader%` | Username of the clan leader | `ZkAleeJoo` | `ZkAleeJoo` |
+| `%onlyclans_ff%` | Friendly Fire status | `ON` / `OFF` | `ON` / `OFF` |
+| `%onlyclans_ff_status%` | Friendly Fire formatted status | `&#00FF88✔ Enabled` | `&#00FF88✔ Activado` |
+| `%onlyclans_ff_badge%` | Friendly Fire badge | `&#00FF88&lENABLED` | `&#00FF88&lHABILITADO` |
+| `%onlyclans_created%` | Clan founding date | `29/08/2026` | `29/08/2026` |
+
+### Multi-Language Explicit Placeholders
+If your network supports multiple languages at once, you can explicitly request the output language directly:
+* `%onlyclans_role_formatted_en%` ➔ `★ Leader`
+* `%onlyclans_role_formatted_es%` ➔ `★ Líder`
+* `%onlyclans_role_en%` ➔ `Leader`
+* `%onlyclans_role_es%` ➔ `Líder`
+* `%onlyclans_ff_badge_en%` ➔ `ENABLED`
+* `%onlyclans_ff_badge_es%` ➔ `HABILITADO`
+* `%onlyclans_ff_status_en%` ➔ `✔ Enabled`
+* `%onlyclans_ff_status_es%` ➔ `✔ Activado`
 
 ---
 
