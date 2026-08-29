@@ -35,36 +35,39 @@ OnlyClans is designed to be a lightweight, highly customizable, and easy-to-use 
 
 ## Commands & Permissions
 
+> [!NOTE]
+> All `/clan` commands can also be executed using the aliases `/olc` or `/onlyclans`.
+
 ### Player Commands
 Basic commands accessible to all players by default (`onlyclans.use`).
 
-| Command | Description |
-|---------|-------------|
-| `/clan` | Opens the main GUI menu. |
-| `/clan create <name>` | Creates a new clan (can also be done via GUI). |
-| `/clan info` | Displays your clan's info in a menu. |
-| `/clan invite <player>` | Invites a player to your clan. |
-| `/clan accept` | Accepts a pending invitation. |
-| `/clan deny` | Denies a pending invitation. |
-| `/clan leave` | Leaves your current clan. |
-| `/clan chat <msg>` or `/c <msg>` | Sends a message to the private clan chat. |
+| Command | Aliases | Description |
+|---------|---------|-------------|
+| `/clan` | `/olc`, `/onlyclans` | Opens the main GUI menu. |
+| `/clan create <name>` | `/olc create <name>` | Creates a new clan (can also be done via GUI). |
+| `/clan info` | `/olc info` | Displays your clan's info in a menu. |
+| `/clan invite <player>` | `/olc invite <player>` | Invites a player to your clan. |
+| `/clan accept` | `/olc accept` | Accepts a pending invitation. |
+| `/clan deny` | `/olc deny` | Denies a pending invitation. |
+| `/clan leave` | `/olc leave` | Leaves your current clan. |
+| `/clan chat <msg>` | `/c <msg>`, `/cc <msg>` | Sends a message to the private clan chat. |
 
 ### Clan Management Commands
 Commands available for Clan Leaders and Moderators.
 
-| Command | Description | Role Required |
-|---------|-------------|---------------|
-| `/clan kick <player>` | Kicks a player from the clan. | Leader, Moderator |
-| `/clan promote <player>` | Promotes a Member to Moderator. | Leader |
-| `/clan demote <player>` | Demotes a Moderator to Member. | Leader |
-| `/clan disband` | Permanently deletes the clan. | Leader |
+| Command | Aliases | Description | Role Required |
+|---------|---------|-------------|---------------|
+| `/clan kick <player>` | `/olc kick <player>` | Kicks a player from the clan. | Leader, Moderator |
+| `/clan promote <player>` | `/olc promote <player>` | Promotes a Member to Moderator. | Leader |
+| `/clan demote <player>` | `/olc demote <player>` | Demotes a Moderator to Member. | Leader |
+| `/clan disband` | `/olc disband` | Permanently deletes the clan. | Leader |
 
 ### Admin Commands
 Commands reserved for server administrators (`onlyclans.admin`).
 
-| Command | Description | Permission |
-|---------|-------------|------------|
-| `/clan reload` | Reloads all configuration files and menus. | `onlyclans.admin` |
+| Command | Aliases | Description | Permission |
+|---------|---------|-------------|------------|
+| `/clan reload` | `/olc reload`, `/onlyclans reload` | Reloads all configuration files and menus without restarting. | `onlyclans.admin` |
 
 ---
 
