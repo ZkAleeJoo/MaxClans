@@ -119,11 +119,17 @@ When a player clicks an item, you can assign it an action:
 
 ### Menu Placeholders
 Inside `menus.yml`, you can use these special placeholders for item names and lore to make them dynamic:
-- `{player}` - The viewing player's name.
-- `{clan_name}` - The clan's name.
-- `{clan_tag}` - The clan's tag.
-- `{clan_members}` - Total member count of the clan.
-- `{clan_ff}` - Friendly Fire status (ON/OFF).
+- `%player%` - The viewing player's name.
+- `%clan_name%` - The clan's name.
+- `%clan_tag%` - The clan's tag.
+- `%clan_members%` - Total member count of the clan.
+- `%clan_members_online%` - Members currently online.
+- `%clan_leader%` - Clan leader's username.
+- `%clan_role%` - Player's role badge (★ Leader, ◆ Moderator, ● Member).
+- `%clan_ff%` - Friendly Fire status (✔ Activado / ✖ Desactivado).
+- `%clan_ff_badge%` - Friendly Fire badge (HABILITADO / DESHABILITADO).
+- `%clan_created%` - Clan creation date.
+*(Also supports PlaceholderAPI placeholders if installed on the server).*
 
 ---
 
