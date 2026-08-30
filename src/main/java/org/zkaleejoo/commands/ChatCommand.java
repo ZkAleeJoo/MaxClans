@@ -29,6 +29,12 @@ public class ChatCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (!player.hasPermission("onlyclans.command.chat")) {
+            player.sendMessage(MessageUtils.getColoredMessage(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getNoPermission()));
+            return true;
+        }
+
         if (args.length == 0) {
             player.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMessage("usage-chat", "&cUsage: /c <message>")));

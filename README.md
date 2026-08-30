@@ -40,35 +40,86 @@ OnlyClans is designed to be a lightweight, highly customizable, and easy-to-use 
 > All `/clan` commands can also be executed using the aliases `/olc` or `/onlyclans`.
 
 ### Player Commands
-Basic commands accessible to all players by default (`onlyclans.use`).
+Basic commands accessible to all players by default (`onlyclans.use` or individual `onlyclans.command.*` permissions).
 
-| Command | Aliases | Description |
-|---------|---------|-------------|
-| `/clan` | `/olc`, `/onlyclans` | Opens the main GUI menu. |
-| `/clan create <name>` | `/olc create <name>` | Creates a new clan (can also be done via GUI). |
-| `/clan info` | `/olc info` | Displays your clan's info in a menu. |
-| `/clan invite <player>` | `/olc invite <player>` | Invites a player to your clan. |
-| `/clan accept` | `/olc accept` | Accepts a pending invitation. |
-| `/clan deny` | `/olc deny` | Denies a pending invitation. |
-| `/clan leave` | `/olc leave` | Leaves your current clan. |
-| `/clan chat <msg>` | `/c <msg>`, `/cc <msg>` | Sends a message to the private clan chat. |
+| Command | Aliases | Description | Permission | Default |
+|---------|---------|-------------|------------|---------|
+| `/clan` | `/olc`, `/onlyclans` | Opens the main GUI menu. | `onlyclans.command.main` | `true` |
+| `/clan help` | `/olc help` | Displays the help message and wiki link. | `onlyclans.command.help` | `true` |
+| `/clan list` | `/olc browse`, `/clan browse` | Opens the clan browser GUI to view all clans. | `onlyclans.command.list` | `true` |
+| `/clan info` | `/olc info` | Displays your clan's info and roster in a menu. | `onlyclans.command.info` | `true` |
+| `/clan create <name>` | `/olc create <name>` | Creates a new clan (can also be done via GUI). | `onlyclans.command.create` | `true` |
+| `/clan request <clan>` | `/olc join <clan>`, `/clan join` | Requests to join an existing clan. | `onlyclans.command.request` | `true` |
+| `/clan accept` | `/olc accept` | Accepts a pending clan invitation. | `onlyclans.command.accept` | `true` |
+| `/clan deny` | `/olc deny` | Denies a pending clan invitation. | `onlyclans.command.deny` | `true` |
+| `/clan leave` | `/olc leave` | Leaves your current clan. | `onlyclans.command.leave` | `true` |
+| `/clan chat <msg>` | `/c <msg>`, `/cc <msg>`, `/clanchat` | Sends a message to the private clan chat. | `onlyclans.command.chat` | `true` |
 
 ### Clan Management Commands
 Commands available for Clan Leaders and Moderators.
 
-| Command | Aliases | Description | Role Required |
-|---------|---------|-------------|---------------|
-| `/clan kick <player>` | `/olc kick <player>` | Kicks a player from the clan. | Leader, Moderator |
-| `/clan promote <player>` | `/olc promote <player>` | Promotes a Member to Moderator. | Leader |
-| `/clan demote <player>` | `/olc demote <player>` | Demotes a Moderator to Member. | Leader |
-| `/clan disband` | `/olc disband` | Permanently deletes the clan. | Leader |
+| Command | Aliases | Description | Role Required | Permission | Default |
+|---------|---------|-------------|---------------|------------|---------|
+| `/clan invite <player>` | `/olc invite <player>` | Invites a player to your clan. | Leader, Moderator | `onlyclans.command.invite` | `true` |
+| `/clan acceptrequest <player>` | `/olc acceptjoin` | Accepts a player's request to join the clan. | Leader, Moderator | `onlyclans.command.acceptrequest` | `true` |
+| `/clan denyrequest <player>` | `/olc denyjoin` | Denies a player's request to join the clan. | Leader, Moderator | `onlyclans.command.denyrequest` | `true` |
+| `/clan kick <player>` | `/olc kick <player>` | Kicks a player from the clan. | Leader, Moderator | `onlyclans.command.kick` | `true` |
+| `/clan promote <player>` | `/olc promote <player>` | Promotes a Member to Moderator. | Leader | `onlyclans.command.promote` | `true` |
+| `/clan demote <player>` | `/olc demote <player>` | Demotes a Moderator to Member. | Leader | `onlyclans.command.demote` | `true` |
+| `/clan disband` | `/olc disband` | Permanently deletes the clan. | Leader | `onlyclans.command.disband` | `true` |
 
 ### Admin Commands
-Commands reserved for server administrators (`onlyclans.admin`).
+Commands and privileges reserved for server administrators.
 
-| Command | Aliases | Description | Permission |
-|---------|---------|-------------|------------|
-| `/clan reload` | `/olc reload`, `/onlyclans reload` | Reloads all configuration files and menus without restarting. | `onlyclans.admin` |
+| Command | Aliases | Description | Permission | Default |
+|---------|---------|-------------|------------|---------|
+| `/clan reload` | `/olc reload`, `/onlyclans reload` | Reloads all configuration files, messages, and menus. | `onlyclans.command.reload` / `onlyclans.admin` | `op` |
+| *Update Notifications* | N/A | Receives in-game notifications when a new update is available. | `onlyclans.admin` | `op` |
+
+---
+
+### Permissions Reference & Hierarchy
+
+OnlyClans uses a hierarchical permission structure compatible with all standard permission managers (**LuckPerms**, UltraPermissions, PermissionsEx, etc.).
+
+```text
+onlyclans.admin (default: op)
+├── onlyclans.command.reload
+└── onlyclans.use (default: true)
+    ├── onlyclans.command.main
+    ├── onlyclans.command.help
+    ├── onlyclans.command.list
+    ├── onlyclans.command.info
+    ├── onlyclans.command.create
+    ├── onlyclans.command.request
+    ├── onlyclans.command.accept
+    ├── onlyclans.command.deny
+    ├── onlyclans.command.leave
+    ├── onlyclans.command.chat
+    ├── onlyclans.command.invite
+    ├── onlyclans.command.acceptrequest
+    ├── onlyclans.command.denyrequest
+    ├── onlyclans.command.kick
+    ├── onlyclans.command.promote
+    ├── onlyclans.command.demote
+    └── onlyclans.command.disband
+```
+
+#### Example LuckPerms Configurations:
+* **Revoke clan creation for default players (e.g. VIP-only feature):**
+  ```bash
+  /lp group default permission set onlyclans.command.create false
+  /lp group vip permission set onlyclans.command.create true
+  ```
+* **Disable clan chat on a specific world/server:**
+  ```bash
+  /lp group default permission set onlyclans.command.chat false
+  ```
+* **Grant full admin access:**
+  ```bash
+  /lp user <admin> permission set onlyclans.admin true
+  ```
+
 
 ---
 

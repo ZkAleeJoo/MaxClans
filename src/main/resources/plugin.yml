@@ -15,8 +15,83 @@ commands:
 
 permissions:
   onlyclans.admin:
-    description: Full access to admin commands.
+    description: Full access to admin commands and notifications.
     default: op
+    children:
+      onlyclans.command.reload: true
+      onlyclans.use: true
   onlyclans.use:
-    description: Access to basic clan commands.
+    description: Access to all player clan commands and menus.
     default: true
+    children:
+      onlyclans.command.main: true
+      onlyclans.command.help: true
+      onlyclans.command.list: true
+      onlyclans.command.info: true
+      onlyclans.command.create: true
+      onlyclans.command.disband: true
+      onlyclans.command.invite: true
+      onlyclans.command.accept: true
+      onlyclans.command.deny: true
+      onlyclans.command.leave: true
+      onlyclans.command.kick: true
+      onlyclans.command.promote: true
+      onlyclans.command.demote: true
+      onlyclans.command.request: true
+      onlyclans.command.acceptrequest: true
+      onlyclans.command.denyrequest: true
+      onlyclans.command.chat: true
+  onlyclans.command.main:
+    description: Open the main clan menu.
+    default: true
+  onlyclans.command.help:
+    description: View the clan help command.
+    default: true
+  onlyclans.command.list:
+    description: Browse all server clans.
+    default: true
+  onlyclans.command.info:
+    description: View clan info and member roster.
+    default: true
+  onlyclans.command.create:
+    description: Create a new clan.
+    default: true
+  onlyclans.command.disband:
+    description: Disband a clan.
+    default: true
+  onlyclans.command.invite:
+    description: Invite players to the clan.
+    default: true
+  onlyclans.command.accept:
+    description: Accept clan invitations.
+    default: true
+  onlyclans.command.deny:
+    description: Deny clan invitations.
+    default: true
+  onlyclans.command.leave:
+    description: Leave current clan.
+    default: true
+  onlyclans.command.kick:
+    description: Kick a member from the clan.
+    default: true
+  onlyclans.command.promote:
+    description: Promote a clan member.
+    default: true
+  onlyclans.command.demote:
+    description: Demote a clan moderator.
+    default: true
+  onlyclans.command.request:
+    description: Send a request to join a clan.
+    default: true
+  onlyclans.command.acceptrequest:
+    description: Accept join requests.
+    default: true
+  onlyclans.command.denyrequest:
+    description: Deny join requests.
+    default: true
+  onlyclans.command.chat:
+    description: Use clan chat (/clan chat or /c).
+    default: true
+  onlyclans.command.reload:
+    description: Reload the plugin configuration.
+    default: op

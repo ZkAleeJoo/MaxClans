@@ -29,7 +29,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("onlyclans.admin")) {
+            if (!sender.hasPermission("onlyclans.command.reload") && !sender.hasPermission("onlyclans.admin")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -49,6 +49,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         ClanManager clanManager = plugin.getClanManager();
 
         if (args.length == 0) {
+            if (!player.hasPermission("onlyclans.command.main")) {
+                sendNoPermission(player);
+                return true;
+            }
             Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
             plugin.getMenuBuilder().openMenu(player, "main", clan);
             return true;
@@ -58,15 +62,27 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         switch (sub) {
             case "help" -> {
+                if (!sender.hasPermission("onlyclans.command.help")) {
+                    sendNoPermission(sender);
+                    return true;
+                }
                 help(sender);
                 return true;
             }
             case "list", "browse" -> {
+                if (!player.hasPermission("onlyclans.command.list")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
                 plugin.getMenuBuilder().openMenu(player, "clan_list", clan, 0);
                 return true;
             }
             case "create" -> {
+                if (!player.hasPermission("onlyclans.command.create")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     plugin.getMenuBuilder().openMenu(player, "create", null);
                 } else {
@@ -91,11 +107,15 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "disband" -> {
+                if (!player.hasPermission("onlyclans.command.disband")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
                 if (clan == null) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                                    .getMessage("not-in-clan", "&cYou are not in a clan.")));
+                                     .getMessage("not-in-clan", "&cYou are not in a clan.")));
                     return true;
                 }
                 if (!clan.getMember(player.getUniqueId()).isLeader()) {
@@ -108,6 +128,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "invite" -> {
+                if (!player.hasPermission("onlyclans.command.invite")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -125,6 +149,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "request", "join" -> {
+                if (!player.hasPermission("onlyclans.command.request")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -143,6 +171,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "acceptrequest", "acceptjoin" -> {
+                if (!player.hasPermission("onlyclans.command.acceptrequest")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -153,6 +185,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "denyrequest", "denyjoin" -> {
+                if (!player.hasPermission("onlyclans.command.denyrequest")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -163,18 +199,34 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "accept" -> {
+                if (!player.hasPermission("onlyclans.command.accept")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 clanManager.acceptInvite(player);
                 return true;
             }
             case "deny" -> {
+                if (!player.hasPermission("onlyclans.command.deny")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 clanManager.denyInvite(player);
                 return true;
             }
             case "leave" -> {
+                if (!player.hasPermission("onlyclans.command.leave")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 clanManager.leaveClan(player);
                 return true;
             }
             case "kick" -> {
+                if (!player.hasPermission("onlyclans.command.kick")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -192,6 +244,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "promote" -> {
+                if (!player.hasPermission("onlyclans.command.promote")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -209,6 +265,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "demote" -> {
+                if (!player.hasPermission("onlyclans.command.demote")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -226,6 +286,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "chat", "c" -> {
+                if (!player.hasPermission("onlyclans.command.chat")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 if (args.length < 2) {
                     player.sendMessage(MessageUtils.getColoredMessage(
                             plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -244,6 +308,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "info" -> {
+                if (!player.hasPermission("onlyclans.command.info")) {
+                    sendNoPermission(player);
+                    return true;
+                }
                 Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
                 if (clan != null) {
                     plugin.getMenuBuilder().openMenu(player, "info", clan);
@@ -284,11 +352,23 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         List<String> completions = new ArrayList<>();
 
         if (args.length == 1) {
-            completions.addAll(Arrays.asList(
-                    "create", "disband", "invite", "accept", "deny",
-                    "leave", "kick", "promote", "demote", "chat", "info",
-                    "list", "request", "acceptrequest", "denyrequest", "help"));
-            if (sender.hasPermission("onlyclans.admin")) {
+            if (sender.hasPermission("onlyclans.command.create")) completions.add("create");
+            if (sender.hasPermission("onlyclans.command.disband")) completions.add("disband");
+            if (sender.hasPermission("onlyclans.command.invite")) completions.add("invite");
+            if (sender.hasPermission("onlyclans.command.accept")) completions.add("accept");
+            if (sender.hasPermission("onlyclans.command.deny")) completions.add("deny");
+            if (sender.hasPermission("onlyclans.command.leave")) completions.add("leave");
+            if (sender.hasPermission("onlyclans.command.kick")) completions.add("kick");
+            if (sender.hasPermission("onlyclans.command.promote")) completions.add("promote");
+            if (sender.hasPermission("onlyclans.command.demote")) completions.add("demote");
+            if (sender.hasPermission("onlyclans.command.chat")) completions.add("chat");
+            if (sender.hasPermission("onlyclans.command.info")) completions.add("info");
+            if (sender.hasPermission("onlyclans.command.list")) completions.add("list");
+            if (sender.hasPermission("onlyclans.command.request")) completions.add("request");
+            if (sender.hasPermission("onlyclans.command.acceptrequest")) completions.add("acceptrequest");
+            if (sender.hasPermission("onlyclans.command.denyrequest")) completions.add("denyrequest");
+            if (sender.hasPermission("onlyclans.command.help")) completions.add("help");
+            if (sender.hasPermission("onlyclans.command.reload") || sender.hasPermission("onlyclans.admin")) {
                 completions.add("reload");
             }
             return filterCompletions(completions, args[0]);
@@ -296,20 +376,23 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
-            if (sub.equals("invite") || sub.equals("kick") || sub.equals("promote") || sub.equals("demote")) {
+            if (sub.equals("invite") && sender.hasPermission("onlyclans.command.invite")
+                    || sub.equals("kick") && sender.hasPermission("onlyclans.command.kick")
+                    || sub.equals("promote") && sender.hasPermission("onlyclans.command.promote")
+                    || sub.equals("demote") && sender.hasPermission("onlyclans.command.demote")) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     completions.add(p.getName());
                 }
                 return filterCompletions(completions, args[1]);
             }
-            if (sub.equals("request") || sub.equals("join")) {
+            if ((sub.equals("request") || sub.equals("join")) && sender.hasPermission("onlyclans.command.request")) {
                 for (Clan c : plugin.getClanManager().getAllClans()) {
                     completions.add(c.getName());
                 }
                 return filterCompletions(completions, args[1]);
             }
-            if (sub.equals("acceptrequest") || sub.equals("denyrequest") || sub.equals("acceptjoin")
-                    || sub.equals("denyjoin")) {
+            if ((sub.equals("acceptrequest") || sub.equals("acceptjoin")) && sender.hasPermission("onlyclans.command.acceptrequest")
+                    || (sub.equals("denyrequest") || sub.equals("denyjoin")) && sender.hasPermission("onlyclans.command.denyrequest")) {
                 if (sender instanceof Player p) {
                     Clan clan = plugin.getClanManager().getClanByPlayer(p.getUniqueId());
                     if (clan != null) {
