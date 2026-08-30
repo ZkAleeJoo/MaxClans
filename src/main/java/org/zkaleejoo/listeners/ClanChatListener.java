@@ -1,7 +1,6 @@
 package org.zkaleejoo.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,7 +8,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.managers.ClanManager;
-import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class ClanChatListener implements Listener {
@@ -63,18 +61,6 @@ public class ClanChatListener implements Listener {
             org.zkaleejoo.utils.FoliaCompat.runGlobal(plugin, () -> {
                 clanManager.createClan(player, message, tag);
             });
-            return;
-        }
-
-        Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
-        if (clan != null) {
-            Component clanPrefix = MessageUtils.toComponent(
-                    "&8[&b" + clan.getTag() + "&8] ");
-
-            event.renderer((source, sourceDisplayName, msg, audience) -> clanPrefix
-                    .append(sourceDisplayName)
-                    .append(Component.text(" "))
-                    .append(msg));
         }
     }
 }
