@@ -1,0 +1,710 @@
+# ====================================================================#
+#                     OnlyClans - Menus Configuration               #
+# ====================================================================#
+# Available Placeholders:
+#   %player%              - Player name
+#   %clan_name%           - Clan name (or 'None')
+#   %clan_tag%            - Clan tag (or '---')
+#   %clan_members%        - Total member count
+#   %clan_members_online% - Currently online members
+#   %clan_leader%         - Clan leader name
+#   %clan_role%           - Formatted player role
+#   %clan_ff%             - Friendly Fire status (✔ Enabled / ✖ Disabled)
+#   %clan_ff_badge%       - Friendly Fire badge (ENABLED / DISABLED)
+#   %clan_created%        - Clan creation date
+#   %total_clans%         - Total number of registered clans
+#   %page%                - Current page number
+#   %max_pages%           - Total page count
+#
+# Available Actions:
+#   open:<menu_id>        - Opens another menu (e.g.: open:create, open:info, open:clan_list)
+#   action:create_clan    - Starts clan creation (chat input prompt)
+#   action:toggle_ff      - Toggles Friendly Fire
+#   action:disband        - Opens clan disband confirmation menu
+#   action:confirm_disband- Permanently disbands the clan
+#   action:leave          - Leaves the current clan
+#   action:clan_page_prev - Goes to previous page in clan list
+#   action:clan_page_next - Goes to next page in clan list
+#   command:<command>     - Executes a command as the player
+#   close                 - Closes the menu
+# ====================================================================#
+
+menus:
+  # ------------------------------------------------------------------#
+  #                       MAIN MENU (MAIN)                           #
+  # ------------------------------------------------------------------#
+  main:
+    title: '&8» &8&lᴍᴀɪɴ ᴍᴇɴᴜ'
+    size: 45
+    open_sound: BLOCK_CHEST_OPEN
+    open_sound_volume: 0.8
+    open_sound_pitch: 1.1
+    filler: BLACK_STAINED_GLASS_PANE
+    filler_glow: false
+    # Refresh rate in server ticks (20 ticks = 1s, 60 ticks = 3s). 0 disables auto-refresh.
+    update_interval: 60
+    items:
+      #Frame / Border Decoration
+      border_purple:
+        slots:
+        - 0
+        - 1
+        - 7
+        - 8
+        - 9
+        - 17
+        - 27
+        - 35
+        - 36
+        - 37
+        - 43
+        - 44
+        material: PURPLE_STAINED_GLASS_PANE
+        name: ' '
+      #Button: Create Clan
+      btn_create:
+        slot: 19
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTU4NTlkOTU3MDQzMWNhZTk2MGEzODZhY2I3MTE1NGFiMDc3MjlhN2Y0ZTFmOWIwMDU2ZTdiYWFmMWM5NmViYyJ9fX0=
+        name: '&#00FF88&lᴄʀᴇᴀᴛᴇ ᴄʟᴀɴ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Found your own clan, recruit'
+        - '&#A0AEC0allies and forge an empire.'
+        - ''
+        - '&#718096▪ &#E2E8F0Requirements: &#00FF88None'
+        - '&#718096▪ &#E2E8F0Length: &#00FF883 to 16 characters'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00FF88Click to found your clan'
+        glow: true
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.2
+        action: open:create
+      #Button: Your Clan / Clan Panel
+      btn_clan_info:
+        slot: 21
+        material: PLAYER_HEAD
+        owner: "%player%"
+        name: '&#00E5FF&lʏᴏᴜʀ ᴄʟᴀɴ: &#FFFFFF%clan_name%'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Name: &#FFFFFF%clan_name%'
+        - '&#718096▪ &#A0AEC0Tag: &#FFFFFF[%clan_tag%]'
+        - '&#718096▪ &#A0AEC0Leader: &#FFFFFF%clan_leader%'
+        - '&#718096▪ &#A0AEC0Your Role: &#FFFFFF%clan_role%'
+        - '&#718096▪ &#A0AEC0Members: &#FFFFFF%clan_members_online%&#718096/&#FFFFFF%clan_members%'
+        - '&#718096▪ &#A0AEC0Ally PvP: %clan_ff%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00E5FFClick to view dashboard'
+        glow: true
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.3
+        action: open:info
+      #Button: Clan Explorer / All Clans
+      btn_clan_list:
+        slot: 23
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTAxYmY1NjNlNzk5NjUwOTViYWMzM2QzNTRlMjFhMDI4ZjczNzQ1ZGNhZWViNzU0MTNjMDEyYzhiYzBlZGZmYSJ9fX0=
+        name: '&#FFD700&lᴄʟᴀɴ ʙʀᴏᴡꜱᴇʀ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Browse all registered clans,'
+        - '&#A0AEC0view leader stats and apply.'
+        - ''
+        - '&#718096▪ &#A0AEC0Total clans: &#FFD700%total_clans%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FFD700Click to explore clans'
+        glow: true
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.2
+        action: open:clan_list
+      #Button: Guide and Commands
+      btn_help:
+        slot: 25
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ0MmNlNzgwOTVlODA0NzZkMTVlZTNjN2MwYjYzMWY3ZjczNGZhMmQwNTkyY2ExZTZiZjhlZGI4OTMwMTQzYyJ9fX0=
+        name: '&#FFAA00&lɢᴜɪᴅᴇ & ᴄᴏᴍᴍᴀɴᴅꜱ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Learn all the commands and'
+        - '&#A0AEC0features of the clan system.'
+        - ''
+        - '&#718096▪ &#E2E8F0/clan help &#718096- View list'
+        - '&#718096▪ &#E2E8F0/clan list &#718096- Browse clans'
+        - '&#718096▪ &#E2E8F0/clan chat &#718096- Clan chat'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FFAA00Click to view in chat'
+        sound: ITEM_BOOK_PAGE_TURN
+        action: command:clan help
+      #Button: Close Menu
+      btn_close:
+        slot: 40
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+        name: '&#FF3366&lᴄʟᴏꜱᴇ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Closes the current menu.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 0.8
+        action: close
+
+  # ------------------------------------------------------------------#
+  #                     CLAN LIST MENU (CLAN_LIST)                   #
+  # ------------------------------------------------------------------#
+  clan_list:
+    title: '&8» &8&lᴄʟᴀɴ ʟɪꜱᴛ &7(%page%/%max_pages%)'
+    size: 54
+    open_sound: BLOCK_CHEST_OPEN
+    open_sound_volume: 0.8
+    open_sound_pitch: 1.2
+    filler: BLACK_STAINED_GLASS_PANE
+    dynamic_clans: true
+    clan_slots:
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+    - 33
+    - 34
+    clan_item:
+      name: '&#00FF88&l%clan_name% &#718096[%clan_tag%]'
+      lore:
+      - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      - '&#718096▪ &#A0AEC0Leader: &#FFFFFF%clan_leader%'
+      - '&#718096▪ &#A0AEC0Tag: &#FFFFFF[%clan_tag%]'
+      - '&#718096▪ &#A0AEC0Members: &#FFFFFF%clan_members_online%&#718096/&#FFFFFF%clan_members%'
+      - '&#718096▪ &#A0AEC0Friendly Fire: %clan_ff%'
+      - '&#718096▪ &#A0AEC0Staff: %clan_staff_status%'
+      - '&#718096▪ &#A0AEC0Founded: &#E2E8F0%clan_created%'
+      - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      - '%action_hint%'
+    items:
+      border_cyan:
+        slots:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 17
+        - 18
+        - 26
+        - 27
+        - 35
+        - 36
+        - 44
+        material: CYAN_STAINED_GLASS_PANE
+        name: ' '
+      header_info:
+        slot: 4
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQyNDBkNzkyZjE4MWZjNGYyMTk3YTVjOTE2NmMwOWE4ZDkzMGUwMzZjZWRlOWRiZjU5NGRkYjNjNGZiNjgwYSJ9fX0=
+        name: '&#00E5FF&lᴄʟᴀɴ ʙʀᴏᴡꜱᴇʀ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Explore all active clans on the'
+        - '&#A0AEC0server and send a join request.'
+        - ''
+        - '&#718096▪ &#A0AEC0Total Clans: &#00E5FF%total_clans%'
+        - '&#718096▪ &#A0AEC0Current Page: &#00E5FF%page%&#718096/&#00E5FF%max_pages%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        glow: true
+      btn_prev:
+        slot: 48
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzdhNDBiYTljZDE0ZTk3OTUxNTZkNDc3NWFhNTM5MzYzYjk2N2U3N2EzMCJ9fX0=
+        name: '&#00E5FF&l◀ ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Go to the previous page.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: ITEM_BOOK_PAGE_TURN
+        sound_pitch: 1.2
+        action: action:clan_page_prev
+      btn_page_info:
+        slot: 49
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTU4NTlkOTU3MDQzMWNhZTk2MGEzODZhY2I3MTE1NGFiMDc3MjlhN2Y0ZTFmOWIwMDU2ZTdiYWFmMWM5NmViYyJ9fX0=
+        name: '&#FFD700&lᴘᴀɢᴇ: &#FFFFFF%page% / %max_pages%'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Total Clans: &#FFD700%total_clans%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      btn_next:
+        slot: 50
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgyYWQxYjljYjRkZWFmYzE5MjcxNDNiYmM0OTUxNWJhTE45Zjc4NzAxNmUwMzExMDRiMmMj19fX0=
+        name: '&#00E5FF&lɴᴇxᴛ ᴘᴀɢᴇ ▶'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Go to the next page.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: ITEM_BOOK_PAGE_TURN
+        sound_pitch: 1.2
+        action: action:clan_page_next
+      btn_back:
+        slot: 45
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+        name: '&c&lʙᴀᴄᴋ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Return to the main menu.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 0.9
+        action: open:main
+
+  # ------------------------------------------------------------------#
+  #                     CREATE CLAN MENU (CREATE)                     #
+  # ------------------------------------------------------------------#
+  create:
+    title: '&8» &8&lᴄʀᴇᴀᴛᴇ ᴄʟᴀɴ'
+    size: 36
+    open_sound: BLOCK_CHEST_OPEN
+    open_sound_volume: 0.8
+    open_sound_pitch: 1.2
+    filler: BLACK_STAINED_GLASS_PANE
+    items:
+      #Information and Requirements
+      info_reqs:
+        slot: 11
+        material: BOOK
+        name: '&#00E5FF&lʀᴇꞯᴜɪʀᴇᴍᴇɴᴛꜱ & ʀᴜʟᴇꜱ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Length: &#00E5FF3 to 16 characters'
+        - '&#718096▪ &#A0AEC0Characters: &#00E5FFLetters, numbers & _'
+        - '&#718096▪ &#A0AEC0Do not use offensive names'
+        - '&#718096▪ &#A0AEC0The tag is generated automatically'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        glow: true
+      #Start Button
+      btn_start:
+        slot: 13
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDZjNzQ4YmI2YjQwMGQ3ZDgyYmEyNWRmMGYzMDk4YTViZjBkYjVmNDE4YzBhODc3MmUwZGE2ODI1MmUyODdlMCJ9fX0=
+        name: '&#00FF88&lꜱᴛᴀʀᴛ ᴄʀᴇᴀᴛɪᴏɴ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Clicking will prompt you to'
+        - '&#A0AEC0type the name in the chat.'
+        - ''
+        - '&#718096▪ &#A0AEC0Type &#FF5555''cancel'' &#A0AEC0to cancel.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00FF88Click to begin'
+        glow: true
+        sound: ENTITY_EXPERIENCE_ORB_PICKUP
+        sound_pitch: 1.3
+        action: action:create_clan
+      #Clan Perks
+      info_perks:
+        slot: 15
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzY3MmM3OTExNWU4NmJhYWIwYWE1ZGYyZmYzNDE1YTExMTAyYWQ1YjZkYmY5MTQyNzJhNTA3YzI4MGFhNjQxOSJ9fX0=
+        name: '&#FFD700&lᴄʟᴀɴ ᴘᴇʀᴋꜱ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Private chat channel'
+        - '&#718096▪ &#A0AEC0Friendly fire protection'
+        - '&#718096▪ &#A0AEC0Leader, Mod & Member roles'
+        - '&#718096▪ &#A0AEC0Full interactive management'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      #Back Button
+      btn_back:
+        slot: 31
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+        name: '&#FF3366&lBack'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Return to the main menu.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 0.9
+        action: open:main
+  # ------------------------------------------------------------------#
+  #                      CLAN PANEL (INFO)                            #
+  # ------------------------------------------------------------------#
+  info:
+    title: '&c&l%clan_name% &8» &8&lᴏᴠᴇʀᴠɪᴇᴡ'
+    size: 45
+    open_sound: BLOCK_CHEST_OPEN
+    open_sound_volume: 0.8
+    open_sound_pitch: 1.2
+    filler: BLACK_STAINED_GLASS_PANE
+    # Refresh rate in server ticks (20 ticks = 1s, 60 ticks = 3s). 0 disables auto-refresh.
+    update_interval: 60
+    items:
+      #Borders
+      border_cyan:
+        slots:
+        - 0
+        - 1
+        - 7
+        - 8
+        - 9
+        - 17
+        - 27
+        - 35
+        - 36
+        - 37
+        - 43
+        - 44
+        material: CYAN_STAINED_GLASS_PANE
+        name: ' '
+      #Crest/Clan Overview
+      clan_crest:
+        slot: 13
+        material: PLAYER_HEAD
+        owner: "%clan_leader%"
+        name: '&c&l%clan_name%' #[%clan_tag%]
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Leader: &f%clan_leader%'
+        - '&#718096▪ &#A0AEC0Your Role: %clan_role%'
+        - '&#718096▪ &#A0AEC0Members: &f%clan_members_online%&8/&f%clan_members%'
+        - '&#718096▪ &#A0AEC0Friendly Fire: %clan_ff%'
+        - '&#718096▪ &#A0AEC0Founded: &f%clan_created%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        glow: true
+      #Button: View Members
+      btn_members:
+        slot: 21
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTAxYmY1NjNlNzk5NjUwOTViYWMzM2QzNTRlMjFhMDI4ZjczNzQ1ZGNhZWViNzU0MTNjMDEyYzhiYzBlZGZmYSJ9fX0=
+        name: '&#FFD700&lᴄʟᴀɴ ᴍᴇᴍʙᴇʀꜱ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0View the full list of players,'
+        - '&#A0AEC0their roles, and online status.'
+        - ''
+        - '&#718096▪ &#A0AEC0Total: &f%clan_members% players'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FFD700▶ Click to view members'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.2
+        action: open:members
+      #Button: Clan Settings
+      btn_settings:
+        slot: 23
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjc5ZTliYzZmYzFjOWRhNWE5N2Q5YjY5ZWM4MDVjYTU1NzdjMTUxN2RmZjg5NTcwNmQ1ODNlNTg2NzFjYjczNiJ9fX0=
+        name: '&#FFAA00&lᴄʟᴀɴ ꜱᴇᴛᴛɪɴɢꜱ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Configure friendly fire,'
+        - '&#A0AEC0combat options, and more.'
+        - ''
+        - '&#718096▪ &#FFAA00Leader Only'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FFAA00▶ Click to open settings'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.2
+        action: open:settings
+      #Button: Leave Clan
+      btn_leave:
+        slot: 31
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2IxYjQ5ZWYxOTUwZjcyYWE1NjkxZjQzNmI3ZmVlMTQ5MmRiYTE1MDljNzA2MTc4MWQxYWI3N2EyOGY0MzE2OCJ9fX0=
+        name: '&#FF3366&lʟᴇᴀᴠᴇ ᴄʟᴀɴ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Resign your membership from'
+        - '&#A0AEC0the current clan.'
+        - ''
+        - '&#718096▪ &#FF5555You will lose your roles and permissions.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FF3366▶ Click to leave clan'
+        sound: BLOCK_NOTE_BLOCK_BASS
+        sound_pitch: 0.7
+        action: action:leave
+      #Back Button
+      btn_back:
+        slot: 40
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+        name: '&c&lʙᴀᴄᴋ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Return to the main menu.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 0.9
+        action: open:main
+  # ------------------------------------------------------------------#
+  #                     MEMBER LIST (MEMBERS)                        #
+  # ------------------------------------------------------------------#
+  members:
+    title: '&c&l%clan_name% &8» &8&lᴍᴇᴍʙᴇʀꜱ &7(%page%/%max_pages%)'
+    size: 45
+    open_sound: BLOCK_CHEST_OPEN
+    open_sound_volume: 0.8
+    open_sound_pitch: 1.2
+    dynamic_members: true
+    member_slots:
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 28
+    - 29
+    - 30
+    - 31
+    - 32
+    - 33
+    - 34
+    member_item:
+      name: '%member_role_formatted% &#FFFFFF%member_name%'
+      lore:
+      - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      - '&#A0AEC0Status: %member_status%'
+      - '&#A0AEC0Role: %member_role_formatted%'
+      - '&#A0AEC0KDR: &#00FF88%member_kdr% &#718096(&#FFFFFF%member_kills% &#718096K / &#FFFFFF%member_deaths% &#718096D)'
+      - '&#A0AEC0Playtime: &#00E5FF%member_playtime%'
+      - '&#A0AEC0Joined: &#E2E8F0%member_joined%'
+    filler: BLACK_STAINED_GLASS_PANE
+    items:
+      #Header / Member Info
+      header_info:
+        slot: 4
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQyNDBkNzkyZjE4MWZjNGYyMTk3YTVjOTE2NmMwOWE4ZDkzMGUwMzZjZWRlOWRiZjU5NGRkYjNjNGZiNjgwYSJ9fX0=
+        name: '&#FFD700&lᴍᴇᴍʙᴇʀ ʟɪꜱᴛ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Total Members: &#FFD700%clan_members%'
+        - '&#718096▪ &#A0AEC0Online: &#FFD700%clan_members_online%'
+        - '&#718096▪ &#A0AEC0Current Sort: %sort_mode%'
+        - ''
+        - '&#718096▪ &#E2E8F0/clan invite <player> &#718096- Invite'
+        - '&#718096▪ &#E2E8F0/clan kick <player>   &#718096- Kick'
+        - '&#718096▪ &#E2E8F0/clan promote <player>&#718096- Promote'
+        - '&#718096▪ &#E2E8F0/clan demote <player> &#718096- Demote'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        glow: true
+      #Button: Sort / Filter
+      btn_sort:
+        slot: 44
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDg4ZDFjZDY1YzQ5ZGE2MzcxYmVjOGQ5ODFkYTMxNmI4OTc5ZWY5NDgwNmI0OGUxYWYyZDMxYjU2YmFhZjQ3In19fQ==
+        name: '&#00E5FF&lꜱᴏʀᴛ & ꜰɪʟᴛᴇʀ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Current: %sort_mode%'
+        - ''
+        - '&#718096▪ &#A0AEC0Available Modes:'
+        - '  &#718096• &#FFD700Role &#718096(Hierarchy)'
+        - '  &#718096• &#00FF88KDR &#718096(High to Low)'
+        - '  &#718096• &#00E5FFPlaytime &#718096(Most Active)'
+        - '  &#718096• &#FFAA00Join Date &#718096(Recent)'
+        - '  &#718096• &#E2E8F0Join Date &#718096(Oldest)'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00E5FF▶ Left-Click: Next Mode'
+        - '&#718096▶ Right-Click: Previous Mode'
+        glow: true
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.3
+        action: action:cycle_member_sort
+      #Previous Page Button
+      btn_prev:
+        slot: 38
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzdhNDBiYTljZDE0ZTk3OTUxNTZkNDc3NWFhNTM5MzYzYjk2N2U3N2EzMCJ9fX0=
+        name: '&#00E5FF&l◀ ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Go to the previous member page.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: ITEM_BOOK_PAGE_TURN
+        sound_pitch: 1.2
+        action: action:member_page_prev
+      #Next Page Button
+      btn_next:
+        slot: 42
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgyYWQxYjljYjRkZWFmYzE5MjcxNDNiYmM0OTUxNWJhTE45Zjc4NzAxNmUwMzExMDRiMmMj19fX0=
+        name: '&#00E5FF&lɴᴇxᴛ ᴘᴀɢᴇ ▶'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Go to the next member page.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: ITEM_BOOK_PAGE_TURN
+        sound_pitch: 1.2
+        action: action:member_page_next
+      #Back Button
+      btn_back:
+        slot: 40
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+        name: '&c&lʙᴀᴄᴋ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Return to the clan dashboard.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 0.9
+        action: open:info
+  # ------------------------------------------------------------------#
+  #                     CLAN SETTINGS (SETTINGS)                     #
+  # ------------------------------------------------------------------#
+  settings:
+    title: '&c&l%clan_name% &8» &8&lꜱᴇᴛᴛɪɴɢꜱ'
+    size: 36
+    open_sound: BLOCK_CHEST_OPEN
+    open_sound_volume: 0.8
+    open_sound_pitch: 1.2
+    filler: BLACK_STAINED_GLASS_PANE
+    # Refresh rate in server ticks (20 ticks = 1s, 60 ticks = 3s). 0 disables auto-refresh.
+    update_interval: 60
+    items:
+      #Toggle: Friendly Fire
+      toggle_ff:
+        slot: 11
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGQ4ZTlhYjVjNGM4ZWQ3YTkzMDhmYjY4YjBjYjQwY2RhZTBjZWRjNThlZmYyMWNmMDBiNTYwYTYwMzY1ZDZkNSJ9fX0=
+        name: '&#00E5FF&lꜰʀɪᴇɴᴅʟʏ ꜰɪʀᴇ (ᴀʟʟʏ ᴘᴠᴘ)'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Enable or disable damage'
+        - '&#A0AEC0between clan members.'
+        - ''
+        - '&#718096▪ &#A0AEC0Current status: %clan_ff%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00E5FF▶ Click to toggle'
+        glow: true
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_ff
+      #Security Info
+      info_security:
+        slot: 13
+        material: SHIELD
+        name: '&#FFD700&lꜱᴇᴄᴜʀɪᴛʏ & ᴘʀɪᴠᴀᴄʏ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#718096▪ &#A0AEC0Leader: &#FFD700%clan_leader%'
+        - '&#718096▪ &#A0AEC0Tag: &#00E5FF[%clan_tag%]'
+        - '&#718096▪ &#A0AEC0Created: &#E2E8F0%clan_created%'
+        - ''
+        - '&#718096▪ &#A0AEC0Only the clan leader can'
+        - '&#A0AEC0modify these settings.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      #Danger Button: Disband Clan
+      btn_disband:
+        slot: 15
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzlmMzU2MDViY2QxNWYyZmYzNDg4M2Y0NzdiYjdiOWFlNjQ2ZTk4N2NhZWVkZDU0NDliMGUyNjQ0Y2NmNzIyIn19fQ==
+        name: '&#FF3366&lᴅɪꜱʙᴀɴᴅ ᴄʟᴀɴ (ᴅᴀɴɢᴇʀ)'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Permanently and irreversibly'
+        - '&#A0AEC0delete your clan.'
+        - ''
+        - '&#718096▪ &#FF0000This action cannot be undone!'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FF3366▶ Click to proceed'
+        sound: BLOCK_NOTE_BLOCK_BASS
+        sound_pitch: 0.6
+        action: action:disband
+      #Back Button
+      btn_back:
+        slot: 31
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+        name: '&c&lʙᴀᴄᴋ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Return to the clan dashboard.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 0.9
+        action: open:info
+  # ------------------------------------------------------------------#
+  #             CONFIRM DISBAND MENU (CONFIRM-DISBAND)               #
+  # ------------------------------------------------------------------#
+  confirm-disband:
+    title: '&4&lᴅɪꜱʙᴀɴᴅ ᴄʟᴀɴ'
+    size: 27
+    open_sound: ENTITY_WITHER_SPAWN
+    open_sound_volume: 0.6
+    open_sound_pitch: 1.5
+    filler: RED_STAINED_GLASS_PANE
+    items:
+      #Button: Confirm Disband
+      btn_confirm:
+        slot: 11
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDk5ODBjMWQyMTE4MDlhOWI2NTY1MDg4ZjU2YTM4ZjJlZjQ5MTE1YzEwNTRmYTY2MjQ1MTIyZTllZWVkZWNjMiJ9fX0=
+        name: '&#00FF88&lʏᴇꜱ, ᴅɪꜱʙᴀɴᴅ ᴄʟᴀɴ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0I confirm that I want to disband'
+        - '&#A0AEC0the clan &#FFFFFF%clan_name%&#A0AEC0.'
+        - ''
+        - '&#718096▪ &#FF0000All data will be permanently deleted.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00FF88Click to confirm'
+        glow: true
+        sound: ENTITY_GENERIC_EXPLODE
+        sound_pitch: 1.0
+        action: action:confirm_disband
+      #Critical Warning Center
+      warning_center:
+        slot: 13
+        material: TNT
+        name: '&#FF3366&lᴄʀɪᴛɪᴄᴀʟ ᴡᴀʀɴɪɴɢ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0You are about to completely'
+        - '&#A0AEC0delete your clan.'
+        - ''
+        - '&#718096▪ &#E2E8F0Affected members: &#00FF88%clan_members%'
+        - '&#718096▪ &#FF0000100% irreversible action.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      #Button: Cancel
+      btn_cancel:
+        slot: 15
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmJkMmJlYzVlYmI0Njc1Y2YyOTA2YjVmNGMyMjE4OTgyMjM2NTYzZmQ3YjQyYjg1OGIyOWRmZGU2Y2VmYzQyOCJ9fX0=
+        name: '&#FF3366&lᴄᴀɴᴄᴇʟ & ɢᴏ ʙᴀᴄᴋ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Do not disband the clan and'
+        - '&#A0AEC0return to settings.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00E5FFClick to cancel'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.2
+        action: open:settings

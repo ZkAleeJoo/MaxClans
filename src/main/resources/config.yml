@@ -1,0 +1,110 @@
+# ==================================================================== #
+#                      OnlyClans - Main Configuration                  #
+# ==================================================================== #
+
+general:
+  prefix: '&#2F6AFA&lOnlyClans &8» '
+  # Plugin language (options: 'en', 'es', or any custom messages_<lang>.yml)
+  language: 'en'
+  update-check: true
+  bstats: true
+
+database:
+  # Type: 'sqlite' or 'mysql'
+  type: 'sqlite'
+  # MySQL settings (only used if type is 'mysql')
+  host: 'localhost'
+  port: 3306
+  name: 'onlyclans'
+  username: 'root'
+  password: ''
+
+# ==================================================================== #
+#                      Placeholder Configuration                       #
+# ==================================================================== #
+# Configure all internal placeholders and PlaceholderAPI placeholders.
+# Placeholders adapt automatically according to 'general.language'.
+# You can also explicitly request a specific language placeholder:
+#   %onlyclans_role_formatted_en%, %onlyclans_role_formatted_es%
+#   %onlyclans_ff_badge_en%, %onlyclans_ff_badge_es%
+#   %onlyclans_ff_status_en%, %onlyclans_ff_status_es%
+# ==================================================================== #
+placeholders:
+  # Date formatting pattern (e.g. dd/MM/yyyy or MM/dd/yyyy)
+  date-format: 'dd/MM/yyyy'
+  # Tag formatting template ({tag} is replaced with the clan tag)
+  tag-format: '&#8727F5[{tag}]'
+  # Multi-language text settings
+  languages:
+    en:
+      none: 'None'
+      no-clan-tag: '---'
+      unknown: 'Unknown'
+      not-in-clan: 'None'
+      roles:
+        leader: 'Leader'
+        moderator: 'Moderator'
+        member: 'Member'
+        none: 'None'
+      roles-formatted:
+        leader: '&#FFD700★ Leader'
+        moderator: '&#00E5FF◆ Moderator'
+        member: '&#A0AEC0● Member'
+        none: '&#718096None'
+      friendly-fire:
+        on: 'ON'
+        off: 'OFF'
+        badge-enabled: '&#00FF88&lENABLED'
+        badge-disabled: '&#FF3366&lDISABLED'
+        status-enabled: '&#00FF88✔ Enabled'
+        status-disabled: '&#FF3366✖ Disabled'
+      gui:
+        status-online: '&#00FF88● Online'
+        status-offline: '&#FF3366○ Offline'
+        status-label: '&#A0AEC0Status: '
+        role-label: '&#A0AEC0Role: '
+        kdr-label: '&#A0AEC0KDR: '
+        playtime-label: '&#A0AEC0Playtime: '
+        joined-label: '&#A0AEC0Joined: '
+        management-title: '&#FFD700⚡ Management Commands:'
+        sort-role: '&#FFD700Role'
+        sort-kdr: '&#00FF88KDR (High to Low)'
+        sort-playtime: '&#00E5FFPlaytime (Most Active)'
+        sort-join-recent: '&#FFAA00Join Date (Recent)'
+        sort-join-oldest: '&#E2E8F0Join Date (Oldest)'
+    es:
+      none: 'Ninguno'
+      no-clan-tag: '---'
+      unknown: 'Desconocido'
+      not-in-clan: 'Ninguno'
+      roles:
+        leader: 'Líder'
+        moderator: 'Moderador'
+        member: 'Miembro'
+        none: 'Ninguno'
+      roles-formatted:
+        leader: '&#FFD700★ Líder'
+        moderator: '&#00E5FF◆ Moderador'
+        member: '&#A0AEC0● Miembro'
+        none: '&#718096Ninguno'
+      friendly-fire:
+        on: 'ON'
+        off: 'OFF'
+        badge-enabled: '&#00FF88&lHABILITADO'
+        badge-disabled: '&#FF3366&lDESHABILITADO'
+        status-enabled: '&#00FF88✔ Activado'
+        status-disabled: '&#FF3366✖ Desactivado'
+      gui:
+        status-online: '&#00FF88● En línea'
+        status-offline: '&#FF3366○ Desconectado'
+        status-label: '&#A0AEC0Estado: '
+        role-label: '&#A0AEC0Rango: '
+        kdr-label: '&#A0AEC0KDR: '
+        playtime-label: '&#A0AEC0Tiempo Jugado: '
+        joined-label: '&#A0AEC0Unido: '
+        management-title: '&#FFD700⚡ Comandos de gestión:'
+        sort-role: '&#FFD700Rango'
+        sort-kdr: '&#00FF88KDR (Mayor a menor)'
+        sort-playtime: '&#00E5FFTiempo Jugado (Más activo)'
+        sort-join-recent: '&#FFAA00Fecha de Unión (Reciente)'
+        sort-join-oldest: '&#E2E8F0Fecha de Unión (Antiguo)'
