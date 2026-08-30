@@ -15,8 +15,9 @@ Welcome to the **OnlyClans** Official Wiki! Here you will find all the informati
 2. [Commands & Permissions](#-commands--permissions)
 3. [Placeholders](#-placeholders)
 4. [Menus Guide](#-menus-guide)
-5. [Database Configuration](#-database-configuration)
-6. [Future Updates](#-future-updates)
+5. [Performance & Rate Limits Guide](#-performance--rate-limits-guide)
+6. [Database Configuration](#-database-configuration)
+7. [Future Updates](#-future-updates)
 
 ---
 
@@ -223,6 +224,16 @@ When a player clicks an item in the GUI, you can assign it an action:
 
 ---
 
+### Menu General Settings
+Each menu in `menus.yml` can be configured with:
+* `title`: Display title of the GUI (supports HEX colors and placeholders).
+* `size`: Inventory size (9, 18, 27, 36, 45, 54).
+* `open_sound`: Sound played when the menu opens (e.g. `BLOCK_CHEST_OPEN` or `none`).
+* `filler`: Background glass pane material (e.g. `BLACK_STAINED_GLASS_PANE` or `none`).
+* `update_interval`: Frequency in server ticks to auto-refresh the menu while open (e.g., `60` for every 3 seconds). Set to `0` to disable auto-refresh.
+
+---
+
 ### Menu Placeholders
 Inside `menus.yml`, you can use these dynamic placeholders in item names, lore, and titles:
 
@@ -240,6 +251,31 @@ Inside `menus.yml`, you can use these dynamic placeholders in item names, lore, 
 | `%clan_created%` | Clan creation date | `29/08/2026` |
 
 *(Note: Also supports any installed PlaceholderAPI placeholders automatically!)*
+
+---
+
+## Performance & Rate Limits Guide
+
+When building rich GUI menus with custom player heads, server performance and external API rate limits are important to understand.
+
+### Mojang Session Rate Limits (`HTTP 429`)
+Paper and Spigot servers query Mojang's session servers (`sessionserver.mojang.com`) in the background to fetch player profile textures and skins for `PLAYER_HEAD` items. Mojang enforces a rate limit per IP address. If this limit is exceeded, Paper logs an asynchronous warning:
+```text
+[WARN]: Couldn't look up profile properties for <uuid>
+com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 429
+```
+> [!NOTE]
+> This is a non-fatal warning handled asynchronously by Paper. It will **not** freeze or crash your server; it simply means the skin texture couldn't be loaded from Mojang at that exact moment.
+
+### How OnlyClans Optimizes Head Loading
+1. **In-Memory Profile Caching**:
+   OnlyClans automatically reuses the in-memory `PlayerProfile` for online players (`Player.getPlayerProfile()`). This completely eliminates redundant HTTP network calls to Mojang when viewing menus, online clan leaders, or online clan members.
+2. **Optimized Menu Refresh Rate (`update_interval`)**:
+   Menus with dynamic content (such as `main`, `info`, and `settings`) use `update_interval: 60` (3 seconds) by default instead of aggressive 1-second refreshes. You can adjust or set it to `0` to disable automatic ticking.
+3. **Use Base64 Textures for Decorative Icons**:
+   For generic or decorative heads (buttons, navigation, crowns, coins), always use `base64:` in `menus.yml`. Base64 heads load instantly from texture hashes without querying Mojang.
+4. **Offline-Mode Servers (No-Premium)**:
+   In `online-mode=false` servers, player UUIDs are MD5 hashes (v3) that do not exist in Mojang's official registry. Using a skin management plugin like **SkinsRestorer** ensures offline player skins are cached and resolved locally without causing Mojang API lookup errors.
 
 ---
 
