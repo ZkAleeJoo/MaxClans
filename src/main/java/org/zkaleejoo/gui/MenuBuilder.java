@@ -14,6 +14,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.NamespacedKey;
+import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.Nullable;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanPlayer;
@@ -28,9 +31,37 @@ import java.util.*;
 public class MenuBuilder {
 
     private final OnlyClans plugin;
+    private final NamespacedKey menuItemKey;
+    private final NamespacedKey menuIdKey;
 
     public MenuBuilder(OnlyClans plugin) {
         this.plugin = plugin;
+        this.menuItemKey = new NamespacedKey(plugin, "gui_item");
+        this.menuIdKey = new NamespacedKey(plugin, "gui_menu_id");
+    }
+
+    public NamespacedKey getMenuItemKey() {
+        return menuItemKey;
+    }
+
+    public NamespacedKey getMenuIdKey() {
+        return menuIdKey;
+    }
+
+    public void markAsMenuItem(ItemMeta meta, String menuId) {
+        if (meta == null)
+            return;
+        meta.getPersistentDataContainer().set(menuItemKey, PersistentDataType.BYTE, (byte) 1);
+        if (menuId != null) {
+            meta.getPersistentDataContainer().set(menuIdKey, PersistentDataType.STRING, menuId);
+        }
+    }
+
+    public boolean isClanMenuItem(@Nullable ItemStack item) {
+        if (item == null || !item.hasItemMeta())
+            return false;
+        ItemMeta meta = item.getItemMeta();
+        return meta != null && meta.getPersistentDataContainer().has(menuItemKey, PersistentDataType.BYTE);
     }
 
     public void openMenu(Player player, String menuId, Clan clan) {
@@ -68,7 +99,7 @@ public class MenuBuilder {
             page = Math.min(Math.max(0, page), maxPages - 1);
         }
 
-        ClanMenuHolder holder = new ClanMenuHolder(menuId, page, sortType != null ? sortType : MemberSortType.ROLE);
+        ClanMenuHolder holder = new ClanMenuHolder(plugin, menuId, page, sortType != null ? sortType : MemberSortType.ROLE);
         String rawTitle = menuSection.getString("title", "&8Menu");
         String title = replacePlaceholders(rawTitle, player, clan, page, holder);
         int size = menuSection.getInt("size", 27);
@@ -78,6 +109,7 @@ public class MenuBuilder {
         }
 
         Inventory inventory = Bukkit.createInventory(holder, size, MessageUtils.toComponent(title));
+        holder.setInventory(inventory);
 
         updateInventory(inventory, menuId, player, clan);
 
@@ -103,6 +135,7 @@ public class MenuBuilder {
         if (inventory.getHolder() instanceof ClanMenuHolder cmh) {
             holder = cmh;
             page = cmh.getPage();
+            holder.clearSlots();
         }
 
         boolean isClanList = menuId.equalsIgnoreCase("clan_list") || menuSection.getBoolean("dynamic_clans", false);
@@ -132,21 +165,32 @@ public class MenuBuilder {
         ConfigurationSection itemsSection = menuSection.getConfigurationSection("items");
         if (itemsSection != null) {
             for (String itemKey : itemsSection.getKeys(false)) {
-                if (isClanList || isMemberList) {
-                    if (itemKey.equalsIgnoreCase("btn_prev") && page <= 0) {
-                        continue;
-                    }
-                    if (itemKey.equalsIgnoreCase("btn_next") && page >= maxPages - 1) {
-                        continue;
-                    }
-                }
-
                 ConfigurationSection itemConfig = itemsSection.getConfigurationSection(itemKey);
                 if (itemConfig == null)
                     continue;
 
                 List<Integer> slots = getSlotsFromConfig(itemConfig);
-                ItemStack item = createItem(itemConfig, player, clan, page, holder);
+
+                if (isClanList || isMemberList) {
+                    if (itemKey.equalsIgnoreCase("btn_prev") && page <= 0) {
+                        for (int slot : slots) {
+                            if (slot >= 0 && slot < size) {
+                                inventory.setItem(slot, null);
+                            }
+                        }
+                        continue;
+                    }
+                    if (itemKey.equalsIgnoreCase("btn_next") && page >= maxPages - 1) {
+                        for (int slot : slots) {
+                            if (slot >= 0 && slot < size) {
+                                inventory.setItem(slot, null);
+                            }
+                        }
+                        continue;
+                    }
+                }
+
+                ItemStack item = createItem(itemConfig, player, clan, page, holder, menuId);
 
                 for (int slot : slots) {
                     if (slot >= 0 && slot < size) {
@@ -178,6 +222,7 @@ public class MenuBuilder {
                         fillerMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
                         fillerMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     }
+                    markAsMenuItem(fillerMeta, menuId);
                     fillerItem.setItemMeta(fillerMeta);
                 }
                 for (int i = 0; i < size; i++) {
@@ -277,6 +322,12 @@ public class MenuBuilder {
         String lang = plugin.getMainConfigManager().getSelectedLanguage();
         ConfigurationSection memberItemConfig = menuSection.getConfigurationSection("member_item");
 
+        for (int slot : memberSlots) {
+            if (slot >= 0 && slot < inventory.getSize()) {
+                inventory.setItem(slot, null);
+            }
+        }
+
         for (int i = startIndex; i < endIndex; i++) {
             if (slotIndex >= memberSlots.size())
                 break;
@@ -305,6 +356,7 @@ public class MenuBuilder {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
             if (skullMeta != null) {
+                markAsMenuItem(skullMeta, "members");
                 if (onlinePlayer != null) {
                     skullMeta.setPlayerProfile(onlinePlayer.getPlayerProfile());
                 } else {
@@ -441,6 +493,12 @@ public class MenuBuilder {
 
         ConfigurationSection itemTemplate = menuSection.getConfigurationSection("clan_item");
 
+        for (int slot : clanSlots) {
+            if (slot >= 0 && slot < inventory.getSize()) {
+                inventory.setItem(slot, null);
+            }
+        }
+
         for (int i = startIndex; i < endIndex; i++) {
             if (slotIndex >= clanSlots.size())
                 break;
@@ -456,6 +514,7 @@ public class MenuBuilder {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
             if (skullMeta != null) {
+                markAsMenuItem(skullMeta, "clan_list");
                 OfflinePlayer leader = Bukkit.getOfflinePlayer(clan.getOwner());
                 Player leaderOnline = Bukkit.getPlayer(clan.getOwner());
                 if (leaderOnline != null) {
@@ -548,11 +607,16 @@ public class MenuBuilder {
     }
 
     private ItemStack createItem(ConfigurationSection itemConfig, Player player, Clan clan, int page) {
-        return createItem(itemConfig, player, clan, page, null);
+        return createItem(itemConfig, player, clan, page, null, null);
     }
 
     private ItemStack createItem(ConfigurationSection itemConfig, Player player, Clan clan, int page,
             ClanMenuHolder holder) {
+        return createItem(itemConfig, player, clan, page, holder, holder != null ? holder.getMenuId() : null);
+    }
+
+    private ItemStack createItem(ConfigurationSection itemConfig, Player player, Clan clan, int page,
+            ClanMenuHolder holder, String menuId) {
         String materialName = itemConfig.getString("material", "STONE");
         Material material = Material.matchMaterial(materialName);
         if (material == null) {
@@ -563,6 +627,8 @@ public class MenuBuilder {
         ItemMeta meta = item.getItemMeta();
         if (meta == null)
             return item;
+
+        markAsMenuItem(meta, menuId);
 
         String name = itemConfig.getString("name", "");
         String processedName = replacePlaceholders(name, player, clan, page, holder);

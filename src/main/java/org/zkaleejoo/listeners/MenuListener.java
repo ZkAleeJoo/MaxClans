@@ -4,9 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.gui.ClanMenuHolder;
 import org.zkaleejoo.gui.MenuBuilder;
@@ -26,20 +34,40 @@ public class MenuListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player))
             return;
 
-        if (!(event.getInventory().getHolder() instanceof ClanMenuHolder holder))
+        Inventory topInventory = event.getView().getTopInventory();
+        if (!ClanMenuHolder.isClanMenu(topInventory))
             return;
 
         event.setCancelled(true);
+        event.setResult(org.bukkit.event.Event.Result.DENY);
 
-        if (event.getCurrentItem() == null)
+        ClanMenuHolder holder = ClanMenuHolder.getHolder(topInventory);
+        if (holder == null)
             return;
 
-        int slot = event.getRawSlot();
+        Inventory clickedInventory = event.getClickedInventory();
+        if (clickedInventory == null)
+            return;
+
+        if (clickedInventory.equals(event.getView().getBottomInventory()))
+            return;
+
+        if (!clickedInventory.equals(topInventory))
+            return;
+
+        int slot = event.getSlot();
+        if (slot < 0 || slot >= topInventory.getSize())
+            return;
+
+        ItemStack currentItem = event.getCurrentItem();
+        if (currentItem == null || currentItem.getType().isAir())
+            return;
+
         String menuId = holder.getMenuId();
         MenuBuilder menuBuilder = plugin.getMenuBuilder();
 
@@ -82,13 +110,58 @@ public class MenuListener implements Listener {
         handleAction(player, action, holder, itemConfig != null && itemConfig.contains("sound"));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryDrag(InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof Player))
             return;
 
-        if (event.getInventory().getHolder() instanceof ClanMenuHolder) {
+        if (ClanMenuHolder.isClanMenu(event.getView().getTopInventory())) {
             event.setCancelled(true);
+            event.setResult(org.bukkit.event.Event.Result.DENY);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (ClanMenuHolder.isClanMenu(event.getInventory())) {
+            if (event.getPlayer() instanceof Player player) {
+                ItemStack cursor = player.getItemOnCursor();
+                if (plugin.getMenuBuilder().isClanMenuItem(cursor)) {
+                    player.setItemOnCursor(null);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        if (plugin.getMenuBuilder().isClanMenuItem(event.getItemDrop().getItemStack())) {
+            event.getItemDrop().remove();
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryMoveItem(InventoryMoveItemEvent event) {
+        if (plugin.getMenuBuilder().isClanMenuItem(event.getItem())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (plugin.getMenuBuilder().isClanMenuItem(event.getItemInHand())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPrepareItemCraft(PrepareItemCraftEvent event) {
+        for (ItemStack item : event.getInventory().getMatrix()) {
+            if (plugin.getMenuBuilder().isClanMenuItem(item)) {
+                event.getInventory().setResult(null);
+                return;
+            }
         }
     }
 

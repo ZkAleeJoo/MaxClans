@@ -2,38 +2,63 @@ package org.zkaleejoo.gui;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.MemberSortType;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class ClanMenuHolder implements InventoryHolder {
 
+    private final OnlyClans plugin;
     private final String menuId;
     private int page = 0;
     private MemberSortType memberSortType = MemberSortType.ROLE;
     private final Map<Integer, String> clanSlots = new HashMap<>();
     private final Map<Integer, UUID> memberSlots = new HashMap<>();
+    private Inventory inventory;
 
-    public ClanMenuHolder(String menuId) {
+    public ClanMenuHolder(OnlyClans plugin, String menuId) {
+        this.plugin = plugin;
         this.menuId = menuId;
         this.page = 0;
         this.memberSortType = MemberSortType.ROLE;
     }
 
-    public ClanMenuHolder(String menuId, int page) {
+    public ClanMenuHolder(OnlyClans plugin, String menuId, int page) {
+        this.plugin = plugin;
         this.menuId = menuId;
         this.page = page;
         this.memberSortType = MemberSortType.ROLE;
     }
 
-    public ClanMenuHolder(String menuId, int page, MemberSortType memberSortType) {
+    public ClanMenuHolder(OnlyClans plugin, String menuId, int page, MemberSortType memberSortType) {
+        this.plugin = plugin;
         this.menuId = menuId;
         this.page = page;
         this.memberSortType = memberSortType != null ? memberSortType : MemberSortType.ROLE;
+    }
+
+    public ClanMenuHolder(String menuId) {
+        this(null, menuId, 0, MemberSortType.ROLE);
+    }
+
+    public ClanMenuHolder(String menuId, int page) {
+        this(null, menuId, page, MemberSortType.ROLE);
+    }
+
+    public ClanMenuHolder(String menuId, int page, MemberSortType memberSortType) {
+        this(null, menuId, page, memberSortType);
+    }
+
+    public OnlyClans getPlugin() {
+        return plugin;
     }
 
     public MemberSortType getMemberSortType() {
@@ -56,6 +81,11 @@ public class ClanMenuHolder implements InventoryHolder {
         this.page = page;
     }
 
+    public void clearSlots() {
+        clanSlots.clear();
+        memberSlots.clear();
+    }
+
     public void setClanAtSlot(int slot, String clanName) {
         clanSlots.put(slot, clanName);
     }
@@ -72,8 +102,33 @@ public class ClanMenuHolder implements InventoryHolder {
         return memberSlots.get(slot);
     }
 
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     @Override
-    public @NotNull Inventory getInventory() {
+    public @Nullable Inventory getInventory() {
+        return inventory;
+    }
+
+    public static boolean isClanMenu(@Nullable Inventory inventory) {
+        return inventory != null && inventory.getHolder() instanceof ClanMenuHolder;
+    }
+
+    public static boolean isClanMenu(@Nullable InventoryView view) {
+        return view != null && isClanMenu(view.getTopInventory());
+    }
+
+    public static @Nullable ClanMenuHolder getHolder(@Nullable Inventory inventory) {
+        if (inventory != null && inventory.getHolder() instanceof ClanMenuHolder holder) {
+            return holder;
+        }
         return null;
+    }
+
+    public static @Nullable ClanMenuHolder getHolder(@Nullable InventoryView view) {
+        if (view == null)
+            return null;
+        return getHolder(view.getTopInventory());
     }
 }

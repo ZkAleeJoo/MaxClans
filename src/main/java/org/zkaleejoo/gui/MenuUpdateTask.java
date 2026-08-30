@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.Clan;
+import org.zkaleejoo.utils.FoliaCompat;
 
 public class MenuUpdateTask implements Runnable {
 
@@ -20,20 +21,32 @@ public class MenuUpdateTask implements Runnable {
     public void run() {
         tickCounter++;
         FileConfiguration menusConfig = plugin.getMainConfigManager().getMenusConfig();
-        if (menusConfig == null) return;
+        if (menusConfig == null)
+            return;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            InventoryView view = player.getOpenInventory();
-            if (view == null || view.getTopInventory() == null) continue;
+            FoliaCompat.runForEntity(plugin, player, () -> {
+                if (!player.isOnline())
+                    return;
 
-            if (view.getTopInventory().getHolder() instanceof ClanMenuHolder holder) {
-                String menuId = holder.getMenuId();
-                int updateInterval = menusConfig.getInt("menus." + menuId + ".update_interval", 0);
-                if (updateInterval > 0 && tickCounter % updateInterval == 0) {
-                    Clan clan = plugin.getClanManager().getClanByPlayer(player.getUniqueId());
-                    plugin.getMenuBuilder().updateInventory(view.getTopInventory(), menuId, player, clan);
+                InventoryView view = player.getOpenInventory();
+                if (view == null || view.getTopInventory() == null)
+                    return;
+
+                if (ClanMenuHolder.isClanMenu(view.getTopInventory())) {
+                    ClanMenuHolder holder = ClanMenuHolder.getHolder(view.getTopInventory());
+                    if (holder == null)
+                        return;
+
+                    String menuId = holder.getMenuId();
+                    int updateInterval = menusConfig.getInt("menus." + menuId + ".update_interval", 0);
+                    if (updateInterval > 0 && tickCounter % updateInterval == 0) {
+                        Clan clan = plugin.getClanManager().getClanByPlayer(player.getUniqueId());
+                        plugin.getMenuBuilder().updateInventory(view.getTopInventory(), menuId, player, clan);
+                    }
                 }
-            }
+            });
         }
     }
 }
+
