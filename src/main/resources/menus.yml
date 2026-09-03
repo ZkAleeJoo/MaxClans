@@ -589,24 +589,24 @@ menus:
     # Refresh rate in server ticks (20 ticks = 1s, 60 ticks = 3s). 0 disables auto-refresh.
     update_interval: 60
     items:
-      #Toggle: Friendly Fire
-      toggle_ff:
+      #Button: Flags & Privileges
+      btn_flags:
         slot: 11
         material: PLAYER_HEAD
         base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGQ4ZTlhYjVjNGM4ZWQ3YTkzMDhmYjY4YjBjYjQwY2RhZTBjZWRjNThlZmYyMWNmMDBiNTYwYTYwMzY1ZDZkNSJ9fX0=
-        name: '&#00E5FF&lꜰʀɪᴇɴᴅʟʏ ꜰɪʀᴇ (ᴀʟʟʏ ᴘᴠᴘ)'
+        name: '&#00E5FF&lꜰʟᴀɢꜱ & ᴘʀɪᴠɪʟᴇɢᴇꜱ'
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-        - '&#A0AEC0Enable or disable damage'
-        - '&#A0AEC0between clan members.'
+        - '&#A0AEC0Configure friendly fire, open join,'
+        - '&#A0AEC0member invites, and clan flags.'
         - ''
-        - '&#718096▪ &#A0AEC0Current status: %clan_ff%'
+        - '&#718096▪ &#A0AEC0Active flags & combat rules'
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-        - '&#00E5FF▶ Click to toggle'
+        - '&#00E5FF▶ Click to configure flags'
         glow: true
-        sound: BLOCK_NOTE_BLOCK_PLING
-        sound_pitch: 1.8
-        action: action:toggle_ff
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 1.2
+        action: open:flags
       #Security Info
       info_security:
         slot: 13
@@ -618,8 +618,8 @@ menus:
         - '&#718096▪ &#A0AEC0Tag: &#00E5FF[%clan_tag%]'
         - '&#718096▪ &#A0AEC0Created: &#E2E8F0%clan_created%'
         - ''
-        - '&#718096▪ &#A0AEC0Only the clan leader can'
-        - '&#A0AEC0modify these settings.'
+        - '&#718096▪ &#A0AEC0Leaders and Moderators can'
+        - '&#718096▪ &#A0AEC0access clan settings.'
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
       #Danger Button: Disband Clan
       btn_disband:
@@ -632,7 +632,7 @@ menus:
         - '&#A0AEC0Permanently and irreversibly'
         - '&#A0AEC0delete your clan.'
         - ''
-        - '&#718096▪ &#FF0000This action cannot be undone!'
+        - '&#718096▪ &#FF0000Only the leader can disband!'
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         - '&#FF3366▶ Click to proceed'
         sound: BLOCK_NOTE_BLOCK_BASS
@@ -651,6 +651,174 @@ menus:
         sound: UI_BUTTON_CLICK
         sound_pitch: 0.9
         action: open:info
+
+  # ------------------------------------------------------------------#
+  #                    CLAN FLAGS (FLAGS)                             #
+  # ------------------------------------------------------------------#
+  flags:
+    title: '&c&l%clan_name% &8» &8&lꜰʟᴀɢꜱ & ᴘʀɪᴠɪʟᴇɢᴇꜱ'
+    size: 45
+    open_sound: BLOCK_CHEST_OPEN
+    open_sound_volume: 0.8
+    open_sound_pitch: 1.2
+    filler: BLACK_STAINED_GLASS_PANE
+    update_interval: 60
+    items:
+      border_blue:
+        slots:
+        - 0
+        - 1
+        - 7
+        - 8
+        - 9
+        - 17
+        - 27
+        - 35
+        - 36
+        - 37
+        - 43
+        - 44
+        material: BLUE_STAINED_GLASS_PANE
+        name: ' '
+      header_flags:
+        slot: 4
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQyNDBkNzkyZjE4MWZjNGYyMTk3YTVjOTE2NmMwOWE4ZDkzMGUwMzZjZWRlOWRiZjU5NGRkYjNjNGZiNjgwYSJ9fX0=
+        name: '&#00E5FF&lᴄʟᴀɴ ꜰʟᴀɢꜱ & ᴘʀɪᴠɪʟᴇɢᴇꜱ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Toggle features and permissions'
+        - '&#A0AEC0for members and allies.'
+        - ''
+        - '&#718096▪ &#A0AEC0Leaders and Moderators can'
+        - '&#718096▪ &#A0AEC0toggle regular clan flags.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        glow: true
+      flag_friendly_fire:
+        slot: 19
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGQ4ZTlhYjVjNGM4ZWQ3YTkzMDhmYjY4YjBjYjQwY2RhZTBjZWRjNThlZmYyMWNmMDBiNTYwYTYwMzY1ZDZkNSJ9fX0=
+        name: '&#FF5555&lꜰʀɪᴇɴᴅʟʏ ꜰɪʀᴇ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Enable or disable damage'
+        - '&#A0AEC0between clan members.'
+        - ''
+        - '&#718096▪ &#A0AEC0Status: %clan_flag_friendly_fire%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FF5555▶ Click to toggle'
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_flag:friendly_fire
+      flag_open_join:
+        slot: 20
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDZjNzQ4YmI2YjQwMGQ3ZDgyYmEyNWRmMGYzMDk4YTViZjBkYjVmNDE4YzBhODc3MmUwZGE2ODI1MmUyODdlMCJ9fX0=
+        name: '&#00FF88&lᴏᴘᴇɴ ᴊᴏɪɴ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Allow players to join directly'
+        - '&#A0AEC0without request or invite.'
+        - ''
+        - '&#718096▪ &#A0AEC0Status: %clan_flag_open_join%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#00FF88▶ Click to toggle'
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_flag:open_join
+      flag_ally_damage:
+        slot: 21
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGE5OTNlZTU4ZjkzYjc3NDUwOGFiOWQ5OTk5MTE5MDZmYTU5NTU1NmYzNWYyODdhNGEzOWJiNWVkNTkwMmQifX19
+        name: '&#38BDF8&lᴀʟʟʏ ᴅᴀᴍᴀɢᴇ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Prevent or allow combat damage'
+        - '&#A0AEC0towards members of allied clans.'
+        - ''
+        - '&#718096▪ &#A0AEC0Status: %clan_flag_ally_damage%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#38BDF8▶ Click to toggle'
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_flag:ally_damage
+      flag_member_invites:
+        slot: 22
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTU4NTlkOTU3MDQzMWNhZTk2MGEzODZhY2I3MTE1NGFiMDc3MjlhN2Y0ZTFmOWIwMDU2ZTdiYWFmMWM5NmViYyJ9fX0=
+        name: '&#FFAA00&lᴍᴇᴍʙᴇʀ ɪɴᴠɪᴛᴇꜱ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Allow regular members to invite'
+        - '&#A0AEC0players to the clan.'
+        - ''
+        - '&#718096▪ &#A0AEC0Status: %clan_flag_member_invites%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FFAA00▶ Click to toggle'
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_flag:member_invites
+      flag_visible_in_list:
+        slot: 23
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTAxYmY1NjNlNzk5NjUwOTViYWMzM2QzNTRlMjFhMDI4ZjczNzQ1ZGNhZWViNzU0MTNjMDEyYzhiYzBlZGZmYSJ9fX0=
+        name: '&#A855F7&l👁 ᴠɪꜱɪʙʟᴇ ɪɴ ʟɪꜱᴛ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Show or hide the clan in'
+        - '&#A0AEC0the public /clan list.'
+        - ''
+        - '&#718096▪ &#A0AEC0Status: %clan_flag_visible_in_list%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A855F7▶ Click to toggle'
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_flag:visible_in_list
+      flag_public_home:
+        slot: 24
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2FkZjY5ZGFmZTY4ZWYzYTIyZmIwOGNiZDJmZjE2N2U3YWEyZjkyNWFmZTMzNmE0YzA0NzJkZDJiMWI1OWM3In19fQ==
+        name: '&#FBBF24&lᴘᴜʙʟɪᴄ ʜᴏᴍᴇ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Allow or block allied clans'
+        - '&#A0AEC0teleporting to clan home.'
+        - ''
+        - '&#718096▪ &#A0AEC0Status: %clan_flag_public_home%'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#FBBF24▶ Click to toggle'
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_flag:public_home
+      flag_spy_chat:
+        slot: 25
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ0MmNlNzgwOTVlODA0NzZkMTVlZTNjN2MwYjYzMWY3ZjczNGZhMmQwNTkyY2ExZTZiZjhlZGI4OTMwMTQzYyJ9fX0=
+        name: '&#EC4899&lꜱᴘʏ ᴄʜᴀᴛ (ᴀᴅᴍɪɴ)'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Administrative monitoring of'
+        - '&#A0AEC0clan chat for server staff.'
+        - ''
+        - '&#718096▪ &#A0AEC0Status: %clan_flag_spy_chat%'
+        - '&#718096▪ &#EC4899Admin Only'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#EC4899▶ Click to toggle (Admin)'
+        sound: BLOCK_NOTE_BLOCK_PLING
+        sound_pitch: 1.8
+        action: action:toggle_flag:spy_chat
+      btn_back:
+        slot: 40
+        material: PLAYER_HEAD
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
+        name: '&c&lʙᴀᴄᴋ'
+        lore:
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#A0AEC0Return to clan settings.'
+        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        sound: UI_BUTTON_CLICK
+        sound_pitch: 0.9
+        action: open:settings
   # ------------------------------------------------------------------#
   #             CONFIRM DISBAND MENU (CONFIRM-DISBAND)               #
   # ------------------------------------------------------------------#

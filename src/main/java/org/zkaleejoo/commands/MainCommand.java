@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.managers.ClanManager;
 import org.zkaleejoo.models.Clan;
+import org.zkaleejoo.models.ClanFlag;
+import org.zkaleejoo.models.ClanPlayer;
+import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.utils.MessageUtils;
 
 import java.util.ArrayList;
@@ -322,6 +325,96 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
                 return true;
             }
+            case "flags", "settings" -> {
+                if (!player.hasPermission("onlyclans.command.flags") && !player.hasPermission("onlyclans.command.settings")) {
+                    sendNoPermission(player);
+                    return true;
+                }
+                Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
+                if (clan != null) {
+                    ClanPlayer cp = clan.getMember(player.getUniqueId());
+                    boolean canAccess = player.hasPermission("onlyclans.admin")
+                            || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
+                    if (canAccess) {
+                        plugin.getMenuBuilder().openMenu(player, sub.equals("flags") ? "flags" : "settings", clan);
+                    } else {
+                        player.sendMessage(MessageUtils.getColoredMessage(
+                                plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                        .getMessage("no-flag-permission",
+                                                "&cOnly clan leaders and moderators can access clan settings.")));
+                    }
+                } else {
+                    player.sendMessage(MessageUtils.getColoredMessage(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("not-in-clan", "&cYou are not in a clan.")));
+                }
+                return true;
+            }
+            case "flag" -> {
+                if (!player.hasPermission("onlyclans.command.flags")) {
+                    sendNoPermission(player);
+                    return true;
+                }
+                Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
+                if (clan == null) {
+                    player.sendMessage(MessageUtils.getColoredMessage(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("not-in-clan", "&cYou are not in a clan.")));
+                    return true;
+                }
+                if (args.length < 2) {
+                    player.sendMessage(MessageUtils.getColoredMessage(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("usage-flag", "&cUsage: /clan flag <flag> [on|off|toggle]")));
+                    return true;
+                }
+                ClanFlag flag = ClanFlag.fromKey(args[1]);
+                if (flag == null) {
+                    player.sendMessage(MessageUtils.getColoredMessage(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("invalid-flag", "&cInvalid flag name. Available: friendly_fire, open_join, ally_damage, member_invites, visible_in_list, public_home, spy_chat")));
+                    return true;
+                }
+                if (args.length >= 3) {
+                    String state = args[2].toLowerCase();
+                    boolean newVal;
+                    if (state.equals("on") || state.equals("true") || state.equals("enable") || state.equals("1")) {
+                        newVal = true;
+                    } else if (state.equals("off") || state.equals("false") || state.equals("disable") || state.equals("0")) {
+                        newVal = false;
+                    } else {
+                        newVal = !clan.getFlag(flag);
+                    }
+                    clanManager.setFlag(clan, flag, newVal, player);
+                } else {
+                    clanManager.toggleFlag(clan, flag, player);
+                }
+                return true;
+            }
+            case "spy" -> {
+                if (!player.hasPermission("onlyclans.spy") && !player.hasPermission("onlyclans.admin")) {
+                    sendNoPermission(player);
+                    return true;
+                }
+                boolean newState;
+                if (args.length >= 2) {
+                    String state = args[1].toLowerCase();
+                    newState = state.equals("on") || state.equals("true") || state.equals("enable") || state.equals("1");
+                    clanManager.setSpyMode(player.getUniqueId(), newState);
+                } else {
+                    newState = clanManager.toggleSpyMode(player.getUniqueId());
+                }
+                if (newState) {
+                    player.sendMessage(MessageUtils.getColoredMessage(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("spy-enabled", "&aClan chat spy mode enabled.")));
+                } else {
+                    player.sendMessage(MessageUtils.getColoredMessage(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("spy-disabled", "&cClan chat spy mode disabled.")));
+                }
+                return true;
+            }
             default -> {
                 sender.sendMessage(MessageUtils.getColoredMessage(
                         plugin.getMainConfigManager().getPrefix()
@@ -364,6 +457,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("onlyclans.command.chat")) completions.add("chat");
             if (sender.hasPermission("onlyclans.command.info")) completions.add("info");
             if (sender.hasPermission("onlyclans.command.list")) completions.add("list");
+            if (sender.hasPermission("onlyclans.command.flags")) {
+                completions.add("flags");
+                completions.add("flag");
+            }
+            if (sender.hasPermission("onlyclans.command.settings")) completions.add("settings");
+            if (sender.hasPermission("onlyclans.spy") || sender.hasPermission("onlyclans.admin")) completions.add("spy");
             if (sender.hasPermission("onlyclans.command.request")) completions.add("request");
             if (sender.hasPermission("onlyclans.command.acceptrequest")) completions.add("acceptrequest");
             if (sender.hasPermission("onlyclans.command.denyrequest")) completions.add("denyrequest");
@@ -376,6 +475,17 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
+            if (sub.equals("flag") && sender.hasPermission("onlyclans.command.flags")) {
+                for (ClanFlag f : ClanFlag.values()) {
+                    completions.add(f.getKey());
+                }
+                return filterCompletions(completions, args[1]);
+            }
+            if (sub.equals("spy") && (sender.hasPermission("onlyclans.spy") || sender.hasPermission("onlyclans.admin"))) {
+                completions.add("on");
+                completions.add("off");
+                return filterCompletions(completions, args[1]);
+            }
             if (sub.equals("invite") && sender.hasPermission("onlyclans.command.invite")
                     || sub.equals("kick") && sender.hasPermission("onlyclans.command.kick")
                     || sub.equals("promote") && sender.hasPermission("onlyclans.command.promote")
@@ -410,6 +520,16 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     }
                 }
                 return filterCompletions(completions, args[1]);
+            }
+        }
+
+        if (args.length == 3) {
+            String sub = args[0].toLowerCase();
+            if (sub.equals("flag") && sender.hasPermission("onlyclans.command.flags")) {
+                completions.add("on");
+                completions.add("off");
+                completions.add("toggle");
+                return filterCompletions(completions, args[2]);
             }
         }
 

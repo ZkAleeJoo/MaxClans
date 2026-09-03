@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.database.ClanStorage;
 import org.zkaleejoo.models.Clan;
+import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.utils.MessageUtils;
@@ -25,10 +26,33 @@ public class ClanManager {
     private final Map<UUID, String> playerClanMap = new HashMap<>();
     private final Set<UUID> pendingCreations = new HashSet<>();
     private final Map<UUID, String> pendingInvites = new HashMap<>();
+    private final Set<UUID> spyModeUsers = new HashSet<>();
 
     public ClanManager(OnlyClans plugin, ClanStorage storage) {
         this.plugin = plugin;
         this.storage = storage;
+    }
+
+    public boolean isSpyMode(UUID uuid) {
+        return spyModeUsers.contains(uuid);
+    }
+
+    public void setSpyMode(UUID uuid, boolean enabled) {
+        if (enabled) {
+            spyModeUsers.add(uuid);
+        } else {
+            spyModeUsers.remove(uuid);
+        }
+    }
+
+    public boolean toggleSpyMode(UUID uuid) {
+        if (spyModeUsers.contains(uuid)) {
+            spyModeUsers.remove(uuid);
+            return false;
+        } else {
+            spyModeUsers.add(uuid);
+            return true;
+        }
     }
 
     public void loadClans() {
@@ -108,7 +132,8 @@ public class ClanManager {
         }
 
         ClanPlayer cp = clan.getMember(inviter.getUniqueId());
-        if (cp == null || !cp.hasRoleAtLeast(ClanRole.MODERATOR)) {
+        boolean canInvite = cp != null && (cp.hasRoleAtLeast(ClanRole.MODERATOR) || clan.isMemberInvites());
+        if (!canInvite) {
             inviter.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("no-invite-permission", "&cYou don't have permission to invite players.")));
@@ -256,6 +281,11 @@ public class ClanManager {
             applicant.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("already-in-clan", "&cYou are already in a clan.")));
+            return;
+        }
+
+        if (clan.isOpenJoin()) {
+            joinOpenClan(applicant, clan);
             return;
         }
 
@@ -595,6 +625,35 @@ public class ClanManager {
                         + plugin.getMainConfigManager().getMessage("demoted-self", "&cYou have been demoted to Member.")));
     }
 
+    public void joinOpenClan(Player player, Clan clan) {
+        if (clan == null) return;
+        if (isInClan(player.getUniqueId())) {
+            player.sendMessage(MessageUtils.getColoredMessage(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("already-in-clan", "&cYou are already in a clan.")));
+            return;
+        }
+
+        clan.removeJoinRequest(player.getUniqueId());
+        clan.removeInvite(player.getUniqueId());
+        pendingInvites.remove(player.getUniqueId());
+
+        ClanPlayer cp = new ClanPlayer(player.getUniqueId(), clan.getName(), ClanRole.MEMBER);
+        clan.addMember(cp);
+        playerClanMap.put(player.getUniqueId(), clan.getName().toLowerCase());
+        storage.saveClanPlayer(cp);
+
+        player.sendMessage(MessageUtils.getColoredMessage(
+                plugin.getMainConfigManager().getPrefix()
+                        + plugin.getMainConfigManager()
+                                .getMessage("clan-joined-open", "&aYou have joined the open clan '&f{clan}&a'!")
+                                .replace("{clan}", clan.getName())));
+
+        broadcastToClan(clan, plugin.getMainConfigManager().getPrefix()
+                + plugin.getMainConfigManager().getMessage("player-joined", "&a{player} has joined the clan!")
+                        .replace("{player}", player.getName()));
+    }
+
     public void toggleFriendlyFire(Clan clan) {
         clan.setFriendlyFire(!clan.isFriendlyFire());
         storage.updateClan(clan);
@@ -609,6 +668,63 @@ public class ClanManager {
                         .replace("{status}", status));
     }
 
+    public boolean toggleFlag(Clan clan, ClanFlag flag, Player actor) {
+        if (clan == null || flag == null)
+            return false;
+        return setFlag(clan, flag, !clan.getFlag(flag), actor);
+    }
+
+    public boolean setFlag(Clan clan, ClanFlag flag, boolean newVal, Player actor) {
+        if (clan == null || flag == null || actor == null)
+            return false;
+
+        if (flag.isAdminOnly()) {
+            if (!actor.hasPermission("onlyclans.admin") && !actor.hasPermission("onlyclans.spy")) {
+                actor.sendMessage(MessageUtils.getColoredMessage(
+                        plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                .getMessage("flag-admin-only",
+                                        "&cOnly server administrators can modify this administrative flag.")));
+                return false;
+            }
+        } else {
+            ClanPlayer cp = clan.getMember(actor.getUniqueId());
+            boolean canModify = actor.hasPermission("onlyclans.admin")
+                    || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
+            if (!canModify) {
+                actor.sendMessage(MessageUtils.getColoredMessage(
+                        plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                .getMessage("no-flag-permission",
+                                        "&cOnly clan leaders and moderators can modify clan flags.")));
+                return false;
+            }
+        }
+
+        clan.setFlag(flag, newVal);
+        storage.updateClan(clan);
+
+        String lang = plugin.getMainConfigManager().getSelectedLanguage();
+        String statusText = plugin.getPlaceholderManager() != null
+                ? plugin.getPlaceholderManager().getFlagStatus(flag, newVal, lang)
+                : (newVal ? "&aON" : "&cOFF");
+
+        if (flag == ClanFlag.SPY_CHAT) {
+            String adminMsg = plugin.getMainConfigManager().getPrefix()
+                    + plugin.getMainConfigManager()
+                            .getMessage("flag-toggled-spy_chat", "&eAdministrative spy monitoring is now {status}&e.")
+                            .replace("{status}", statusText);
+            actor.sendMessage(MessageUtils.getColoredMessage(adminMsg));
+        } else {
+            String msgKey = "flag-toggled-" + flag.getKey();
+            String broadcastMsg = plugin.getMainConfigManager().getPrefix()
+                    + plugin.getMainConfigManager()
+                            .getMessage(msgKey, "&eFlag " + flag.getKey() + " is now {status}&e.")
+                            .replace("{status}", statusText);
+            broadcastToClan(clan, broadcastMsg);
+        }
+
+        return true;
+    }
+
     public void sendClanMessage(Clan clan, Player sender, String message) {
         String formatted = plugin.getMainConfigManager().getPrefix()
                 + plugin.getMainConfigManager()
@@ -619,6 +735,23 @@ public class ClanManager {
             Player member = Bukkit.getPlayer(uuid);
             if (member != null && member.isOnline()) {
                 member.sendMessage(MessageUtils.getColoredMessage(formatted));
+            }
+        }
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (online.hasPermission("onlyclans.spy") || online.hasPermission("onlyclans.admin")) {
+                if (!clan.hasMember(online.getUniqueId())) {
+                    if (clan.isSpyChat() || isSpyMode(online.getUniqueId())) {
+                        String spyFormatted = plugin.getMainConfigManager().getPrefix()
+                                + plugin.getMainConfigManager()
+                                        .getMessage("clan-chat-spy-format",
+                                                "&8[&cClanSpy&8] &7[{clan}] &f{player}&7: &f{message}")
+                                        .replace("{clan}", clan.getName())
+                                        .replace("{player}", sender.getName())
+                                        .replace("{message}", message);
+                        online.sendMessage(MessageUtils.getColoredMessage(spyFormatted));
+                    }
+                }
             }
         }
     }

@@ -13,11 +13,12 @@ Welcome to the **OnlyClans** Official Wiki! Here you will find all the informati
 ## Table of Contents
 1. [Features](#-features)
 2. [Commands & Permissions](#-commands--permissions)
-3. [Placeholders](#-placeholders)
-4. [Menus Guide](#-menus-guide)
-5. [Performance & Rate Limits Guide](#-performance--rate-limits-guide)
-6. [Database Configuration](#-database-configuration)
-7. [Future Updates](#-future-updates)
+3. [Clan Flags & Privileges](#-clan-flags--privileges)
+4. [Placeholders](#-placeholders)
+5. [Menus Guide](#-menus-guide)
+6. [Performance & Rate Limits Guide](#-performance--rate-limits-guide)
+7. [Database Configuration](#-database-configuration)
+8. [Future Updates](#-future-updates)
 
 ---
 
@@ -25,10 +26,10 @@ Welcome to the **OnlyClans** Official Wiki! Here you will find all the informati
 OnlyClans is designed to be a lightweight, highly customizable, and easy-to-use clan system for modern Minecraft servers.
 - **Full GUI Support**: Create, manage, and view your clan through interactive inventory menus.
 - **Clan Roles**: Leader, Moderator, and Member roles with different permissions (invite, kick, promote, demote).
-- **Friendly Fire Toggle**: Clan leaders can toggle PvP between clan members.
-- **Clan Chat**: Private communication channel for clan members (`/c <message>`).
-- **PlaceholderAPI Integration**: Display clan stats and info anywhere (chat, scoreboard, tablist).
-- **Multiple Databases**: Supports both SQLite (local) and MySQL (remote) storage.
+- **Advanced Clan Flags & Privileges**: Interactive GUI menu for leaders and moderators to toggle 7 advanced clan flags: Friendly Fire, Open Join, Ally Damage, Member Invites, Visibility in List, Public Home, and Administrative Spy Chat.
+- **Clan Chat & Spy**: Private communication channel for clan members (`/c <message>`) and administrative monitoring mode for staff (`/clan spy`).
+- **PlaceholderAPI Integration**: Display clan stats, roles, and flag statuses anywhere (chat, scoreboard, tablist).
+- **Multiple Databases**: Supports both SQLite (local) and MySQL (remote) storage with automated migrations.
 - **Multilingual**: Built-in support for English and Spanish, fully customizable in `messages_en.yml` and `messages_es.yml`.
 - **Folia Support**: Fully compatible with Folia and Paper servers.
 
@@ -60,7 +61,9 @@ Commands available for Clan Leaders and Moderators.
 
 | Command | Aliases | Description | Role Required | Permission | Default |
 |---------|---------|-------------|---------------|------------|---------|
-| `/clan invite <player>` | `/olc invite <player>` | Invites a player to your clan. | Leader, Moderator | `onlyclans.command.invite` | `true` |
+| `/clan flags` | `/clan settings`, `/olc flags` | Opens the Clan Flags & Privileges GUI. | Leader, Moderator | `onlyclans.command.flags` | `true` |
+| `/clan flag <flag> [on\|off\|toggle]` | `/olc flag ...` | Toggles or sets a clan flag via command. | Leader, Moderator | `onlyclans.command.flags` | `true` |
+| `/clan invite <player>` | `/olc invite <player>` | Invites a player to your clan (Members can invite if `member_invites` is enabled). | Leader, Moderator, Member* | `onlyclans.command.invite` | `true` |
 | `/clan acceptrequest <player>` | `/olc acceptjoin` | Accepts a player's request to join the clan. | Leader, Moderator | `onlyclans.command.acceptrequest` | `true` |
 | `/clan denyrequest <player>` | `/olc denyjoin` | Denies a player's request to join the clan. | Leader, Moderator | `onlyclans.command.denyrequest` | `true` |
 | `/clan kick <player>` | `/olc kick <player>` | Kicks a player from the clan. | Leader, Moderator | `onlyclans.command.kick` | `true` |
@@ -73,6 +76,7 @@ Commands and privileges reserved for server administrators.
 
 | Command | Aliases | Description | Permission | Default |
 |---------|---------|-------------|------------|---------|
+| `/clan spy [on\|off]` | `/olc spy` | Toggles global clan chat spy monitoring for staff. | `onlyclans.spy` / `onlyclans.admin` | `op` |
 | `/clan reload` | `/olc reload`, `/onlyclans reload` | Reloads all configuration files, messages, and menus. | `onlyclans.command.reload` / `onlyclans.admin` | `op` |
 | *Update Notifications* | N/A | Receives in-game notifications when a new update is available. | `onlyclans.admin` | `op` |
 
@@ -85,11 +89,14 @@ OnlyClans uses a hierarchical permission structure compatible with all standard 
 ```text
 onlyclans.admin (default: op)
 ├── onlyclans.command.reload
+├── onlyclans.spy
 └── onlyclans.use (default: true)
     ├── onlyclans.command.main
     ├── onlyclans.command.help
     ├── onlyclans.command.list
     ├── onlyclans.command.info
+    ├── onlyclans.command.flags
+    ├── onlyclans.command.settings
     ├── onlyclans.command.create
     ├── onlyclans.command.request
     ├── onlyclans.command.accept
@@ -115,13 +122,30 @@ onlyclans.admin (default: op)
   ```bash
   /lp group default permission set onlyclans.command.chat false
   ```
+* **Grant clan chat spy permission to moderators:**
+  ```bash
+  /lp group mod permission set onlyclans.spy true
+  ```
 * **Grant full admin access:**
   ```bash
   /lp user <admin> permission set onlyclans.admin true
   ```
 
-
 ---
+
+## Clan Flags & Privileges
+
+OnlyClans features an advanced flag system allowing leaders and moderators to fine-tune combat, invitations, visibility, and privacy. Flags can be toggled through the interactive GUI (`/clan flags` or `/clan settings`) or via command (`/clan flag <flag> [on|off|toggle]`).
+
+| Flag Key | Icon | Default | Who Can Toggle | Description |
+|---|:---:|:---:|---|---|
+| `friendly_fire` | ⚔️ | `false` | Leader, Moderator | Enables or disables PvP combat damage between members of the same clan. |
+| `open_join` | 🔓 | `false` | Leader, Moderator | When enabled, players can join instantly without needing an invite or waiting for request approval (works via `/clan join <clan>` or clicking in `/clan list`). |
+| `ally_damage` | 🛡️ | `false` | Leader, Moderator | Prevents or allows PvP combat damage against members of allied clans. If either clan has it disabled, damage is cancelled. |
+| `member_invites`| 📢 | `false` | Leader, Moderator | Allows regular Members to invite new players (`/clan invite <player>`). If disabled, only Leaders and Moderators can invite. |
+| `visible_in_list`| 👁️ | `true` | Leader, Moderator | Controls whether the clan appears in the public `/clan list` browser. Server admins and members of the clan can always see it. |
+| `public_home` | 🏠 | `false` | Leader, Moderator | Allows or restricts allied clans from teleporting to your clan base. |
+| `spy_chat` | 💬 | `false` | **Admin Only** | Administrative monitoring flag that mirrors private clan chat messages to staff members with `onlyclans.spy`. |
 
 ## Placeholders
 
@@ -144,6 +168,9 @@ You can use these placeholders in plugins like TAB, EssentialsX Chat, DecentHolo
 | `%onlyclans_ff%` | Friendly Fire status | `ON` / `OFF` | `ON` / `OFF` |
 | `%onlyclans_ff_status%` | Friendly Fire formatted status | `&#00FF88✔ Enabled` | `&#00FF88✔ Activado` |
 | `%onlyclans_ff_badge%` | Friendly Fire badge | `&#00FF88&lENABLED` | `&#00FF88&lHABILITADO` |
+| `%onlyclans_flag_<flag>%` | Formatted status of a clan flag | `&#00FF88✔ Enabled` | `&#00FF88✔ Activado` |
+| `%onlyclans_flag_<flag>_badge%` | Formatted badge of a clan flag | `&#00FF88&lENABLED` | `&#00FF88&lHABILITADO` |
+| `%onlyclans_flag_<flag>_status%` | Formatted status of a clan flag | `&#00FF88✔ Enabled` | `&#00FF88✔ Activado` |
 | `%onlyclans_created%` | Clan founding date | `29/08/2026` | `29/08/2026` |
 
 ### Multi-Language Explicit Placeholders
@@ -156,6 +183,8 @@ If your network supports multiple languages at once, you can explicitly request 
 * `%onlyclans_ff_badge_es%` ➔ `HABILITADO`
 * `%onlyclans_ff_status_en%` ➔ `✔ Enabled`
 * `%onlyclans_ff_status_es%` ➔ `✔ Activado`
+* `%onlyclans_flag_open_join_en%` ➔ `✔ Enabled`
+* `%onlyclans_flag_open_join_es%` ➔ `✔ Activado`
 
 ---
 
@@ -263,9 +292,10 @@ When a player clicks an item in the GUI, you can assign it an action:
 
 | Action | Description |
 |--------|-------------|
-| `open:<menu_id>` | Opens another menu (e.g., `open:create`, `open:info`, `open:members`, `open:settings`). |
+| `open:<menu_id>` | Opens another menu (e.g., `open:create`, `open:info`, `open:members`, `open:settings`, `open:flags`). |
 | `action:create_clan` | Prompts the player to type their clan name in chat to create it. |
-| `action:toggle_ff` | Toggles the clan's Friendly Fire (Leader only). |
+| `action:toggle_ff` | Toggles the clan's Friendly Fire (Leader & Moderator). |
+| `action:toggle_flag:<flag>` | Toggles a specific clan flag (Leader & Moderator, or Admin for `spy_chat`). |
 | `action:disband` | Opens the disband confirmation menu (Leader only). |
 | `action:confirm_disband` | Permanently deletes the clan (Leader only). |
 | `action:leave` | Leaves the player's current clan. |
@@ -299,6 +329,8 @@ Inside `menus.yml`, you can use these dynamic placeholders in item names, lore, 
 | `%clan_role%` | Formatted role badge with icon | `&#FFD700★ Líder` |
 | `%clan_ff%` | Friendly fire status | `&#00FF88✔ Activado` / `&#FF3366✖ Desactivado` |
 | `%clan_ff_badge%` | Friendly fire badge | `HABILITADO` / `DESHABILITADO` |
+| `%clan_flag_<flag>%` | Formatted clan flag status | `&#00FF88✔ Activado` / `&#FF3366✖ Desactivado` |
+| `%clan_flag_<flag>_badge%` | Formatted clan flag badge | `HABILITADO` / `DESHABILITADO` |
 | `%clan_created%` | Clan creation date | `29/08/2026` |
 
 *(Note: Also supports any installed PlaceholderAPI placeholders automatically!)*

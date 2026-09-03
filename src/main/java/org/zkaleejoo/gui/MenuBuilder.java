@@ -19,6 +19,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.Clan;
+import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.models.MemberSortType;
@@ -38,6 +39,20 @@ public class MenuBuilder {
         this.plugin = plugin;
         this.menuItemKey = new NamespacedKey(plugin, "gui_item");
         this.menuIdKey = new NamespacedKey(plugin, "gui_menu_id");
+    }
+
+    public List<Clan> getVisibleClansFor(Player player) {
+        List<Clan> result = new ArrayList<>();
+        Clan playerClan = player != null ? plugin.getClanManager().getClanByPlayer(player.getUniqueId()) : null;
+        boolean isAdmin = player != null && player.hasPermission("onlyclans.admin");
+
+        for (Clan c : plugin.getClanManager().getAllClans()) {
+            if (c.isVisibleInList() || isAdmin || (playerClan != null && playerClan.getName().equalsIgnoreCase(c.getName()))) {
+                result.add(c);
+            }
+        }
+        result.sort((a, b) -> Integer.compare(b.getMemberCount(), a.getMemberCount()));
+        return result;
     }
 
     public NamespacedKey getMenuItemKey() {
@@ -88,7 +103,7 @@ public class MenuBuilder {
         if (menuId.equalsIgnoreCase("clan_list") || menuSection.getBoolean("dynamic_clans", false)) {
             List<Integer> clanSlots = menuSection.getIntegerList("clan_slots");
             int itemsPerPage = clanSlots.isEmpty() ? 21 : clanSlots.size();
-            int totalClans = plugin.getClanManager().getAllClans().size();
+            int totalClans = getVisibleClansFor(player).size();
             int maxPages = Math.max(1, (int) Math.ceil((double) totalClans / itemsPerPage));
             page = Math.min(Math.max(0, page), maxPages - 1);
         } else if (menuId.equalsIgnoreCase("members") || menuSection.getBoolean("dynamic_members", false)) {
@@ -145,7 +160,7 @@ public class MenuBuilder {
         if (isClanList) {
             List<Integer> clanSlots = menuSection.getIntegerList("clan_slots");
             int itemsPerPage = clanSlots.isEmpty() ? 21 : clanSlots.size();
-            int totalClans = plugin.getClanManager().getAllClans().size();
+            int totalClans = getVisibleClansFor(player).size();
             maxPages = Math.max(1, (int) Math.ceil((double) totalClans / itemsPerPage));
             page = Math.min(Math.max(0, page), maxPages - 1);
             if (holder != null) {
@@ -474,8 +489,7 @@ public class MenuBuilder {
             }
         }
 
-        List<Clan> allClans = new ArrayList<>(plugin.getClanManager().getAllClans());
-        allClans.sort((a, b) -> Integer.compare(b.getMemberCount(), a.getMemberCount()));
+        List<Clan> allClans = getVisibleClansFor(viewer);
 
         int itemsPerPage = clanSlots.size();
         int totalClans = allClans.size();
@@ -554,6 +568,9 @@ public class MenuBuilder {
                         } else if (viewerInClan) {
                             actionHint = lang.equalsIgnoreCase("es") ? "&#718096Ya perteneces a un clan"
                                     : "&#718096Already in a clan";
+                        } else if (clan.isOpenJoin()) {
+                            actionHint = lang.equalsIgnoreCase("es") ? "&#00FF88▶ Clic para entrar (Clan Abierto)"
+                                    : "&#00FF88▶ Click to join (Open Clan)";
                         } else if (alreadyRequested) {
                             actionHint = lang.equalsIgnoreCase("es") ? "&#FFAA00⌛ Solicitud Pendiente"
                                     : "&#FFAA00⌛ Request Pending";
@@ -588,6 +605,8 @@ public class MenuBuilder {
                         loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#00E5FF▶ Your Current Clan"));
                     } else if (viewerInClan) {
                         loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#718096Already in a clan"));
+                    } else if (clan.isOpenJoin()) {
+                        loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#00FF88▶ Click to join (Open Clan)"));
                     } else if (alreadyRequested) {
                         loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#FFAA00⌛ Request Pending"));
                     } else if (hasStaff) {
@@ -746,7 +765,7 @@ public class MenuBuilder {
         String playerName = player.getName();
         text = text.replace("%player%", playerName).replace("{player}", playerName);
 
-        int totalClans = plugin.getClanManager().getAllClans().size();
+        int totalClans = getVisibleClansFor(player).size();
         FileConfiguration menusConfig = plugin.getMainConfigManager().getMenusConfig();
         List<Integer> clanSlots = menusConfig != null ? menusConfig.getIntegerList("menus.clan_list.clan_slots") : null;
         int itemsPerPage = (clanSlots != null && !clanSlots.isEmpty()) ? clanSlots.size() : 21;
@@ -809,6 +828,16 @@ public class MenuBuilder {
             text = text.replace("%clan_ff%", ffText).replace("{clan_ff}", ffText);
             text = text.replace("%clan_ff_badge%", ffBadge).replace("{clan_ff_badge}", ffBadge);
             text = text.replace("%clan_created%", createdDate).replace("{clan_created}", createdDate);
+
+            for (ClanFlag flag : ClanFlag.values()) {
+                boolean val = clan.getFlag(flag);
+                String flagStatus = pm != null ? pm.getFlagStatus(flag, val, lang) : (val ? "ON" : "OFF");
+                String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang) : (val ? "ENABLED" : "DISABLED");
+                text = text.replace("%clan_flag_" + flag.getKey() + "%", flagStatus)
+                        .replace("{clan_flag_" + flag.getKey() + "}", flagStatus)
+                        .replace("%clan_flag_" + flag.getKey() + "_badge%", flagBadge)
+                        .replace("{clan_flag_" + flag.getKey() + "_badge}", flagBadge);
+            }
         } else {
             String noneText = pm != null ? pm.getNotInClanText(lang) : "None";
             String noClanTag = pm != null ? pm.getNoClanTag(lang) : "---";
@@ -826,6 +855,16 @@ public class MenuBuilder {
             text = text.replace("%clan_ff%", noFfText).replace("{clan_ff}", noFfText);
             text = text.replace("%clan_ff_badge%", noFfBadge).replace("{clan_ff_badge}", noFfBadge);
             text = text.replace("%clan_created%", noCreated).replace("{clan_created}", noCreated);
+
+            for (ClanFlag flag : ClanFlag.values()) {
+                boolean val = flag.getDefaultValue();
+                String flagStatus = pm != null ? pm.getFlagStatus(flag, val, lang) : "OFF";
+                String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang) : "DISABLED";
+                text = text.replace("%clan_flag_" + flag.getKey() + "%", flagStatus)
+                        .replace("{clan_flag_" + flag.getKey() + "}", flagStatus)
+                        .replace("%clan_flag_" + flag.getKey() + "_badge%", flagBadge)
+                        .replace("{clan_flag_" + flag.getKey() + "_badge}", flagBadge);
+            }
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {

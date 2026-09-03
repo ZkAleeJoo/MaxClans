@@ -78,6 +78,12 @@ public class DatabaseManager {
                     + "tag VARCHAR(16) NOT NULL,"
                     + "owner VARCHAR(36) NOT NULL,"
                     + "friendly_fire BOOLEAN DEFAULT 0,"
+                    + "open_join BOOLEAN DEFAULT 0,"
+                    + "ally_damage BOOLEAN DEFAULT 0,"
+                    + "member_invites BOOLEAN DEFAULT 0,"
+                    + "visible_in_list BOOLEAN DEFAULT 1,"
+                    + "public_home BOOLEAN DEFAULT 0,"
+                    + "spy_chat BOOLEAN DEFAULT 0,"
                     + "created_at BIGINT NOT NULL"
                     + ")" + engine);
 
@@ -91,6 +97,30 @@ public class DatabaseManager {
 
             try {
                 stmt.executeUpdate("ALTER TABLE clan_players ADD COLUMN joined_at BIGINT DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN open_join BOOLEAN DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN ally_damage BOOLEAN DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN member_invites BOOLEAN DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN visible_in_list BOOLEAN DEFAULT 1");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN public_home BOOLEAN DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN spy_chat BOOLEAN DEFAULT 0");
             } catch (SQLException ignored) {
             }
 

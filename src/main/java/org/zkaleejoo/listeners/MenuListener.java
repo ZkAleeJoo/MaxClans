@@ -20,7 +20,9 @@ import org.zkaleejoo.gui.ClanMenuHolder;
 import org.zkaleejoo.gui.MenuBuilder;
 import org.zkaleejoo.managers.ClanManager;
 import org.zkaleejoo.models.Clan;
+import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
+import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
 
@@ -314,7 +316,9 @@ public class MenuListener implements Listener {
             case "open:settings" -> {
                 if (clan != null) {
                     ClanPlayer cp = clan.getMember(player.getUniqueId());
-                    if (cp != null && cp.isLeader()) {
+                    boolean canAccess = player.hasPermission("onlyclans.admin")
+                            || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
+                    if (canAccess) {
                         if (!hasCustomSound)
                             SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.2f);
                         player.closeInventory();
@@ -324,7 +328,28 @@ public class MenuListener implements Listener {
                         player.sendMessage(MessageUtils.getColoredMessage(
                                 plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                                         .getMessage("only-leader-settings",
-                                                "&cOnly the clan leader can access clan settings.")));
+                                                "&cOnly clan leaders and moderators can access clan settings.")));
+                    }
+                } else {
+                    SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
+                }
+            }
+            case "open:flags" -> {
+                if (clan != null) {
+                    ClanPlayer cp = clan.getMember(player.getUniqueId());
+                    boolean canAccess = player.hasPermission("onlyclans.admin")
+                            || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
+                    if (canAccess) {
+                        if (!hasCustomSound)
+                            SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.2f);
+                        player.closeInventory();
+                        plugin.getMenuBuilder().openMenu(player, "flags", clan);
+                    } else {
+                        SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
+                        player.sendMessage(MessageUtils.getColoredMessage(
+                                plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                        .getMessage("no-flag-permission",
+                                                "&cOnly clan leaders and moderators can modify clan flags.")));
                     }
                 } else {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
@@ -368,13 +393,16 @@ public class MenuListener implements Listener {
                 clanManager.addPendingCreation(player.getUniqueId());
             }
             case "action:toggle_ff" -> {
-                if (clan != null && clan.getMember(player.getUniqueId()) != null
-                        && clan.getMember(player.getUniqueId()).isLeader()) {
-                    clanManager.toggleFriendlyFire(clan);
-                    if (!hasCustomSound)
-                        SoundUtils.playSound(player, "BLOCK_NOTE_BLOCK_PLING", 1.0f, 1.8f);
-                    plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(), "settings",
-                            player, clan);
+                if (clan != null) {
+                    boolean success = clanManager.toggleFlag(clan, ClanFlag.FRIENDLY_FIRE, player);
+                    if (success) {
+                        if (!hasCustomSound)
+                            SoundUtils.playSound(player, "BLOCK_NOTE_BLOCK_PLING", 1.0f, 1.8f);
+                        plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                                holder != null ? holder.getMenuId() : "settings", player, clan);
+                    } else {
+                        SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
+                    }
                 } else {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                 }
@@ -444,6 +472,22 @@ public class MenuListener implements Listener {
                         SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.2f);
                     player.closeInventory();
                     plugin.getMenuBuilder().openMenu(player, targetMenu, clan);
+                } else if (lowerAction.startsWith("action:toggle_flag:")) {
+                    String flagKey = action.substring("action:toggle_flag:".length()).trim();
+                    ClanFlag flag = ClanFlag.fromKey(flagKey);
+                    if (clan != null && flag != null) {
+                        boolean success = clanManager.toggleFlag(clan, flag, player);
+                        if (success) {
+                            if (!hasCustomSound)
+                                SoundUtils.playSound(player, "BLOCK_NOTE_BLOCK_PLING", 1.0f, 1.8f);
+                            plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                                    holder != null ? holder.getMenuId() : "flags", player, clan);
+                        } else {
+                            SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
+                        }
+                    } else {
+                        SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
+                    }
                 } else if (lowerAction.startsWith("action:request_clan:")) {
                     if (!player.hasPermission("onlyclans.command.request")) {
                         SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);

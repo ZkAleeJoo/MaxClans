@@ -41,6 +41,14 @@ public class ClanDamageListener implements Listener {
                                 + plugin.getMainConfigManager().getMessage("friendly-fire-disabled",
                                         "&cFriendly fire is disabled in your clan.")));
             }
+        } else if (attackerClan.isAlly(victimClan.getName()) || victimClan.isAlly(attackerClan.getName())) {
+            if (!attackerClan.isAllyDamage() || !victimClan.isAllyDamage()) {
+                event.setCancelled(true);
+                attacker.sendMessage(MessageUtils.getColoredMessage(
+                        plugin.getMainConfigManager().getPrefix()
+                                + plugin.getMainConfigManager().getMessage("ally-damage-disabled",
+                                        "&cDamage towards allied clans is disabled.")));
+            }
         }
     }
 

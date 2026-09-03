@@ -58,6 +58,11 @@ placeholders:
         badge-disabled: '&#FF3366&lDISABLED'
         status-enabled: '&#00FF88✔ Enabled'
         status-disabled: '&#FF3366✖ Disabled'
+      flags:
+        badge-enabled: '&#00FF88&lENABLED'
+        badge-disabled: '&#FF3366&lDISABLED'
+        status-enabled: '&#00FF88✔ Enabled'
+        status-disabled: '&#FF3366✖ Disabled'
       gui:
         status-online: '&#00FF88● Online'
         status-offline: '&#FF3366○ Offline'
@@ -66,7 +71,7 @@ placeholders:
         kdr-label: '&#A0AEC0KDR: '
         playtime-label: '&#A0AEC0Playtime: '
         joined-label: '&#A0AEC0Joined: '
-        management-title: '&#FFD700⚡ Management Commands:'
+        management-title: '&#FFD700Management Commands:'
         sort-role: '&#FFD700Role'
         sort-kdr: '&#00FF88KDR (High to Low)'
         sort-playtime: '&#00E5FFPlaytime (Most Active)'
@@ -94,6 +99,11 @@ placeholders:
         badge-disabled: '&#FF3366&lDESHABILITADO'
         status-enabled: '&#00FF88✔ Activado'
         status-disabled: '&#FF3366✖ Desactivado'
+      flags:
+        badge-enabled: '&#00FF88&lHABILITADO'
+        badge-disabled: '&#FF3366&lDESHABILITADO'
+        status-enabled: '&#00FF88✔ Activado'
+        status-disabled: '&#FF3366✖ Desactivado'
       gui:
         status-online: '&#00FF88● En línea'
         status-offline: '&#FF3366○ Desconectado'
@@ -102,7 +112,7 @@ placeholders:
         kdr-label: '&#A0AEC0KDR: '
         playtime-label: '&#A0AEC0Tiempo Jugado: '
         joined-label: '&#A0AEC0Unido: '
-        management-title: '&#FFD700⚡ Comandos de gestión:'
+        management-title: '&#FFD700Comandos de gestión:'
         sort-role: '&#FFD700Rango'
         sort-kdr: '&#00FF88KDR (Mayor a menor)'
         sort-playtime: '&#00E5FFTiempo Jugado (Más activo)'

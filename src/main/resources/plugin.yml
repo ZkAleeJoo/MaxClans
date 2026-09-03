@@ -19,6 +19,7 @@ permissions:
     default: op
     children:
       onlyclans.command.reload: true
+      onlyclans.spy: true
       onlyclans.use: true
   onlyclans.use:
     description: Access to all player clan commands and menus.
@@ -28,6 +29,8 @@ permissions:
       onlyclans.command.help: true
       onlyclans.command.list: true
       onlyclans.command.info: true
+      onlyclans.command.flags: true
+      onlyclans.command.settings: true
       onlyclans.command.create: true
       onlyclans.command.disband: true
       onlyclans.command.invite: true
@@ -95,3 +98,12 @@ permissions:
   onlyclans.command.reload:
     description: Reload the plugin configuration.
     default: op
+  onlyclans.spy:
+    description: Spy on clan chat messages.
+    default: op
+  onlyclans.command.flags:
+    description: Access and toggle clan flags.
+    default: true
+  onlyclans.command.settings:
+    description: Access clan settings menu.
+    default: true

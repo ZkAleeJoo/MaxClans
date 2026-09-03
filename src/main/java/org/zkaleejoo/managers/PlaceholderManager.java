@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.Clan;
+import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.utils.MessageUtils;
@@ -115,6 +116,18 @@ public class PlaceholderManager {
     public String getFriendlyFireStatus(boolean ff, String lang) {
         return MessageUtils.getColoredMessage(ff ? getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled")
                 : getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled"));
+    }
+
+    public String getFlagStatus(ClanFlag flag, boolean value, String lang) {
+        return MessageUtils.getColoredMessage(value
+                ? getString(lang, "flags.status-enabled", getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled"))
+                : getString(lang, "flags.status-disabled", getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled")));
+    }
+
+    public String getFlagBadge(ClanFlag flag, boolean value, String lang) {
+        return MessageUtils.getColoredMessage(value
+                ? getString(lang, "flags.badge-enabled", getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED"))
+                : getString(lang, "flags.badge-disabled", getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED")));
     }
 
     public String getGuiText(String key, String lang, String def) {
@@ -254,6 +267,28 @@ public class PlaceholderManager {
             if (clan == null)
                 return getFriendlyFireStatus(false, lang);
             return getFriendlyFireStatus(clan.isFriendlyFire(), lang);
+        }
+
+        if (cleanParam.startsWith("flag_")) {
+            String rest = cleanParam.substring(5);
+            boolean isBadge = rest.endsWith("_badge");
+            boolean isStatus = rest.endsWith("_status");
+            String flagKey = rest;
+            if (isBadge) {
+                flagKey = rest.substring(0, rest.length() - 6);
+            } else if (isStatus) {
+                flagKey = rest.substring(0, rest.length() - 7);
+            }
+
+            ClanFlag flag = ClanFlag.fromKey(flagKey);
+            if (flag != null) {
+                boolean val = clan != null ? clan.getFlag(flag) : flag.getDefaultValue();
+                if (isBadge) {
+                    return getFlagBadge(flag, val, lang);
+                } else {
+                    return getFlagStatus(flag, val, lang);
+                }
+            }
         }
 
         if (cleanParam.equals("created")) {
