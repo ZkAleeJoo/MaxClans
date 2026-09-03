@@ -23,6 +23,7 @@ import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
+import org.zkaleejoo.models.TopSortType;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
 
@@ -272,6 +273,91 @@ public class MenuListener implements Listener {
                         holder.setPage(currentPage + 1);
                     plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
                             holder != null ? holder.getMenuId() : "members", player, clan);
+                } else {
+                    SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 0.8f, 1.0f);
+                }
+            }
+            case "open:top", "open:clan_top" -> {
+                if (!player.hasPermission("onlyclans.command.top")) {
+                    SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
+                    player.sendMessage(MessageUtils.getColoredMessage(
+                            plugin.getMainConfigManager().getPrefix()
+                                    + plugin.getMainConfigManager().getNoPermission()));
+                    return;
+                }
+                if (!hasCustomSound)
+                    SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.2f);
+                player.closeInventory();
+                plugin.getMenuBuilder().openTopMenu(player, TopSortType.KDR, 0);
+            }
+            case "action:top_sort:kdr" -> {
+                if (holder != null) {
+                    holder.setTopSortType(TopSortType.KDR);
+                    holder.setPage(0);
+                    if (!hasCustomSound)
+                        SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.3f);
+                    plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                            holder.getMenuId(), player, clan);
+                }
+            }
+            case "action:top_sort:kills" -> {
+                if (holder != null) {
+                    holder.setTopSortType(TopSortType.KILLS);
+                    holder.setPage(0);
+                    if (!hasCustomSound)
+                        SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.3f);
+                    plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                            holder.getMenuId(), player, clan);
+                }
+            }
+            case "action:top_sort:members" -> {
+                if (holder != null) {
+                    holder.setTopSortType(TopSortType.MEMBERS);
+                    holder.setPage(0);
+                    if (!hasCustomSound)
+                        SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.3f);
+                    plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                            holder.getMenuId(), player, clan);
+                }
+            }
+            case "action:cycle_top_sort" -> {
+                if (holder != null) {
+                    holder.setTopSortType(holder.getTopSortType().next());
+                    holder.setPage(0);
+                    if (!hasCustomSound)
+                        SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.3f);
+                    plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                            holder.getMenuId(), player, clan);
+                }
+            }
+            case "action:top_page_prev" -> {
+                int currentPage = holder != null ? holder.getPage() : 0;
+                if (currentPage > 0) {
+                    if (!hasCustomSound)
+                        SoundUtils.playSound(player, "ITEM_BOOK_PAGE_TURN", 0.8f, 1.2f);
+                    if (holder != null)
+                        holder.setPage(currentPage - 1);
+                    plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                            holder != null ? holder.getMenuId() : "top", player, clan);
+                } else {
+                    SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 0.8f, 1.0f);
+                }
+            }
+            case "action:top_page_next" -> {
+                TopSortType tst = holder != null ? holder.getTopSortType() : TopSortType.KDR;
+                int totalTop = plugin.getClanManager().getTopClans(tst).size();
+                List<Integer> topSlots = plugin.getMainConfigManager().getMenusConfig()
+                        .getIntegerList("menus." + (holder != null ? holder.getMenuId() : "top") + ".top_slots");
+                int itemsPerPage = topSlots.isEmpty() ? 21 : topSlots.size();
+                int maxPages = Math.max(1, (int) Math.ceil((double) totalTop / itemsPerPage));
+                int currentPage = holder != null ? holder.getPage() : 0;
+                if (currentPage < maxPages - 1) {
+                    if (!hasCustomSound)
+                        SoundUtils.playSound(player, "ITEM_BOOK_PAGE_TURN", 0.8f, 1.2f);
+                    if (holder != null)
+                        holder.setPage(currentPage + 1);
+                    plugin.getMenuBuilder().updateInventory(player.getOpenInventory().getTopInventory(),
+                            holder != null ? holder.getMenuId() : "top", player, clan);
                 } else {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 0.8f, 1.0f);
                 }

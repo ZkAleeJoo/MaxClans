@@ -77,6 +77,9 @@ placeholders:
         sort-playtime: '&#00E5FFPlaytime (Most Active)'
         sort-join-recent: '&#FFAA00Join Date (Recent)'
         sort-join-oldest: '&#E2E8F0Join Date (Oldest)'
+        sort-top-kdr: '&#00FF88KDR (Ratio)'
+        sort-top-kills: '&#FF3366Kills (Most Bloodthirsty)'
+        sort-top-members: '&#00E5FFMembers (Largest)'
     es:
       none: 'Ninguno'
       no-clan-tag: '---'
@@ -118,3 +121,6 @@ placeholders:
         sort-playtime: '&#00E5FFTiempo Jugado (Más activo)'
         sort-join-recent: '&#FFAA00Fecha de Unión (Reciente)'
         sort-join-oldest: '&#E2E8F0Fecha de Unión (Antiguo)'
+        sort-top-kdr: '&#00FF88KDR (Ratio)'
+        sort-top-kills: '&#FF3366Asesinatos (Más Sanguinarios)'
+        sort-top-members: '&#00E5FFMiembros (Más Grandes)'

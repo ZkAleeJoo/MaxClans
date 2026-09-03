@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.MemberSortType;
+import org.zkaleejoo.models.TopSortType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class ClanMenuHolder implements InventoryHolder {
     private final String menuId;
     private int page = 0;
     private MemberSortType memberSortType = MemberSortType.ROLE;
+    private TopSortType topSortType = TopSortType.KDR;
     private final Map<Integer, String> clanSlots = new HashMap<>();
     private final Map<Integer, UUID> memberSlots = new HashMap<>();
     private Inventory inventory;
@@ -38,11 +40,20 @@ public class ClanMenuHolder implements InventoryHolder {
         this.memberSortType = MemberSortType.ROLE;
     }
 
+    public ClanMenuHolder(OnlyClans plugin, String menuId, int page, TopSortType topSortType) {
+        this.plugin = plugin;
+        this.menuId = menuId;
+        this.page = page;
+        this.memberSortType = MemberSortType.ROLE;
+        this.topSortType = topSortType != null ? topSortType : TopSortType.KDR;
+    }
+
     public ClanMenuHolder(OnlyClans plugin, String menuId, int page, MemberSortType memberSortType) {
         this.plugin = plugin;
         this.menuId = menuId;
         this.page = page;
         this.memberSortType = memberSortType != null ? memberSortType : MemberSortType.ROLE;
+        this.topSortType = TopSortType.KDR;
     }
 
     public ClanMenuHolder(String menuId) {
@@ -57,8 +68,20 @@ public class ClanMenuHolder implements InventoryHolder {
         this(null, menuId, page, memberSortType);
     }
 
+    public ClanMenuHolder(String menuId, int page, TopSortType topSortType) {
+        this(null, menuId, page, topSortType);
+    }
+
     public OnlyClans getPlugin() {
         return plugin;
+    }
+
+    public TopSortType getTopSortType() {
+        return topSortType;
+    }
+
+    public void setTopSortType(TopSortType topSortType) {
+        this.topSortType = topSortType != null ? topSortType : TopSortType.KDR;
     }
 
     public MemberSortType getMemberSortType() {

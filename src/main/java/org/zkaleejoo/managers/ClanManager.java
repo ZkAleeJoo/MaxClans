@@ -13,6 +13,7 @@ import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
+import org.zkaleejoo.models.TopSortType;
 import org.zkaleejoo.utils.MessageUtils;
 
 import java.util.*;
@@ -785,6 +786,90 @@ public class ClanManager {
 
     public Collection<Clan> getAllClans() {
         return Collections.unmodifiableCollection(clans.values());
+    }
+
+    public ClanStorage getStorage() {
+        return storage;
+    }
+
+    public void registerPvPStats(Player attacker, Player victim) {
+        if (attacker == null || victim == null || attacker.equals(victim)) {
+            return;
+        }
+
+        Clan attackerClan = getClanByPlayer(attacker.getUniqueId());
+        Clan victimClan = getClanByPlayer(victim.getUniqueId());
+
+        if (attackerClan == null && victimClan == null) {
+            return;
+        }
+
+        if (attackerClan != null) {
+            if (victimClan == null) {
+                attackerClan.addKill();
+                storage.updateClan(attackerClan);
+            } else if (!attackerClan.getName().equalsIgnoreCase(victimClan.getName())) {
+                attackerClan.addKill();
+                attackerClan.addRivalKill();
+                storage.updateClan(attackerClan);
+
+                victimClan.addDeath();
+                storage.updateClan(victimClan);
+            }
+        } else {
+            victimClan.addDeath();
+            storage.updateClan(victimClan);
+        }
+    }
+
+    public List<Clan> getTopClans(TopSortType sortType) {
+        return getTopClans(sortType, true);
+    }
+
+    public List<Clan> getTopClans(TopSortType sortType, boolean onlyVisible) {
+        if (sortType == null) {
+            sortType = TopSortType.KDR;
+        }
+        List<Clan> list = new ArrayList<>();
+        for (Clan clan : clans.values()) {
+            if (!onlyVisible || clan.isVisibleInList()) {
+                list.add(clan);
+            }
+        }
+
+        switch (sortType) {
+            case KDR -> list.sort((a, b) -> {
+                int cmp = Double.compare(b.getKDR(), a.getKDR());
+                if (cmp != 0) return cmp;
+                int killCmp = Integer.compare(b.getKills(), a.getKills());
+                if (killCmp != 0) return killCmp;
+                return Long.compare(a.getCreatedAt(), b.getCreatedAt());
+            });
+            case KILLS -> list.sort((a, b) -> {
+                int cmp = Integer.compare(b.getKills(), a.getKills());
+                if (cmp != 0) return cmp;
+                int kdrCmp = Double.compare(b.getKDR(), a.getKDR());
+                if (kdrCmp != 0) return kdrCmp;
+                return Long.compare(a.getCreatedAt(), b.getCreatedAt());
+            });
+            case MEMBERS -> list.sort((a, b) -> {
+                int cmp = Integer.compare(b.getMemberCount(), a.getMemberCount());
+                if (cmp != 0) return cmp;
+                int killCmp = Integer.compare(b.getKills(), a.getKills());
+                if (killCmp != 0) return killCmp;
+                return Double.compare(b.getKDR(), a.getKDR());
+            });
+        }
+        return list;
+    }
+
+    public Clan getTopClan(TopSortType sortType, int rank) {
+        if (rank <= 0) return null;
+        List<Clan> top = getTopClans(sortType, true);
+        if (rank <= top.size()) {
+            return top.get(rank - 1);
+        }
+        return null;
     }
 
     private void broadcastToClan(Clan clan, String message) {

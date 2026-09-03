@@ -92,4 +92,6 @@ messages:
   spy-disabled: "&cModo espía de chat de clan desactivado."
   usage-flag: "&cUso: /clan flag <flag> [on|off|toggle]"
   invalid-flag: "&cNombre de flag inválido. Disponibles: friendly_fire, open_join, ally_damage, member_invites, visible_in_list, public_home, spy_chat"
+  top-header: "&6&lTop Clanes &7({sort})"
+  usage-top: "&cUso: /clan top [kdr|kills|members]"
 

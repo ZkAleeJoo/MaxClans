@@ -22,7 +22,7 @@ public class ClanStorage {
 
     public void saveClan(Clan clan) {
         FoliaCompat.runAsync(plugin, () -> {
-            String sql = "INSERT INTO clans (name, tag, owner, friendly_fire, open_join, ally_damage, member_invites, visible_in_list, public_home, spy_chat, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO clans (name, tag, owner, friendly_fire, open_join, ally_damage, member_invites, visible_in_list, public_home, spy_chat, created_at, kills, deaths, rival_kills) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clan.getName());
                 ps.setString(2, clan.getTag());
@@ -35,6 +35,9 @@ public class ClanStorage {
                 ps.setBoolean(9, clan.isPublicHome());
                 ps.setBoolean(10, clan.isSpyChat());
                 ps.setLong(11, clan.getCreatedAt());
+                ps.setInt(12, clan.getKills());
+                ps.setInt(13, clan.getDeaths());
+                ps.setInt(14, clan.getRivalKills());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 plugin.getLogger().log(Level.SEVERE, "Failed to save clan: " + clan.getName(), e);
@@ -63,7 +66,7 @@ public class ClanStorage {
 
     public void updateClan(Clan clan) {
         FoliaCompat.runAsync(plugin, () -> {
-            String sql = "UPDATE clans SET tag = ?, owner = ?, friendly_fire = ?, open_join = ?, ally_damage = ?, member_invites = ?, visible_in_list = ?, public_home = ?, spy_chat = ? WHERE name = ?";
+            String sql = "UPDATE clans SET tag = ?, owner = ?, friendly_fire = ?, open_join = ?, ally_damage = ?, member_invites = ?, visible_in_list = ?, public_home = ?, spy_chat = ?, kills = ?, deaths = ?, rival_kills = ? WHERE name = ?";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clan.getTag());
                 ps.setString(2, clan.getOwner().toString());
@@ -74,7 +77,10 @@ public class ClanStorage {
                 ps.setBoolean(7, clan.isVisibleInList());
                 ps.setBoolean(8, clan.isPublicHome());
                 ps.setBoolean(9, clan.isSpyChat());
-                ps.setString(10, clan.getName());
+                ps.setInt(10, clan.getKills());
+                ps.setInt(11, clan.getDeaths());
+                ps.setInt(12, clan.getRivalKills());
+                ps.setString(13, clan.getName());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 plugin.getLogger().log(Level.SEVERE, "Failed to update clan: " + clan.getName(), e);
@@ -159,6 +165,18 @@ public class ClanStorage {
                     }
                     try {
                         clan.setSpyChat(rs.getBoolean("spy_chat"));
+                    } catch (SQLException ignored) {
+                    }
+                    try {
+                        clan.setKills(rs.getInt("kills"));
+                    } catch (SQLException ignored) {
+                    }
+                    try {
+                        clan.setDeaths(rs.getInt("deaths"));
+                    } catch (SQLException ignored) {
+                    }
+                    try {
+                        clan.setRivalKills(rs.getInt("rival_kills"));
                     } catch (SQLException ignored) {
                     }
 

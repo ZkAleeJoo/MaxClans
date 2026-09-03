@@ -23,6 +23,7 @@ import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.models.MemberSortType;
+import org.zkaleejoo.models.TopSortType;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
 
@@ -88,6 +89,15 @@ public class MenuBuilder {
     }
 
     public void openMenu(Player player, String menuId, Clan clan, int page, MemberSortType sortType) {
+        openMenu(player, menuId, clan, page, sortType, TopSortType.KDR);
+    }
+
+    public void openTopMenu(Player player, TopSortType sortType, int page) {
+        Clan clan = plugin.getClanManager().getClanByPlayer(player.getUniqueId());
+        openMenu(player, "top", clan, page, MemberSortType.ROLE, sortType != null ? sortType : TopSortType.KDR);
+    }
+
+    public void openMenu(Player player, String menuId, Clan clan, int page, MemberSortType sortType, TopSortType topSortType) {
         FileConfiguration menusConfig = plugin.getMainConfigManager().getMenusConfig();
         ConfigurationSection menuSection = menusConfig.getConfigurationSection("menus." + menuId);
 
@@ -100,21 +110,31 @@ public class MenuBuilder {
             return;
         }
 
+        int maxPages = 1;
         if (menuId.equalsIgnoreCase("clan_list") || menuSection.getBoolean("dynamic_clans", false)) {
             List<Integer> clanSlots = menuSection.getIntegerList("clan_slots");
             int itemsPerPage = clanSlots.isEmpty() ? 21 : clanSlots.size();
             int totalClans = getVisibleClansFor(player).size();
-            int maxPages = Math.max(1, (int) Math.ceil((double) totalClans / itemsPerPage));
+            maxPages = Math.max(1, (int) Math.ceil((double) totalClans / itemsPerPage));
             page = Math.min(Math.max(0, page), maxPages - 1);
         } else if (menuId.equalsIgnoreCase("members") || menuSection.getBoolean("dynamic_members", false)) {
             List<Integer> memberSlots = menuSection.getIntegerList("member_slots");
             int itemsPerPage = memberSlots.isEmpty() ? 21 : memberSlots.size();
             int totalMembers = clan != null ? clan.getMemberCount() : 0;
-            int maxPages = Math.max(1, (int) Math.ceil((double) totalMembers / itemsPerPage));
+            maxPages = Math.max(1, (int) Math.ceil((double) totalMembers / itemsPerPage));
+            page = Math.min(Math.max(0, page), maxPages - 1);
+        } else if (menuId.equalsIgnoreCase("top") || menuId.equalsIgnoreCase("clan_top") || menuSection.getBoolean("dynamic_top", false)) {
+            List<Integer> topSlots = menuSection.getIntegerList("top_slots");
+            int itemsPerPage = topSlots.isEmpty() ? 21 : topSlots.size();
+            int totalTop = plugin.getClanManager().getTopClans(topSortType != null ? topSortType : TopSortType.KDR).size();
+            maxPages = Math.max(1, (int) Math.ceil((double) totalTop / itemsPerPage));
             page = Math.min(Math.max(0, page), maxPages - 1);
         }
 
         ClanMenuHolder holder = new ClanMenuHolder(plugin, menuId, page, sortType != null ? sortType : MemberSortType.ROLE);
+        if (topSortType != null) {
+            holder.setTopSortType(topSortType);
+        }
         String rawTitle = menuSection.getString("title", "&8Menu");
         String title = replacePlaceholders(rawTitle, player, clan, page, holder);
         int size = menuSection.getInt("size", 27);
@@ -155,6 +175,7 @@ public class MenuBuilder {
 
         boolean isClanList = menuId.equalsIgnoreCase("clan_list") || menuSection.getBoolean("dynamic_clans", false);
         boolean isMemberList = menuId.equalsIgnoreCase("members") || menuSection.getBoolean("dynamic_members", false);
+        boolean isTop = menuId.equalsIgnoreCase("top") || menuId.equalsIgnoreCase("clan_top") || menuSection.getBoolean("dynamic_top", false);
 
         int maxPages = 1;
         if (isClanList) {
@@ -175,6 +196,16 @@ public class MenuBuilder {
             if (holder != null) {
                 holder.setPage(page);
             }
+        } else if (isTop) {
+            List<Integer> topSlots = menuSection.getIntegerList("top_slots");
+            int itemsPerPage = topSlots.isEmpty() ? 21 : topSlots.size();
+            TopSortType tst = holder != null ? holder.getTopSortType() : TopSortType.KDR;
+            int totalTop = plugin.getClanManager().getTopClans(tst).size();
+            maxPages = Math.max(1, (int) Math.ceil((double) totalTop / itemsPerPage));
+            page = Math.min(Math.max(0, page), maxPages - 1);
+            if (holder != null) {
+                holder.setPage(page);
+            }
         }
 
         ConfigurationSection itemsSection = menuSection.getConfigurationSection("items");
@@ -186,7 +217,7 @@ public class MenuBuilder {
 
                 List<Integer> slots = getSlotsFromConfig(itemConfig);
 
-                if (isClanList || isMemberList) {
+                if (isClanList || isMemberList || isTop) {
                     if (itemKey.equalsIgnoreCase("btn_prev") && page <= 0) {
                         for (int slot : slots) {
                             if (slot >= 0 && slot < size) {
@@ -222,6 +253,12 @@ public class MenuBuilder {
         if (isClanList) {
             if (holder != null) {
                 renderDynamicClans(inventory, menuSection, player, holder);
+            }
+        }
+
+        if (isTop) {
+            if (holder != null) {
+                renderDynamicTop(inventory, menuSection, player, holder);
             }
         }
 
@@ -625,6 +662,140 @@ public class MenuBuilder {
         }
     }
 
+    private void renderDynamicTop(Inventory inventory, ConfigurationSection menuSection, Player viewer,
+            ClanMenuHolder holder) {
+        List<Integer> topSlots = menuSection.getIntegerList("top_slots");
+        if (topSlots.isEmpty()) {
+            int size = inventory.getSize();
+            topSlots = new ArrayList<>();
+            if (size >= 45) {
+                for (int i = 10; i <= 16; i++) topSlots.add(i);
+                for (int i = 19; i <= 25; i++) topSlots.add(i);
+                for (int i = 28; i <= 34; i++) topSlots.add(i);
+            } else {
+                for (int i = 10; i <= 16; i++) topSlots.add(i);
+            }
+        }
+
+        TopSortType sortType = holder != null ? holder.getTopSortType() : TopSortType.KDR;
+        List<Clan> topClans = plugin.getClanManager().getTopClans(sortType);
+
+        int itemsPerPage = topSlots.size();
+        int totalClans = topClans.size();
+        int maxPages = Math.max(1, (int) Math.ceil((double) totalClans / itemsPerPage));
+        int page = holder != null ? holder.getPage() : 0;
+        page = Math.min(Math.max(0, page), maxPages - 1);
+        if (holder != null) {
+            holder.setPage(page);
+        }
+
+        int startIndex = page * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, totalClans);
+        int slotIndex = 0;
+
+        String lang = plugin.getMainConfigManager().getSelectedLanguage();
+        ConfigurationSection topItemConfig = menuSection.getConfigurationSection("top_item");
+
+        for (int slot : topSlots) {
+            if (slot >= 0 && slot < inventory.getSize()) {
+                inventory.setItem(slot, null);
+            }
+        }
+
+        for (int i = startIndex; i < endIndex; i++) {
+            if (slotIndex >= topSlots.size())
+                break;
+
+            Clan clan = topClans.get(i);
+            int rank = i + 1;
+            int targetSlot = topSlots.get(slotIndex++);
+            if (holder != null) {
+                holder.setClanAtSlot(targetSlot, clan.getName());
+            }
+
+            OfflinePlayer leader = Bukkit.getOfflinePlayer(clan.getOwner());
+            Player leaderOnline = Bukkit.getPlayer(clan.getOwner());
+
+            ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+            if (skullMeta != null) {
+                markAsMenuItem(skullMeta, "top");
+                if (leaderOnline != null) {
+                    skullMeta.setPlayerProfile(leaderOnline.getPlayerProfile());
+                } else {
+                    skullMeta.setOwningPlayer(leader);
+                }
+
+                String rankBadge;
+                if (rank == 1) {
+                    rankBadge = "&#FFD700&l#1 ✦";
+                } else if (rank == 2) {
+                    rankBadge = "&#E2E8F0&l#2 ✦";
+                } else if (rank == 3) {
+                    rankBadge = "&#CD7F32&l#3 ✦";
+                } else {
+                    rankBadge = "&#718096#" + rank;
+                }
+
+                String leaderName = leaderOnline != null ? leaderOnline.getName()
+                        : (leader.getName() != null ? leader.getName() : plugin.getPlaceholderManager().getUnknownText(lang));
+
+                long onlineCount = clan.getMembers().keySet().stream()
+                        .map(Bukkit::getPlayer)
+                        .filter(Objects::nonNull)
+                        .count();
+
+                if (topItemConfig != null) {
+                    String rawTitle = topItemConfig.getString("name", "%clan_rank% &#00FF88&l%clan_name% &#718096[%clan_tag%]");
+                    String processedTitle = rawTitle.replace("%clan_rank%", rankBadge)
+                            .replace("%rank%", String.valueOf(rank))
+                            .replace("%clan_name%", clan.getName())
+                            .replace("%clan_tag%", clan.getTag())
+                            .replace("%clan_leader%", leaderName)
+                            .replace("%clan_kdr%", clan.getFormattedKDR())
+                            .replace("%clan_kills%", String.valueOf(clan.getKills()))
+                            .replace("%clan_deaths%", String.valueOf(clan.getDeaths()))
+                            .replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills()))
+                            .replace("%clan_members%", String.valueOf(clan.getMemberCount()))
+                            .replace("%clan_members_online%", String.valueOf(onlineCount));
+                    skullMeta.displayName(MessageUtils.legacyToComponentNoItalic(processedTitle));
+
+                    List<String> rawLore = topItemConfig.getStringList("lore");
+                    List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
+                    for (String line : rawLore) {
+                        String processedLine = line.replace("%clan_rank%", rankBadge)
+                                .replace("%rank%", String.valueOf(rank))
+                                .replace("%clan_name%", clan.getName())
+                                .replace("%clan_tag%", clan.getTag())
+                                .replace("%clan_leader%", leaderName)
+                                .replace("%clan_kdr%", clan.getFormattedKDR())
+                                .replace("%clan_kills%", String.valueOf(clan.getKills()))
+                                .replace("%clan_deaths%", String.valueOf(clan.getDeaths()))
+                                .replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills()))
+                                .replace("%clan_members%", String.valueOf(clan.getMemberCount()))
+                                .replace("%clan_members_online%", String.valueOf(onlineCount))
+                                .replace("%clan_created%", plugin.getPlaceholderManager().formatDate(clan.getCreatedAt()));
+                        lore.add(MessageUtils.legacyToComponentNoItalic(processedLine));
+                    }
+                    skullMeta.lore(lore);
+                } else {
+                    skullMeta.displayName(MessageUtils.legacyToComponentNoItalic(rankBadge + " &#00FF88&l" + clan.getName() + " &#718096[" + clan.getTag() + "]"));
+                    List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
+                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Líder: &#FFFFFF" + leaderName));
+                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0KDR: &#00FF88" + clan.getFormattedKDR() + " &#718096(&#FFFFFF" + clan.getKills() + " &#718096K / &#FFFFFF" + clan.getDeaths() + " &#718096D)"));
+                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Bajas Rivales: &#FF3366" + clan.getRivalKills()));
+                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Miembros: &#00E5FF" + onlineCount + "&#718096/&#FFFFFF" + clan.getMemberCount()));
+                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    skullMeta.lore(lore);
+                }
+
+                head.setItemMeta(skullMeta);
+            }
+            inventory.setItem(targetSlot, head);
+        }
+    }
+
     private ItemStack createItem(ConfigurationSection itemConfig, Player player, Clan clan, int page) {
         return createItem(itemConfig, player, clan, page, null, null);
     }
@@ -776,6 +947,11 @@ public class MenuBuilder {
             int memItemsPerPage = (memberSlots != null && !memberSlots.isEmpty()) ? memberSlots.size() : 21;
             int totalMembers = clan != null ? clan.getMemberCount() : 0;
             maxPages = Math.max(1, (int) Math.ceil((double) totalMembers / memItemsPerPage));
+        } else if (holder != null && (holder.getMenuId().equalsIgnoreCase("top") || holder.getMenuId().equalsIgnoreCase("clan_top"))) {
+            List<Integer> topSlots = menusConfig != null ? menusConfig.getIntegerList("menus." + holder.getMenuId() + ".top_slots") : null;
+            int topItemsPerPage = (topSlots != null && !topSlots.isEmpty()) ? topSlots.size() : 21;
+            int totalTop = plugin.getClanManager().getTopClans(holder.getTopSortType()).size();
+            maxPages = Math.max(1, (int) Math.ceil((double) totalTop / topItemsPerPage));
         }
 
         int displayPage = Math.min(Math.max(0, page), maxPages - 1) + 1;
@@ -793,6 +969,11 @@ public class MenuBuilder {
                 .replace("%member_sort_mode%", sortName)
                 .replace("{sort_mode}", sortName)
                 .replace("{member_sort_mode}", sortName);
+
+        TopSortType currentTopSort = holder != null ? holder.getTopSortType() : TopSortType.KDR;
+        String topSortName = pm != null ? pm.getTopSortTypeName(currentTopSort, lang) : currentTopSort.name();
+        text = text.replace("%top_sort_mode%", topSortName)
+                .replace("{top_sort_mode}", topSortName);
 
         if (clan != null) {
             String clanName = clan.getName();
@@ -828,6 +1009,10 @@ public class MenuBuilder {
             text = text.replace("%clan_ff%", ffText).replace("{clan_ff}", ffText);
             text = text.replace("%clan_ff_badge%", ffBadge).replace("{clan_ff_badge}", ffBadge);
             text = text.replace("%clan_created%", createdDate).replace("{clan_created}", createdDate);
+            text = text.replace("%clan_kills%", String.valueOf(clan.getKills())).replace("{clan_kills}", String.valueOf(clan.getKills()));
+            text = text.replace("%clan_deaths%", String.valueOf(clan.getDeaths())).replace("{clan_deaths}", String.valueOf(clan.getDeaths()));
+            text = text.replace("%clan_kdr%", clan.getFormattedKDR()).replace("{clan_kdr}", clan.getFormattedKDR());
+            text = text.replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills())).replace("{clan_rival_kills}", String.valueOf(clan.getRivalKills()));
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = clan.getFlag(flag);
@@ -855,6 +1040,10 @@ public class MenuBuilder {
             text = text.replace("%clan_ff%", noFfText).replace("{clan_ff}", noFfText);
             text = text.replace("%clan_ff_badge%", noFfBadge).replace("{clan_ff_badge}", noFfBadge);
             text = text.replace("%clan_created%", noCreated).replace("{clan_created}", noCreated);
+            text = text.replace("%clan_kills%", "0").replace("{clan_kills}", "0");
+            text = text.replace("%clan_deaths%", "0").replace("{clan_deaths}", "0");
+            text = text.replace("%clan_kdr%", "0.00").replace("{clan_kdr}", "0.00");
+            text = text.replace("%clan_rival_kills%", "0").replace("{clan_rival_kills}", "0");
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = flag.getDefaultValue();

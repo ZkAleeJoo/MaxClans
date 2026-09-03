@@ -44,6 +44,7 @@ permissions:
       onlyclans.command.acceptrequest: true
       onlyclans.command.denyrequest: true
       onlyclans.command.chat: true
+      onlyclans.command.top: true
   onlyclans.command.main:
     description: Open the main clan menu.
     default: true
@@ -106,4 +107,7 @@ permissions:
     default: true
   onlyclans.command.settings:
     description: Access clan settings menu.
+    default: true
+  onlyclans.command.top:
+    description: Access top clan rankings and leaderboard menu.
     default: true

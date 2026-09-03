@@ -13,25 +13,26 @@ public class Clan {
     private final Set<UUID> joinRequests;
     private final Set<String> allies;
     private final Map<ClanFlag, Boolean> flags;
+    private int kills;
+    private int deaths;
+    private int rivalKills;
 
     public Clan(String name, String tag, UUID owner) {
-        this.name = name;
-        this.tag = tag;
-        this.owner = owner;
-        this.createdAt = System.currentTimeMillis();
-        this.members = new HashMap<>();
-        this.pendingInvites = new HashSet<>();
-        this.joinRequests = new HashSet<>();
-        this.allies = new HashSet<>();
-        this.flags = new EnumMap<>(ClanFlag.class);
-        initDefaultFlags();
+        this(name, tag, owner, false, System.currentTimeMillis(), 0, 0, 0);
     }
 
     public Clan(String name, String tag, UUID owner, boolean friendlyFire, long createdAt) {
+        this(name, tag, owner, friendlyFire, createdAt, 0, 0, 0);
+    }
+
+    public Clan(String name, String tag, UUID owner, boolean friendlyFire, long createdAt, int kills, int deaths, int rivalKills) {
         this.name = name;
         this.tag = tag;
         this.owner = owner;
         this.createdAt = createdAt;
+        this.kills = kills;
+        this.deaths = deaths;
+        this.rivalKills = rivalKills;
         this.members = new HashMap<>();
         this.pendingInvites = new HashSet<>();
         this.joinRequests = new HashSet<>();
@@ -237,5 +238,64 @@ public class Clan {
 
     public void removeJoinRequest(UUID uuid) {
         joinRequests.remove(uuid);
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void setKills(int kills) {
+        this.kills = Math.max(0, kills);
+    }
+
+    public void addKill() {
+        this.kills++;
+    }
+
+    public void addKills(int amount) {
+        this.kills += Math.max(0, amount);
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = Math.max(0, deaths);
+    }
+
+    public void addDeath() {
+        this.deaths++;
+    }
+
+    public void addDeaths(int amount) {
+        this.deaths += Math.max(0, amount);
+    }
+
+    public int getRivalKills() {
+        return rivalKills;
+    }
+
+    public void setRivalKills(int rivalKills) {
+        this.rivalKills = Math.max(0, rivalKills);
+    }
+
+    public void addRivalKill() {
+        this.rivalKills++;
+    }
+
+    public void addRivalKills(int amount) {
+        this.rivalKills += Math.max(0, amount);
+    }
+
+    public double getKDR() {
+        if (deaths <= 0) {
+            return (double) kills;
+        }
+        return (double) kills / deaths;
+    }
+
+    public String getFormattedKDR() {
+        return String.format(java.util.Locale.US, "%.2f", getKDR());
     }
 }

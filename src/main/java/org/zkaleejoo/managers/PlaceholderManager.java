@@ -9,6 +9,7 @@ import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
+import org.zkaleejoo.models.TopSortType;
 import org.zkaleejoo.utils.MessageUtils;
 
 import java.text.SimpleDateFormat;
@@ -177,8 +178,85 @@ public class PlaceholderManager {
         };
     }
 
+    public String getTopSortTypeName(TopSortType type, String lang) {
+        if (type == null) {
+            return getGuiText("sort-top-kdr", lang, "&#00FF88KDR (Ratio)");
+        }
+        return switch (type) {
+            case KDR -> getGuiText("sort-top-kdr", lang, "&#00FF88KDR (Ratio)");
+            case KILLS -> getGuiText("sort-top-kills", lang, "&#FF3366Kills (Most Bloodthirsty)");
+            case MEMBERS -> getGuiText("sort-top-members", lang, "&#00E5FFMembers (Largest)");
+        };
+    }
+
+    public String resolveTopPlaceholder(String param, String lang) {
+        String rest = param.substring(4);
+        TopSortType sortType = null;
+        String afterType = null;
+
+        if (rest.startsWith("kdr_")) {
+            sortType = TopSortType.KDR;
+            afterType = rest.substring(4);
+        } else if (rest.startsWith("kills_")) {
+            sortType = TopSortType.KILLS;
+            afterType = rest.substring(6);
+        } else if (rest.startsWith("members_")) {
+            sortType = TopSortType.MEMBERS;
+            afterType = rest.substring(8);
+        } else if (rest.startsWith("member_")) {
+            sortType = TopSortType.MEMBERS;
+            afterType = rest.substring(7);
+        }
+
+        if (sortType != null && afterType != null) {
+            int firstUnderscore = afterType.indexOf('_');
+            if (firstUnderscore > 0) {
+                String rankStr = afterType.substring(0, firstUnderscore);
+                String prop = afterType.substring(firstUnderscore + 1);
+
+                try {
+                    int rank = Integer.parseInt(rankStr);
+                    Clan topClan = plugin.getClanManager().getTopClan(sortType, rank);
+
+                    if (prop.equals("name")) {
+                        return topClan != null ? topClan.getName() : getNoneText(lang);
+                    } else if (prop.equals("tag")) {
+                        return topClan != null ? topClan.getTag() : getNoClanTag(lang);
+                    } else if (prop.equals("tag_formatted")) {
+                        return topClan != null ? formatTag(topClan.getTag()) : "";
+                    } else if (prop.equals("leader")) {
+                        if (topClan == null) return getNoneText(lang);
+                        OfflinePlayer leader = Bukkit.getOfflinePlayer(topClan.getOwner());
+                        return leader.getName() != null ? leader.getName() : getUnknownText(lang);
+                    } else if (prop.equals("val") || prop.equals("value")) {
+                        if (topClan == null) {
+                            return sortType == TopSortType.KDR ? "0.00" : "0";
+                        }
+                        return switch (sortType) {
+                            case KDR -> topClan.getFormattedKDR();
+                            case KILLS -> String.valueOf(topClan.getKills());
+                            case MEMBERS -> String.valueOf(topClan.getMemberCount());
+                        };
+                    } else if (prop.equals("kdr")) {
+                        return topClan != null ? topClan.getFormattedKDR() : "0.00";
+                    } else if (prop.equals("kills")) {
+                        return topClan != null ? String.valueOf(topClan.getKills()) : "0";
+                    } else if (prop.equals("deaths")) {
+                        return topClan != null ? String.valueOf(topClan.getDeaths()) : "0";
+                    } else if (prop.equals("rival_kills")) {
+                        return topClan != null ? String.valueOf(topClan.getRivalKills()) : "0";
+                    } else if (prop.equals("members")) {
+                        return topClan != null ? String.valueOf(topClan.getMemberCount()) : "0";
+                    }
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+        return null;
+    }
+
     public String resolvePlaceholder(OfflinePlayer player, String rawParam) {
-        if (player == null || rawParam == null) {
+        if (rawParam == null) {
             return "";
         }
 
@@ -193,9 +271,30 @@ public class PlaceholderManager {
             param = param.substring(3);
         }
 
-        String cleanParam = param.startsWith("clan_") ? param.substring(5) : param;
+        if (param.startsWith("top_")) {
+            return resolveTopPlaceholder(param, lang);
+        }
+
+        if (player == null) {
+            return "";
+        }
 
         Clan clan = plugin.getClanManager().getClanByPlayer(player.getUniqueId());
+
+        if (param.equals("clan_kills")) {
+            return clan != null ? String.valueOf(clan.getKills()) : "0";
+        }
+        if (param.equals("clan_deaths")) {
+            return clan != null ? String.valueOf(clan.getDeaths()) : "0";
+        }
+        if (param.equals("clan_kdr")) {
+            return clan != null ? clan.getFormattedKDR() : "0.00";
+        }
+        if (param.equals("clan_rival_kills") || param.equals("rival_kills")) {
+            return clan != null ? String.valueOf(clan.getRivalKills()) : "0";
+        }
+
+        String cleanParam = param.startsWith("clan_") ? param.substring(5) : param;
 
         if (cleanParam.equals("name")) {
             return clan != null ? clan.getName() : "";

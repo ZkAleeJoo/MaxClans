@@ -13,6 +13,7 @@ import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
+import org.zkaleejoo.models.TopSortType;
 import org.zkaleejoo.utils.MessageUtils;
 
 import java.util.ArrayList;
@@ -39,6 +40,26 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             plugin.reloadPluginState();
             sender.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getPluginReload()));
+            return true;
+        }
+
+        if (args.length >= 1 && (args[0].equalsIgnoreCase("top") || args[0].equalsIgnoreCase("leaderboard"))) {
+            if (!sender.hasPermission("onlyclans.command.top")) {
+                sendNoPermission(sender);
+                return true;
+            }
+            TopSortType sortType = TopSortType.KDR;
+            if (args.length >= 2) {
+                TopSortType parsed = TopSortType.fromKey(args[1]);
+                if (parsed != null) {
+                    sortType = parsed;
+                }
+            }
+            if (!(sender instanceof Player player)) {
+                sendConsoleTop(sender, sortType);
+                return true;
+            }
+            plugin.getMenuBuilder().openTopMenu(player, sortType, 0);
             return true;
         }
 
@@ -429,6 +450,25 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getNoPermission()));
     }
 
+    private void sendConsoleTop(CommandSender sender, TopSortType sortType) {
+        List<Clan> top = plugin.getClanManager().getTopClans(sortType);
+        String typeLabel = sortType.name();
+        sender.sendMessage(MessageUtils.getColoredMessage(
+                plugin.getMainConfigManager().getPrefix() + "&6&lTop Clans &7(" + typeLabel + ")"));
+        if (top.isEmpty()) {
+            sender.sendMessage(MessageUtils.getColoredMessage("&7No clans registered yet."));
+            return;
+        }
+        int limit = Math.min(10, top.size());
+        for (int i = 0; i < limit; i++) {
+            Clan c = top.get(i);
+            sender.sendMessage(MessageUtils.getColoredMessage(
+                    "&e#" + (i + 1) + " &f" + c.getName() + " &7[" + c.getTag() + "] &8- &7KDR: &a" + c.getFormattedKDR()
+                            + " &7| Kills: &c" + c.getKills() + " &7| Deaths: &4" + c.getDeaths()
+                            + " &7| Members: &b" + c.getMemberCount()));
+        }
+    }
+
     public void help(CommandSender sender) {
         String titleTemplate = plugin.getMainConfigManager().getHelpTitle();
         sender.sendMessage(MessageUtils.getColoredMessage(plugin.getMainConfigManager().getPrefix()
@@ -457,6 +497,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("onlyclans.command.chat")) completions.add("chat");
             if (sender.hasPermission("onlyclans.command.info")) completions.add("info");
             if (sender.hasPermission("onlyclans.command.list")) completions.add("list");
+            if (sender.hasPermission("onlyclans.command.top")) completions.add("top");
             if (sender.hasPermission("onlyclans.command.flags")) {
                 completions.add("flags");
                 completions.add("flag");
@@ -475,6 +516,12 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
+            if ((sub.equals("top") || sub.equals("leaderboard")) && sender.hasPermission("onlyclans.command.top")) {
+                completions.add("kdr");
+                completions.add("kills");
+                completions.add("members");
+                return filterCompletions(completions, args[1]);
+            }
             if (sub.equals("flag") && sender.hasPermission("onlyclans.command.flags")) {
                 for (ClanFlag f : ClanFlag.values()) {
                     completions.add(f.getKey());

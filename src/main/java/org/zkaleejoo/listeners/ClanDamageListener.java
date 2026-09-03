@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
@@ -62,5 +63,14 @@ public class ClanDamageListener implements Listener {
             }
         }
         return null;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player victim = event.getPlayer();
+        Player attacker = victim.getKiller();
+        if (attacker != null) {
+            plugin.getClanManager().registerPvPStats(attacker, victim);
+        }
     }
 }

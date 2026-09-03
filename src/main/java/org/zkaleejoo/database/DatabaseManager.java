@@ -84,6 +84,9 @@ public class DatabaseManager {
                     + "visible_in_list BOOLEAN DEFAULT 1,"
                     + "public_home BOOLEAN DEFAULT 0,"
                     + "spy_chat BOOLEAN DEFAULT 0,"
+                    + "kills INT DEFAULT 0,"
+                    + "deaths INT DEFAULT 0,"
+                    + "rival_kills INT DEFAULT 0,"
                     + "created_at BIGINT NOT NULL"
                     + ")" + engine);
 
@@ -121,6 +124,18 @@ public class DatabaseManager {
             }
             try {
                 stmt.executeUpdate("ALTER TABLE clans ADD COLUMN spy_chat BOOLEAN DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN kills INT DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN deaths INT DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN rival_kills INT DEFAULT 0");
             } catch (SQLException ignored) {
             }
 

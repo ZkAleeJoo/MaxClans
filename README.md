@@ -14,11 +14,13 @@ Welcome to the **OnlyClans** Official Wiki! Here you will find all the informati
 1. [Features](#-features)
 2. [Commands & Permissions](#-commands--permissions)
 3. [Clan Flags & Privileges](#-clan-flags--privileges)
-4. [Placeholders](#-placeholders)
-5. [Menus Guide](#-menus-guide)
-6. [Performance & Rate Limits Guide](#-performance--rate-limits-guide)
-7. [Database Configuration](#-database-configuration)
-8. [Future Updates](#-future-updates)
+4. [Clan KDR & Global Statistics](#-clan-kdr--global-statistics)
+5. [Leaderboard & Top Clans (/clan top)](#-leaderboard--top-clans-clan-top)
+6. [Placeholders](#-placeholders)
+7. [Menus Guide](#-menus-guide)
+8. [Performance & Rate Limits Guide](#-performance--rate-limits-guide)
+9. [Database Configuration](#-database-configuration)
+10. [Future Updates](#-future-updates)
 
 ---
 
@@ -26,9 +28,11 @@ Welcome to the **OnlyClans** Official Wiki! Here you will find all the informati
 OnlyClans is designed to be a lightweight, highly customizable, and easy-to-use clan system for modern Minecraft servers.
 - **Full GUI Support**: Create, manage, and view your clan through interactive inventory menus.
 - **Clan Roles**: Leader, Moderator, and Member roles with different permissions (invite, kick, promote, demote).
+- **Clan KDR & Global Statistics**: Real-time database tracking for clan kills, deaths, rival war kills, and ratio ($KDR = \frac{Kills}{Deaths}$).
+- **Leaderboard & Top Clans (`/clan top`)**: Interactive paginated GUI and commands to rank top clans by KDR, Kills, or Member roster size.
 - **Advanced Clan Flags & Privileges**: Interactive GUI menu for leaders and moderators to toggle 7 advanced clan flags: Friendly Fire, Open Join, Ally Damage, Member Invites, Visibility in List, Public Home, and Administrative Spy Chat.
 - **Clan Chat & Spy**: Private communication channel for clan members (`/c <message>`) and administrative monitoring mode for staff (`/clan spy`).
-- **PlaceholderAPI Integration**: Display clan stats, roles, and flag statuses anywhere (chat, scoreboard, tablist).
+- **PlaceholderAPI Integration**: Display clan stats, global top leaderboards, roles, and flag statuses anywhere (chat, scoreboard, tablist, holograms).
 - **Multiple Databases**: Supports both SQLite (local) and MySQL (remote) storage with automated migrations.
 - **Multilingual**: Built-in support for English and Spanish, fully customizable in `messages_en.yml` and `messages_es.yml`.
 - **Folia Support**: Fully compatible with Folia and Paper servers.
@@ -49,6 +53,7 @@ Basic commands accessible to all players by default (`onlyclans.use` or individu
 | `/clan help` | `/olc help` | Displays the help message and wiki link. | `onlyclans.command.help` | `true` |
 | `/clan list` | `/olc browse`, `/clan browse` | Opens the clan browser GUI to view all clans. | `onlyclans.command.list` | `true` |
 | `/clan info` | `/olc info` | Displays your clan's info and roster in a menu. | `onlyclans.command.info` | `true` |
+| `/clan top [kdr\|kills\|members]` | `/olc top`, `/clan leaderboard` | Opens the clan leaderboard GUI (or filters by category). | `onlyclans.command.top` | `true` |
 | `/clan create <name>` | `/olc create <name>` | Creates a new clan (can also be done via GUI). | `onlyclans.command.create` | `true` |
 | `/clan request <clan>` | `/olc join <clan>`, `/clan join` | Requests to join an existing clan. | `onlyclans.command.request` | `true` |
 | `/clan accept` | `/olc accept` | Accepts a pending clan invitation. | `onlyclans.command.accept` | `true` |
@@ -94,6 +99,7 @@ onlyclans.admin (default: op)
     ├── onlyclans.command.main
     ├── onlyclans.command.help
     ├── onlyclans.command.list
+    ├── onlyclans.command.top
     ├── onlyclans.command.info
     ├── onlyclans.command.flags
     ├── onlyclans.command.settings
@@ -147,6 +153,48 @@ OnlyClans features an advanced flag system allowing leaders and moderators to fi
 | `public_home` | 🏠 | `false` | Leader, Moderator | Allows or restricts allied clans from teleporting to your clan base. |
 | `spy_chat` | 💬 | `false` | **Admin Only** | Administrative monitoring flag that mirrors private clan chat messages to staff members with `onlyclans.spy`. |
 
+---
+
+## Clan KDR & Global Statistics
+
+OnlyClans features its own dedicated, server-wide clan PvP combat and kill/death ratio tracking system stored directly in the database. Unlike vanilla Minecraft player statistics, this system records organized clan warfare and collective performance.
+
+### ⚔️ Recorded Database Statistics
+* **Clan Kills (`clan_kills`)**: Total kills made by clan members against clanless players or members of rival clans.
+* **Clan Deaths (`clan_deaths`)**: Total deaths suffered by clan members at the hands of enemy players.
+* **Rival Clan Kills (`rival_kills`)**: Special war counter tracking kills specifically made against members of other clans.
+* **Clan KDR (`KDR`)**: Real-time ratio calculated using:
+  $$\text{KDR} = \frac{\text{Clan Kills}}{\text{Clan Deaths}}$$
+  *(If deaths equal 0, the KDR equals the total kills. Formatted to two decimal places, e.g. `4.50`)*.
+
+### 🛡️ PvP Combat & Anti-Exploit Rules
+| Killer | Victim | Stat Effects |
+|---|---|---|
+| Member of Clan A | Clanless Player | Clan A `clan_kills + 1` |
+| Member of Clan A | Member of Clan B | Clan A `clan_kills + 1`<br>Clan A `rival_kills + 1`<br>Clan B `clan_deaths + 1` |
+| Clanless Player | Member of Clan A | Clan A `clan_deaths + 1` |
+| Member of Clan A | Member of Clan A (Friendly Fire) | **No stats awarded** (Prevents stat boosting / kill farming) |
+
+---
+
+## Leaderboard & Top Clans (`/clan top`)
+
+Players and administrators can view real-time rankings of the best clans on the server using `/clan top` or by clicking the Top Clans icon in the main menu (`/clan`).
+
+### Subcommands & Filters
+* `/clan top`: Opens the interactive Top Clans GUI with the default filter (KDR).
+* `/clan top kdr`: Opens the leaderboard sorted by highest KDR ratio.
+* `/clan top kills`: Opens the leaderboard sorted by most bloodthirsty clans (total clan kills).
+* `/clan top members`: Opens the leaderboard sorted by largest and most active rosters.
+
+### 🏆 Interactive Leaderboard GUI Features
+* **Live Sorting Buttons**: Toggle directly between Top KDR, Top Kills, and Top Members from within the menu with one click.
+* **Dynamic Clan Heads**: Renders real-time player heads of top clan leaders.
+* **Rank Badges**: Distinct visual badges for top clans (`#1 ✦` Gold, `#2 ✦` Silver, `#3 ✦` Bronze, `#4+` Gray).
+* **Multi-Page Pagination**: Seamlessly browse through all server clans with Next and Previous buttons.
+
+---
+
 ## Placeholders
 
 OnlyClans integrates with **PlaceholderAPI** and provides internal placeholders for menus and chat. Placeholders dynamically adapt according to `general.language` in `config.yml`, and can also be queried with an explicit language suffix (`_en`, `_es`) or prefix (`en_`, `es_`).
@@ -171,7 +219,44 @@ You can use these placeholders in plugins like TAB, EssentialsX Chat, DecentHolo
 | `%onlyclans_flag_<flag>%` | Formatted status of a clan flag | `&#00FF88✔ Enabled` | `&#00FF88✔ Activado` |
 | `%onlyclans_flag_<flag>_badge%` | Formatted badge of a clan flag | `&#00FF88&lENABLED` | `&#00FF88&lHABILITADO` |
 | `%onlyclans_flag_<flag>_status%` | Formatted status of a clan flag | `&#00FF88✔ Enabled` | `&#00FF88✔ Activado` |
+| `%onlyclans_clan_kills%` | Total clan kills in PvP wars | `142` | `142` |
+| `%onlyclans_clan_deaths%` | Total clan deaths in PvP wars | `38` | `38` |
+| `%onlyclans_clan_kdr%` | Real-time Clan KDR ratio | `3.74` | `3.74` |
+| `%onlyclans_clan_rival_kills%` | Bajas contra miembros de clanes rivales | `95` | `95` |
 | `%onlyclans_created%` | Clan founding date | `29/08/2026` | `29/08/2026` |
+
+### 🏆 Global Top & Leaderboard Placeholders
+Easily create Holograms, Scoreboards, and Tablists displaying the server's top-ranking clans!
+Format: `%onlyclans_top_<type>_<rank>_<property>%`
+
+* **Available Types (`<type>`)**:
+  * `kdr` — Ranked by highest Kill/Death ratio
+  * `kills` — Ranked by total clan kills
+  * `members` — Ranked by member roster size
+* **Available Ranks (`<rank>`)**:
+  * `1`, `2`, `3`, `4`, `5` ... any integer rank.
+* **Available Properties (`<property>`)**:
+  * `name` — Clan name (e.g. `Vikings`)
+  * `tag` — 3-letter tag (e.g. `VIK`)
+  * `tag_formatted` — Formatted tag with brackets
+  * `leader` — Username of the clan leader
+  * `val` / `value` — Value according to the sort type (`KDR` formatted for kdr, count for kills/members)
+  * `kdr` — Explicit KDR ratio (`3.50`)
+  * `kills` — Total clan kills
+  * `deaths` — Total clan deaths
+  * `rival_kills` — Kills against rival clans
+  * `members` — Total clan members
+
+#### Top Placeholders Examples:
+| Placeholder | Description | Example Output |
+|---|---|---|
+| `%onlyclans_top_kdr_1_name%` | Clan name of #1 KDR clan | `Vikings` |
+| `%onlyclans_top_kdr_1_val%` | KDR value of #1 KDR clan | `5.20` |
+| `%onlyclans_top_kdr_1_leader%` | Leader of #1 KDR clan | `ZkAleeJoo` |
+| `%onlyclans_top_kills_1_name%` | Clan name of #1 Most Kills | `Spartans` |
+| `%onlyclans_top_kills_1_val%` | Total kills of #1 clan | `1250` |
+| `%onlyclans_top_members_1_name%` | Name of largest clan | `Empire` |
+| `%onlyclans_top_members_1_val%` | Member count of largest clan | `32` |
 
 ### Multi-Language Explicit Placeholders
 If your network supports multiple languages at once, you can explicitly request the output language directly:
@@ -292,7 +377,11 @@ When a player clicks an item in the GUI, you can assign it an action:
 
 | Action | Description |
 |--------|-------------|
-| `open:<menu_id>` | Opens another menu (e.g., `open:create`, `open:info`, `open:members`, `open:settings`, `open:flags`). |
+| `open:<menu_id>` | Opens another menu (e.g., `open:create`, `open:info`, `open:members`, `open:top`, `open:settings`, `open:flags`). |
+| `action:top_sort:<type>` | Changes top leaderboard sorting category (`kdr`, `kills`, `members`). |
+| `action:cycle_top_sort` | Cycles to the next top leaderboard sorting category. |
+| `action:top_page_prev` | Navigates to the previous page in the Top Clans GUI. |
+| `action:top_page_next` | Navigates to the next page in the Top Clans GUI. |
 | `action:create_clan` | Prompts the player to type their clan name in chat to create it. |
 | `action:toggle_ff` | Toggles the clan's Friendly Fire (Leader & Moderator). |
 | `action:toggle_flag:<flag>` | Toggles a specific clan flag (Leader & Moderator, or Admin for `spy_chat`). |
@@ -331,6 +420,11 @@ Inside `menus.yml`, you can use these dynamic placeholders in item names, lore, 
 | `%clan_ff_badge%` | Friendly fire badge | `HABILITADO` / `DESHABILITADO` |
 | `%clan_flag_<flag>%` | Formatted clan flag status | `&#00FF88✔ Activado` / `&#FF3366✖ Desactivado` |
 | `%clan_flag_<flag>_badge%` | Formatted clan flag badge | `HABILITADO` / `DESHABILITADO` |
+| `%clan_kills%` | Total clan kills in PvP | `142` |
+| `%clan_deaths%` | Total clan deaths in PvP | `38` |
+| `%clan_kdr%` | Clan kill/death ratio | `3.74` |
+| `%clan_rival_kills%` | Kills against rival clan members | `95` |
+| `%top_sort_mode%` | Current leaderboard sort mode | `KDR (Ratio)` |
 | `%clan_created%` | Clan creation date | `29/08/2026` |
 
 *(Note: Also supports any installed PlaceholderAPI placeholders automatically!)*
