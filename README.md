@@ -1,12 +1,20 @@
-<div align="center">
-  <h1>OnlyClans - Official Wiki</h1>
-  <p>
-    <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version">
-    <img src="https://img.shields.io/badge/Java-21+-red" alt="Java">
-    <img src="https://img.shields.io/badge/Paper--Folia-1.21--26.1.2+-green" alt="Paper-Folia">
-    <img src="https://img.shields.io/badge/Languages-EN_|_ES-blue" alt="Languages">
-  </p>
-</div>
+<a id="readme-top"></a>
+
+<p align="center">
+  <a href="https://github.com/ZkAleeJoo/OnlyClans/graphs/contributors"><img src="https://img.shields.io/github/contributors/ZkAleeJoo/OnlyClans?style=for-the-badge" alt="Contributors"></a>
+  <a href="https://github.com/ZkAleeJoo/OnlyClans/network/members"><img src="https://img.shields.io/github/forks/ZkAleeJoo/OnlyClans?style=for-the-badge" alt="Forks"></a>
+  <a href="https://github.com/ZkAleeJoo/OnlyClans/stargazers"><img src="https://img.shields.io/github/stars/ZkAleeJoo/OnlyClans?style=for-the-badge" alt="Stargazers"></a>
+  <a href="https://github.com/ZkAleeJoo/OnlyClans/issues"><img src="https://img.shields.io/github/issues/ZkAleeJoo/OnlyClans?style=for-the-badge" alt="Issues"></a>
+  <a href="https://github.com/ZkAleeJoo/OnlyClans/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ZkAleeJoo/OnlyClans?style=for-the-badge" alt="License"></a>
+</p>
+
+<p align="center">
+  <a href="https://www.oracle.com/java/"><img src="https://img.shields.io/badge/Java-25-blue?style=for-the-badge&logo=java&logoColor=white" alt="Java"></a>
+  <a href="https://papermc.io/"><img src="https://img.shields.io/badge/PaperMC-API-orange?style=for-the-badge" alt="PaperMC"></a>
+  <a href="https://maven.apache.org/"><img src="https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white" alt="Maven"></a>
+</p>
+
+---
 
 Welcome to the **OnlyClans** Official Wiki! Here you will find all the information you need to configure and use the plugin on your Minecraft server.
 
