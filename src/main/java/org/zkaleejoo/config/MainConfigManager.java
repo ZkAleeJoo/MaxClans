@@ -10,6 +10,7 @@ public class MainConfigManager {
     private CustomConfig configFile;
     private CustomConfig langFile;
     private CustomConfig menusFile;
+    private CustomConfig placeholdersFile;
     private OnlyClans plugin;
 
     private String selectedLanguage;
@@ -41,6 +42,9 @@ public class MainConfigManager {
 
         menusFile = new CustomConfig("menus.yml", null, plugin, false);
         menusFile.registerConfig();
+
+        placeholdersFile = new CustomConfig("placeholders.yml", null, plugin, false);
+        placeholdersFile.registerConfig();
 
         new CustomConfig("messages_en.yml", "lang", plugin, false).registerConfig();
         new CustomConfig("messages_es.yml", "lang", plugin, false).registerConfig();
@@ -86,6 +90,9 @@ public class MainConfigManager {
     public void reloadConfig() {
         configFile.reloadConfig();
         menusFile.reloadConfig();
+        if (placeholdersFile != null) {
+            placeholdersFile.reloadConfig();
+        }
         loadConfig();
     }
 
@@ -171,6 +178,14 @@ public class MainConfigManager {
 
     public FileConfiguration getMenusConfig() {
         return menusFile.getConfig();
+    }
+
+    public CustomConfig getPlaceholdersFile() {
+        return placeholdersFile;
+    }
+
+    public FileConfiguration getPlaceholdersConfig() {
+        return placeholdersFile != null ? placeholdersFile.getConfig() : null;
     }
 
     public String getMessage(String path, String def) {

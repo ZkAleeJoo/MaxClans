@@ -1,0 +1,338 @@
+# ================================================================================= #
+#                                                                                   #
+#                       OnlyClans - Placeholder Guide & Wiki                        #
+#                                                                                   #
+# ================================================================================= #
+# This file is a complete and detailed reference of all placeholders provided       #
+# by OnlyClans for PlaceholderAPI (PAPI) and for internal menus (menus.yml).        #
+#                                                                                   #
+# ================================================================================= #
+
+# --------------------------------------------------------------------------------- #
+# 1. GENERAL INFORMATION & REQUIREMENTS                                             #
+# --------------------------------------------------------------------------------- #
+# To use these placeholders in chat, scoreboards, tablist, holograms, or external   #
+# menus, the PlaceholderAPI (PAPI) plugin must be installed.                        #
+#                                                                                   #
+# Official OnlyClans identifier:                                                    #
+#   %onlyclans_<placeholder>%                                                       #
+#                                                                                   #
+# Compatible plugins:                                                               #
+#   - Chat: LPC, EssentialsChat, ChatControl, CarbonChat, etc.                      #
+#   - Tablist & Nametags: TAB (by NEZNAMY), TitleManager, etc.                      #
+#   - Scoreboards: TAB, FeatherBoard, AnimatedScoreboard, etc.                      #
+#   - Holograms: DecentHolograms, HolographicDisplays, etc.                         #
+#   - External menus: DeluxeMenus, ChestCommands, etc.                              #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 2. FORMAT & MULTI-LANGUAGE MODIFIERS                                              #
+# --------------------------------------------------------------------------------- #
+# OnlyClans allows you to customize the output format and language of placeholders  #
+# directly by appending suffixes or prefixes:                                       #
+#                                                                                   #
+# A) FORMAT MODIFIERS (MiniMessage vs Legacy):                                      #
+#    By default, the plugin uses the format configured in config.yml:               #
+#    'placeholders.format-mode' ('minimessage' or 'legacy').                        #
+#                                                                                   #
+#    - _mm or _minimessage: Forces output in Adventure MiniMessage format           #
+#      e.g. %onlyclans_tag_formatted_mm% -> <dark_gray>[<#00FF88>ZKL<dark_gray>]    #
+#      Ideal for LPC, modern Paper Chat, and Adventure-based plugins.               #
+#                                                                                   #
+#    - _legacy: Forces output in classic Spigot color codes (§a, §f, etc.)          #
+#      e.g. %onlyclans_tag_formatted_legacy% -> §8[§aZKL§8]                         #
+#      Ideal for TAB, Scoreboards, or plugins that only support § color codes.      #
+#                                                                                   #
+# B) LANGUAGE MODIFIERS:                                                            #
+#    You can request text in a specific language regardless of the server's         #
+#    global language by appending _es or _en (or prefixing es_ or en_):             #
+#                                                                                   #
+#    - %onlyclans_role_formatted_es% -> ★ Líder                                     #
+#    - %onlyclans_role_formatted_en% -> ★ Leader                                    #
+#    - %onlyclans_ff_status_es%      -> ✔ Activado                                  #
+#    - %onlyclans_ff_status_en%      -> ✔ Enabled                                   #
+#                                                                                   #
+# C) COMBINING MODIFIERS:                                                           #
+#    You can combine language and format modifiers at the same time:                #
+#    - %onlyclans_role_formatted_es_legacy%                                         #
+#    - %onlyclans_ff_badge_en_mm%                                                   #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 3. PLAYER'S CLAN PLACEHOLDERS                                                     #
+# --------------------------------------------------------------------------------- #
+# Returns information about the clan the player belongs to.                         #
+# If the player is not in any clan, they return the default value configured        #
+# in config.yml (e.g., 'None', '---', '0', etc.).                                   #
+#                                                                                   #
+# Name & Identity:                                                                  #
+#   %onlyclans_clan_name%              - Clan name (e.g., Spartans).                #
+#   %onlyclans_name%                   - Alias for %onlyclans_clan_name%.           #
+#   %onlyclans_clan_displayname%       - Formatted name with colors/decorations     #
+#                                        (MiniMessage format).                      #
+#   %onlyclans_clan_display_name%      - Alias for %onlyclans_clan_displayname%.    #
+#   %onlyclans_clan_name_formatted%    - Alias for %onlyclans_clan_displayname%.    #
+#   %onlyclans_clan_tag%               - Clan tag with its custom colors.           #
+#   %onlyclans_tag%                    - Alias for %onlyclans_clan_tag%.            #
+#   %onlyclans_clan_tag_raw%           - Plain clan tag without color codes.        #
+#   %onlyclans_tag_raw%                - Alias for %onlyclans_clan_tag_raw%.        #
+#   %onlyclans_clan_tag_formatted%     - Clan tag formatted with brackets design    #
+#                                        defined in config.yml (e.g., [SPART]).     #
+#   %onlyclans_tag_formatted%          - Alias for %onlyclans_clan_tag_formatted%.  #
+#                                                                                   #
+# Leadership & Members:                                                             #
+#   %onlyclans_clan_leader%            - Username of the clan leader.               #
+#   %onlyclans_leader%                 - Alias for %onlyclans_clan_leader%.         #
+#   %onlyclans_clan_members%           - Total member count in the clan.            #
+#   %onlyclans_clan_members_count%     - Alias for %onlyclans_clan_members%.        #
+#   %onlyclans_members%                - Alias for %onlyclans_clan_members%.        #
+#   %onlyclans_clan_members_online%    - Count of clan members currently online.    #
+#   %onlyclans_members_online%         - Alias for %onlyclans_clan_members_online%. #
+#                                                                                   #
+# Clan Statistics:                                                                  #
+#   %onlyclans_clan_kills%             - Total clan kills.                          #
+#   %onlyclans_clan_deaths%            - Total clan deaths.                         #
+#   %onlyclans_clan_kdr%               - Clan KDR ratio (e.g., 2.45).               #
+#   %onlyclans_clan_rival_kills%       - Kills against rival clans.                 #
+#   %onlyclans_rival_kills%            - Alias for %onlyclans_clan_rival_kills%.    #
+#   %onlyclans_clan_created%           - Clan creation date                         #
+#                                        (per 'placeholders.date-format').          #
+#   %onlyclans_created%                - Alias for %onlyclans_clan_created%.        #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 4. PLAYER ROLE & MEMBERSHIP PLACEHOLDERS                                          #
+# --------------------------------------------------------------------------------- #
+#   %onlyclans_role%                   - Translated player role name                #
+#                                        (e.g., Leader, Moderator, Member).         #
+#   %onlyclans_role_raw%               - Internal role enum name                    #
+#                                        (e.g., LEADER, MODERATOR, MEMBER).         #
+#   %onlyclans_role_formatted%         - Formatted role with icon and color         #
+#                                        (e.g., &#FFD700★ Leader).                  #
+#   %onlyclans_joined%                 - Date when the player joined the clan.      #
+#   %onlyclans_joined_clan%            - Alias for %onlyclans_joined%.              #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 5. FRIENDLY FIRE & CLAN FLAGS PLACEHOLDERS                                        #
+# --------------------------------------------------------------------------------- #
+# Friendly Fire:                                                                    #
+#   %onlyclans_ff%                     - Raw status text (e.g., ON / OFF).          #
+#   %onlyclans_ff_badge%               - Colored badge (e.g., ENABLED / DISABLED).  #
+#   %onlyclans_ff_status%              - Status with icon (✔ Enabled / ✖ Disabled). #
+#                                                                                   #
+# Clan Flags:                                                                       #
+#   Available flags:                                                                #
+#     - friendly_fire                  - Friendly fire between clan members         #
+#     - open_join                      - Open joining without prior invitation      #
+#     - ally_damage                    - Damage between allied clans                #
+#     - member_invites                 - Members can invite other players           #
+#     - visible_in_list                - Visibility in public clans menu            #
+#     - public_home                    - Clan home accessible to any user           #
+#     - spy_chat                       - Allows admins to spy on clan chat          #
+#                                                                                   #
+#   Syntax per flag:                                                                #
+#     %onlyclans_flag_<flag>%          - Basic status (e.g., ON / OFF).             #
+#     %onlyclans_flag_<flag>_badge%    - Formatted badge (ENABLED / DISABLED).      #
+#     %onlyclans_flag_<flag>_status%   - Status with icon (✔ Enabled / ✖ Disabled). #
+#                                                                                   #
+#   Examples:                                                                       #
+#     %onlyclans_flag_open_join%                                                    #
+#     %onlyclans_flag_open_join_status%                                             #
+#     %onlyclans_flag_member_invites_badge%                                         #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 6. PLAYER PERSONAL STATISTICS                                                     #
+# --------------------------------------------------------------------------------- #
+# Based on the player's individual Minecraft statistics:                            #
+#   %onlyclans_player_kills%           - User's player kills.                       #
+#   %onlyclans_kills%                  - Alias for %onlyclans_player_kills%.        #
+#   %onlyclans_player_deaths%          - User's deaths.                             #
+#   %onlyclans_deaths%                 - Alias for %onlyclans_player_deaths%.       #
+#   %onlyclans_player_kdr%             - Individual KDR ratio (e.g., 1.80).         #
+#   %onlyclans_kdr%                    - Alias for %onlyclans_player_kdr%.          #
+#   %onlyclans_player_playtime%        - Formatted playtime (e.g., 4d 12h 30m).     #
+#   %onlyclans_playtime%               - Alias for %onlyclans_player_playtime%.     #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 7. LEADERBOARDS & TOP CLANS (RANKINGS)                                            #
+# --------------------------------------------------------------------------------- #
+# Allows querying information about top server clans across different categories    #
+# (ideal for Scoreboards, Tablist, and Holograms).                                  #
+#                                                                                   #
+# Structure:                                                                        #
+#   %onlyclans_top_<category>_<rank>_<property>%                                    #
+#                                                                                   #
+# Categories:                                                                       #
+#   - kdr     : Ranked by highest KDR ratio.                                        #
+#   - kills   : Ranked by highest total kills.                                      #
+#   - members : Ranked by highest member count.                                     #
+#                                                                                   #
+# Ranks:                                                                            #
+#   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, etc.                                             #
+#                                                                                   #
+# Available Properties:                                                             #
+#   - name           : Clan name.                                                   #
+#   - displayname    : Clan display name with formatting / decorations.             #
+#   - tag            : Clan tag with colors.                                        #
+#   - tag_raw        : Clean clan tag without colors.                               #
+#   - tag_formatted  : Bracketed clan tag formatted per config.yml.                 #
+#   - leader         : Clan leader username.                                        #
+#   - val or value   : Numeric value of the sorted category (e.g., KDR or Kills).   #
+#   - kdr            : Clan-specific KDR ratio.                                     #
+#   - kills          : Total clan kills.                                            #
+#   - deaths         : Total clan deaths.                                           #
+#   - rival_kills    : Clan kills against rivals.                                   #
+#   - members        : Total clan members count.                                    #
+#                                                                                   #
+# Practical Leaderboard Examples:                                                   #
+#   %onlyclans_top_kdr_1_name%             -> Name of the #1 clan in KDR.           #
+#   %onlyclans_top_kdr_1_val%              -> KDR value of clan #1 (e.g. 4.20).     #
+#   %onlyclans_top_kdr_1_tag_formatted%    -> Bracketed tag of the #1 clan in KDR.  #
+#   %onlyclans_top_kills_1_name%           -> Name of the #1 clan in Kills.         #
+#   %onlyclans_top_kills_1_kills%          -> Total kills of the #1 clan.           #
+#   %onlyclans_top_members_1_name%         -> Name of the clan with most members.   #
+#   %onlyclans_top_members_1_leader%       -> Leader of the clan with most members. #
+#   %onlyclans_top_members_1_members%      -> Member count of the #1 clan.          #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 8. INTERNAL MENU PLACEHOLDERS (menus.yml)                                         #
+# --------------------------------------------------------------------------------- #
+# These placeholders are resolved internally within the OnlyClans menu engine       #
+# (menus.yml). They can be used with %variable% or {variable}:                      #
+#                                                                                   #
+# General Menu Placeholders:                                                        #
+#   %player%                   - Name of the player viewing the menu.               #
+#   %page%                     - Current navigation page.                           #
+#   %max_pages%                - Total pages available.                             #
+#   %total_clans%              - Total clans registered on the server.              #
+#   %sort_mode%                - Current member sorting mode.                       #
+#   %top_sort_mode%            - Current top clans sorting mode.                    #
+#                                                                                   #
+# Clan Placeholders in Menus:                                                       #
+#   %clan_name%                - Clan name.                                         #
+#   %clan_displayname%         - Decorated / colored clan name.                     #
+#   %clan_tag%                 - Simple clan tag.                                   #
+#   %clan_tag_formatted%       - Bracketed clan tag (per config.yml).               #
+#   %clan_leader%              - Clan leader username.                              #
+#   %clan_members%             - Total members count.                               #
+#   %clan_members_online%      - Online members count.                              #
+#   %clan_role%                - Formatted clan role of the player.                 #
+#   %clan_ff%                  - Friendly fire state (ON / OFF).                    #
+#   %clan_ff_badge%            - Friendly fire badge (ENABLED / DISABLED).          #
+#   %clan_kdr%                 - Clan KDR ratio.                                    #
+#   %clan_kills%               - Clan kills.                                        #
+#   %clan_deaths%              - Clan deaths.                                       #
+#   %clan_rival_kills%         - Clan rival kills.                                  #
+#   %clan_created%             - Clan creation date.                                #
+#   %clan_flag_<flag>%         - Status of the flag.                                #
+#   %clan_flag_<flag>_badge%   - Badge of the flag.                                 #
+#                                                                                   #
+# Dynamic Items in Top Clans Menu (top_item):                                       #
+#   %clan_rank%                - Stylized rank medal (e.g., &#FFD700&l#1 ✦).        #
+#   %rank%                     - Plain numeric rank (1, 2, 3...).                   #
+#   %top_rank%                 - Alias for %rank%.                                  #
+#   ...and all clan placeholders above (%clan_name%, etc.).                         #
+#                                                                                   #
+# Dynamic Items in Members Menu (member_item):                                      #
+#   %member_name%              - Member username.                                   #
+#   %member_role%              - Role name.                                         #
+#   %member_role_formatted%    - Role with icon and colors.                         #
+#   %member_status%            - Connection status (Online / Offline).              #
+#   %member_kdr%               - Member's individual KDR.                           #
+#   %member_kills%             - Member's individual kills.                         #
+#   %member_deaths%            - Member's individual deaths.                        #
+#   %member_playtime%          - Member's playtime.                                 #
+#   %member_joined%            - Date when the member joined the clan.              #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 9. PRACTICAL INTEGRATION EXAMPLES WITH OTHER PLUGINS                              #
+# --------------------------------------------------------------------------------- #
+# A) CHAT INTEGRATION (LPC / EssentialsChat):                                       #
+#    To display the formatted clan tag before or after the player's name:           #
+#                                                                                   #
+#    LPC Format (LPC's config.yml):                                                 #
+#      format: '{group} &r%onlyclans_tag_formatted_mm% {prefix}{name}&r: {message}' #
+#                                                                                   #
+#    EssentialsChat Format (Essentials' config.yml):                                #
+#      group-formats:                                                               #
+#        default: '&7[{GROUP}] %onlyclans_tag_formatted_legacy% &r{DISPLAYNAME}: &f{MESSAGE}' #
+#                                                                                   #
+# B) TAB INTEGRATION (NEZNAMY TAB - Tablist & Nametags):                            #
+#    To display the clan tag above the player's head:                               #
+#      tablist-name-formatting:                                                     #
+#        prefix: '%onlyclans_tag_formatted_legacy% %vault_prefix%'                  #
+#                                                                                   #
+# C) SCOREBOARD INTEGRATION (TAB Scoreboard):                                       #
+#    lines:                                                                         #
+#      - '&7&m---------------------'                                                #
+#      - '&e&lYour Clan:'                                                           #
+#      - ' &fTag: %onlyclans_tag_formatted_legacy%'                                 #
+#      - ' &fRank: %onlyclans_role_formatted_legacy%'                               #
+#      - ' &fClan KDR: &a%onlyclans_clan_kdr%'                                      #
+#      - ''                                                                         #
+#      - '&6&lTop 1 Clan:'                                                          #
+#      - ' &e%onlyclans_top_kdr_1_name% &7(&a%onlyclans_top_kdr_1_val% KDR&7)'      #
+#      - '&7&m---------------------'                                                #
+#                                                                                   #
+# D) HOLOGRAM INTEGRATION:                                                          #
+#    /dh create topclans                                                            #
+#    /dh line add topclans &e&l🏆 TOP CLANS (KDR) 🏆                                #
+#    /dh line add topclans &7---------------------------------                      #
+#    /dh line add topclans &6#1 &f%onlyclans_top_kdr_1_name% &8» &a%onlyclans_top_kdr_1_val% KDR #
+#    /dh line add topclans &7#2 &f%onlyclans_top_kdr_2_name% &8» &a%onlyclans_top_kdr_2_val% KDR #
+#    /dh line add topclans &c#3 &f%onlyclans_top_kdr_3_name% &8» &a%onlyclans_top_kdr_3_val% KDR #
+#    /dh line add topclans &7---------------------------------                      #
+# ================================================================================= #
+
+# Structured catalog for programmatic query / YAML inspection:
+catalog:
+  version: '1.0.0'
+  papi_identifier: 'onlyclans'
+  categories:
+    clan:
+      - '%onlyclans_clan_name%'
+      - '%onlyclans_clan_displayname%'
+      - '%onlyclans_clan_tag%'
+      - '%onlyclans_clan_tag_raw%'
+      - '%onlyclans_clan_tag_formatted%'
+      - '%onlyclans_clan_leader%'
+      - '%onlyclans_clan_members%'
+      - '%onlyclans_clan_members_online%'
+      - '%onlyclans_clan_kills%'
+      - '%onlyclans_clan_deaths%'
+      - '%onlyclans_clan_kdr%'
+      - '%onlyclans_clan_rival_kills%'
+      - '%onlyclans_clan_created%'
+    role:
+      - '%onlyclans_role%'
+      - '%onlyclans_role_raw%'
+      - '%onlyclans_role_formatted%'
+      - '%onlyclans_joined%'
+    friendly_fire:
+      - '%onlyclans_ff%'
+      - '%onlyclans_ff_badge%'
+      - '%onlyclans_ff_status%'
+    flags:
+      - '%onlyclans_flag_<flag>%'
+      - '%onlyclans_flag_<flag>_badge%'
+      - '%onlyclans_flag_<flag>_status%'
+    player_stats:
+      - '%onlyclans_player_kills%'
+      - '%onlyclans_player_deaths%'
+      - '%onlyclans_player_kdr%'
+      - '%onlyclans_player_playtime%'
+    leaderboard:
+      - '%onlyclans_top_<kdr|kills|members>_<rank>_<property>%'
+    modifiers:
+      format:
+        - '_mm'
+        - '_minimessage'
+        - '_legacy'
+      language:
+        - '_es'
+        - '_en'

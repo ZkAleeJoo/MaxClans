@@ -48,7 +48,8 @@ public class MenuBuilder {
         boolean isAdmin = player != null && player.hasPermission("onlyclans.admin");
 
         for (Clan c : plugin.getClanManager().getAllClans()) {
-            if (c.isVisibleInList() || isAdmin || (playerClan != null && playerClan.getName().equalsIgnoreCase(c.getName()))) {
+            if (c.isVisibleInList() || isAdmin
+                    || (playerClan != null && playerClan.getName().equalsIgnoreCase(c.getName()))) {
                 result.add(c);
             }
         }
@@ -97,7 +98,8 @@ public class MenuBuilder {
         openMenu(player, "top", clan, page, MemberSortType.ROLE, sortType != null ? sortType : TopSortType.KDR);
     }
 
-    public void openMenu(Player player, String menuId, Clan clan, int page, MemberSortType sortType, TopSortType topSortType) {
+    public void openMenu(Player player, String menuId, Clan clan, int page, MemberSortType sortType,
+            TopSortType topSortType) {
         FileConfiguration menusConfig = plugin.getMainConfigManager().getMenusConfig();
         ConfigurationSection menuSection = menusConfig.getConfigurationSection("menus." + menuId);
 
@@ -123,15 +125,18 @@ public class MenuBuilder {
             int totalMembers = clan != null ? clan.getMemberCount() : 0;
             maxPages = Math.max(1, (int) Math.ceil((double) totalMembers / itemsPerPage));
             page = Math.min(Math.max(0, page), maxPages - 1);
-        } else if (menuId.equalsIgnoreCase("top") || menuId.equalsIgnoreCase("clan_top") || menuSection.getBoolean("dynamic_top", false)) {
+        } else if (menuId.equalsIgnoreCase("top") || menuId.equalsIgnoreCase("clan_top")
+                || menuSection.getBoolean("dynamic_top", false)) {
             List<Integer> topSlots = menuSection.getIntegerList("top_slots");
             int itemsPerPage = topSlots.isEmpty() ? 21 : topSlots.size();
-            int totalTop = plugin.getClanManager().getTopClans(topSortType != null ? topSortType : TopSortType.KDR).size();
+            int totalTop = plugin.getClanManager().getTopClans(topSortType != null ? topSortType : TopSortType.KDR)
+                    .size();
             maxPages = Math.max(1, (int) Math.ceil((double) totalTop / itemsPerPage));
             page = Math.min(Math.max(0, page), maxPages - 1);
         }
 
-        ClanMenuHolder holder = new ClanMenuHolder(plugin, menuId, page, sortType != null ? sortType : MemberSortType.ROLE);
+        ClanMenuHolder holder = new ClanMenuHolder(plugin, menuId, page,
+                sortType != null ? sortType : MemberSortType.ROLE);
         if (topSortType != null) {
             holder.setTopSortType(topSortType);
         }
@@ -175,7 +180,8 @@ public class MenuBuilder {
 
         boolean isClanList = menuId.equalsIgnoreCase("clan_list") || menuSection.getBoolean("dynamic_clans", false);
         boolean isMemberList = menuId.equalsIgnoreCase("members") || menuSection.getBoolean("dynamic_members", false);
-        boolean isTop = menuId.equalsIgnoreCase("top") || menuId.equalsIgnoreCase("clan_top") || menuSection.getBoolean("dynamic_top", false);
+        boolean isTop = menuId.equalsIgnoreCase("top") || menuId.equalsIgnoreCase("clan_top")
+                || menuSection.getBoolean("dynamic_top", false);
 
         int maxPages = 1;
         if (isClanList) {
@@ -433,8 +439,10 @@ public class MenuBuilder {
                         "&#FFD700⚡ Management Commands:");
 
                 if (memberItemConfig != null) {
-                    String rawTitle = memberItemConfig.getString("name", "%member_role_formatted% &#FFFFFF%member_name%");
-                    String processedTitle = rawTitle.replace("%member_name%", memberName)
+                    String rawTitle = memberItemConfig.getString("name",
+                            "%member_role_formatted% &#FFFFFF%member_name%");
+                    String processedTitle = replacePlaceholders(rawTitle, viewer, clan, page, holder)
+                            .replace("%member_name%", memberName)
                             .replace("%member_role%", rawRole)
                             .replace("%member_role_formatted%", roleBadge)
                             .replace("%member_kdr%", kdr)
@@ -447,7 +455,8 @@ public class MenuBuilder {
                     List<String> rawLore = memberItemConfig.getStringList("lore");
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
                     for (String line : rawLore) {
-                        String processedLine = line.replace("%member_name%", memberName)
+                        String processedLine = replacePlaceholders(line, viewer, clan, page, holder)
+                                .replace("%member_name%", memberName)
                                 .replace("%member_role%", rawRole)
                                 .replace("%member_role_formatted%", roleBadge)
                                 .replace("%member_status%", statusText)
@@ -669,11 +678,15 @@ public class MenuBuilder {
             int size = inventory.getSize();
             topSlots = new ArrayList<>();
             if (size >= 45) {
-                for (int i = 10; i <= 16; i++) topSlots.add(i);
-                for (int i = 19; i <= 25; i++) topSlots.add(i);
-                for (int i = 28; i <= 34; i++) topSlots.add(i);
+                for (int i = 10; i <= 16; i++)
+                    topSlots.add(i);
+                for (int i = 19; i <= 25; i++)
+                    topSlots.add(i);
+                for (int i = 28; i <= 34; i++)
+                    topSlots.add(i);
             } else {
-                for (int i = 10; i <= 16; i++) topSlots.add(i);
+                for (int i = 10; i <= 16; i++)
+                    topSlots.add(i);
             }
         }
 
@@ -738,7 +751,8 @@ public class MenuBuilder {
                 }
 
                 String leaderName = leaderOnline != null ? leaderOnline.getName()
-                        : (leader.getName() != null ? leader.getName() : plugin.getPlaceholderManager().getUnknownText(lang));
+                        : (leader.getName() != null ? leader.getName()
+                                : plugin.getPlaceholderManager().getUnknownText(lang));
 
                 long onlineCount = clan.getMembers().keySet().stream()
                         .map(Bukkit::getPlayer)
@@ -746,46 +760,43 @@ public class MenuBuilder {
                         .count();
 
                 if (topItemConfig != null) {
-                    String rawTitle = topItemConfig.getString("name", "%clan_rank% &#00FF88&l%clan_name% &#718096[%clan_tag%]");
-                    String processedTitle = rawTitle.replace("%clan_rank%", rankBadge)
+                    String rawTitle = topItemConfig.getString("name",
+                            "%clan_rank% &#00FF88&l%clan_name% &#718096[%clan_tag%]");
+                    String processedTitle = replacePlaceholders(rawTitle, viewer, clan, page, holder)
+                            .replace("%clan_rank%", rankBadge)
+                            .replace("{clan_rank}", rankBadge)
                             .replace("%rank%", String.valueOf(rank))
-                            .replace("%clan_name%", clan.getName())
-                            .replace("%clan_tag%", clan.getTag())
-                            .replace("%clan_leader%", leaderName)
-                            .replace("%clan_kdr%", clan.getFormattedKDR())
-                            .replace("%clan_kills%", String.valueOf(clan.getKills()))
-                            .replace("%clan_deaths%", String.valueOf(clan.getDeaths()))
-                            .replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills()))
-                            .replace("%clan_members%", String.valueOf(clan.getMemberCount()))
-                            .replace("%clan_members_online%", String.valueOf(onlineCount));
+                            .replace("{rank}", String.valueOf(rank))
+                            .replace("%top_rank%", String.valueOf(rank))
+                            .replace("{top_rank}", String.valueOf(rank));
                     skullMeta.displayName(MessageUtils.toComponentNoItalic(processedTitle));
 
                     List<String> rawLore = topItemConfig.getStringList("lore");
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
                     for (String line : rawLore) {
-                        String processedLine = line.replace("%clan_rank%", rankBadge)
+                        String processedLine = replacePlaceholders(line, viewer, clan, page, holder)
+                                .replace("%clan_rank%", rankBadge)
+                                .replace("{clan_rank}", rankBadge)
                                 .replace("%rank%", String.valueOf(rank))
-                                .replace("%clan_name%", clan.getName())
-                                .replace("%clan_tag%", clan.getTag())
-                                .replace("%clan_leader%", leaderName)
-                                .replace("%clan_kdr%", clan.getFormattedKDR())
-                                .replace("%clan_kills%", String.valueOf(clan.getKills()))
-                                .replace("%clan_deaths%", String.valueOf(clan.getDeaths()))
-                                .replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills()))
-                                .replace("%clan_members%", String.valueOf(clan.getMemberCount()))
-                                .replace("%clan_members_online%", String.valueOf(onlineCount))
-                                .replace("%clan_created%", plugin.getPlaceholderManager().formatDate(clan.getCreatedAt()));
+                                .replace("{rank}", String.valueOf(rank))
+                                .replace("%top_rank%", String.valueOf(rank))
+                                .replace("{top_rank}", String.valueOf(rank));
                         lore.add(MessageUtils.toComponentNoItalic(processedLine));
                     }
                     skullMeta.lore(lore);
                 } else {
-                    skullMeta.displayName(MessageUtils.toComponentNoItalic(rankBadge + " &#00FF88&l" + clan.getName() + " &#718096[" + clan.getTag() + "]"));
+                    skullMeta.displayName(MessageUtils.toComponentNoItalic(
+                            rankBadge + " &#00FF88&l" + clan.getName() + " &#718096[" + clan.getTag() + "]"));
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
                     lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                     lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Líder: &#FFFFFF" + leaderName));
-                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0KDR: &#00FF88" + clan.getFormattedKDR() + " &#718096(&#FFFFFF" + clan.getKills() + " &#718096K / &#FFFFFF" + clan.getDeaths() + " &#718096D)"));
-                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Bajas Rivales: &#FF3366" + clan.getRivalKills()));
-                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Miembros: &#00E5FF" + onlineCount + "&#718096/&#FFFFFF" + clan.getMemberCount()));
+                    lore.add(MessageUtils.toComponentNoItalic(
+                            "&#718096▪ &#A0AEC0KDR: &#00FF88" + clan.getFormattedKDR() + " &#718096(&#FFFFFF"
+                                    + clan.getKills() + " &#718096K / &#FFFFFF" + clan.getDeaths() + " &#718096D)"));
+                    lore.add(MessageUtils
+                            .toComponentNoItalic("&#718096▪ &#A0AEC0Bajas Rivales: &#FF3366" + clan.getRivalKills()));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Miembros: &#00E5FF" + onlineCount
+                            + "&#718096/&#FFFFFF" + clan.getMemberCount()));
                     lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                     skullMeta.lore(lore);
                 }
@@ -943,12 +954,16 @@ public class MenuBuilder {
         int maxPages = Math.max(1, (int) Math.ceil((double) totalClans / itemsPerPage));
 
         if (holder != null && holder.getMenuId().equalsIgnoreCase("members")) {
-            List<Integer> memberSlots = menusConfig != null ? menusConfig.getIntegerList("menus.members.member_slots") : null;
+            List<Integer> memberSlots = menusConfig != null ? menusConfig.getIntegerList("menus.members.member_slots")
+                    : null;
             int memItemsPerPage = (memberSlots != null && !memberSlots.isEmpty()) ? memberSlots.size() : 21;
             int totalMembers = clan != null ? clan.getMemberCount() : 0;
             maxPages = Math.max(1, (int) Math.ceil((double) totalMembers / memItemsPerPage));
-        } else if (holder != null && (holder.getMenuId().equalsIgnoreCase("top") || holder.getMenuId().equalsIgnoreCase("clan_top"))) {
-            List<Integer> topSlots = menusConfig != null ? menusConfig.getIntegerList("menus." + holder.getMenuId() + ".top_slots") : null;
+        } else if (holder != null
+                && (holder.getMenuId().equalsIgnoreCase("top") || holder.getMenuId().equalsIgnoreCase("clan_top"))) {
+            List<Integer> topSlots = menusConfig != null
+                    ? menusConfig.getIntegerList("menus." + holder.getMenuId() + ".top_slots")
+                    : null;
             int topItemsPerPage = (topSlots != null && !topSlots.isEmpty()) ? topSlots.size() : 21;
             int totalTop = plugin.getClanManager().getTopClans(holder.getTopSortType()).size();
             maxPages = Math.max(1, (int) Math.ceil((double) totalTop / topItemsPerPage));
@@ -1007,7 +1022,8 @@ public class MenuBuilder {
             text = text.replace("%clan_name%", clanName).replace("{clan_name}", clanName);
             text = text.replace("%clan_displayname%", clanDisplayName).replace("{clan_displayname}", clanDisplayName);
             text = text.replace("%clan_display_name%", clanDisplayName).replace("{clan_display_name}", clanDisplayName);
-            text = text.replace("%clan_name_formatted%", clanDisplayNameFormatted).replace("{clan_name_formatted}", clanDisplayNameFormatted);
+            text = text.replace("%clan_name_formatted%", clanDisplayNameFormatted).replace("{clan_name_formatted}",
+                    clanDisplayNameFormatted);
             text = text.replace("%clan_tag_formatted%", tagFormatted).replace("{clan_tag_formatted}", tagFormatted);
             text = text.replace("%clan_tag%", clanTag + "<reset>").replace("{clan_tag}", clanTag + "<reset>");
             text = text.replace("%clan_members%", memberCount).replace("{clan_members}", memberCount);
@@ -1017,10 +1033,13 @@ public class MenuBuilder {
             text = text.replace("%clan_ff%", ffText).replace("{clan_ff}", ffText);
             text = text.replace("%clan_ff_badge%", ffBadge).replace("{clan_ff_badge}", ffBadge);
             text = text.replace("%clan_created%", createdDate).replace("{clan_created}", createdDate);
-            text = text.replace("%clan_kills%", String.valueOf(clan.getKills())).replace("{clan_kills}", String.valueOf(clan.getKills()));
-            text = text.replace("%clan_deaths%", String.valueOf(clan.getDeaths())).replace("{clan_deaths}", String.valueOf(clan.getDeaths()));
+            text = text.replace("%clan_kills%", String.valueOf(clan.getKills())).replace("{clan_kills}",
+                    String.valueOf(clan.getKills()));
+            text = text.replace("%clan_deaths%", String.valueOf(clan.getDeaths())).replace("{clan_deaths}",
+                    String.valueOf(clan.getDeaths()));
             text = text.replace("%clan_kdr%", clan.getFormattedKDR()).replace("{clan_kdr}", clan.getFormattedKDR());
-            text = text.replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills())).replace("{clan_rival_kills}", String.valueOf(clan.getRivalKills()));
+            text = text.replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills()))
+                    .replace("{clan_rival_kills}", String.valueOf(clan.getRivalKills()));
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = clan.getFlag(flag);
@@ -1042,7 +1061,8 @@ public class MenuBuilder {
 
             text = text.replace("%clan_name%", noneText).replace("{clan_name}", noneText);
             text = text.replace("%clan_tag%", noClanTag).replace("{clan_tag}", noClanTag);
-            text = text.replace("%clan_tag_formatted%", noClanTagFormatted).replace("{clan_tag_formatted}", noClanTagFormatted);
+            text = text.replace("%clan_tag_formatted%", noClanTagFormatted).replace("{clan_tag_formatted}",
+                    noClanTagFormatted);
             text = text.replace("%clan_members%", "0").replace("{clan_members}", "0");
             text = text.replace("%clan_members_online%", "0").replace("{clan_members_online}", "0");
             text = text.replace("%clan_leader%", noneText).replace("{clan_leader}", noneText);

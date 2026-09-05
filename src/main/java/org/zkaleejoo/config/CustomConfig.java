@@ -72,6 +72,9 @@ public class CustomConfig {
             updateMenusConfig();
             return;
         }
+        if (fileName.equalsIgnoreCase("placeholders.yml")) {
+            return;
+        }
 
         try {
             String resourcePath = (folderName != null) ? folderName + "/" + fileName : fileName;
