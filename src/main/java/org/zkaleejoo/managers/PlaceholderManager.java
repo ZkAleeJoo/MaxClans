@@ -220,8 +220,12 @@ public class PlaceholderManager {
 
                     if (prop.equals("name")) {
                         return topClan != null ? topClan.getName() : getNoneText(lang);
+                    } else if (prop.equals("displayname") || prop.equals("display_name") || prop.equals("name_formatted")) {
+                        return topClan != null ? MessageUtils.getColoredMessage(topClan.getDisplayName()) : getNoneText(lang);
                     } else if (prop.equals("tag")) {
-                        return topClan != null ? topClan.getTag() : getNoClanTag(lang);
+                        return topClan != null ? MessageUtils.getColoredMessage(topClan.getTag()) : getNoClanTag(lang);
+                    } else if (prop.equals("tag_raw")) {
+                        return topClan != null ? MessageUtils.stripColor(topClan.getTag()) : getNoClanTag(lang);
                     } else if (prop.equals("tag_formatted")) {
                         return topClan != null ? formatTag(topClan.getTag()) : "";
                     } else if (prop.equals("leader")) {
@@ -300,8 +304,16 @@ public class PlaceholderManager {
             return clan != null ? clan.getName() : "";
         }
 
+        if (cleanParam.equals("displayname") || cleanParam.equals("display_name") || cleanParam.equals("name_formatted")) {
+            return clan != null ? MessageUtils.getColoredMessage(clan.getDisplayName()) : "";
+        }
+
         if (cleanParam.equals("tag")) {
-            return clan != null ? clan.getTag() : "";
+            return clan != null ? MessageUtils.getColoredMessage(clan.getTag()) : "";
+        }
+
+        if (cleanParam.equals("tag_raw")) {
+            return clan != null ? MessageUtils.stripColor(clan.getTag()) : "";
         }
 
         if (cleanParam.equals("tag_formatted")) {

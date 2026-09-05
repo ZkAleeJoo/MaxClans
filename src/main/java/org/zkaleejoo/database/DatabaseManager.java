@@ -75,7 +75,8 @@ public class DatabaseManager {
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS clans ("
                     + "name VARCHAR(64) PRIMARY KEY,"
-                    + "tag VARCHAR(16) NOT NULL,"
+                    + "tag VARCHAR(64) NOT NULL,"
+                    + "display_name VARCHAR(255) DEFAULT NULL,"
                     + "owner VARCHAR(36) NOT NULL,"
                     + "friendly_fire BOOLEAN DEFAULT 0,"
                     + "open_join BOOLEAN DEFAULT 0,"
@@ -137,6 +138,16 @@ public class DatabaseManager {
             try {
                 stmt.executeUpdate("ALTER TABLE clans ADD COLUMN rival_kills INT DEFAULT 0");
             } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN display_name VARCHAR(255) DEFAULT NULL");
+            } catch (SQLException ignored) {
+            }
+            if (type == DatabaseType.MYSQL) {
+                try {
+                    stmt.executeUpdate("ALTER TABLE clans MODIFY COLUMN tag VARCHAR(64) NOT NULL");
+                } catch (SQLException ignored) {
+                }
             }
 
             plugin.getLogger().info("Database tables created/verified successfully.");

@@ -77,6 +77,8 @@ Commands available for Clan Leaders and Moderators.
 | `/clan kick <player>` | `/olc kick <player>` | Kicks a player from the clan. | Leader, Moderator | `onlyclans.command.kick` | `true` |
 | `/clan promote <player>` | `/olc promote <player>` | Promotes a Member to Moderator. | Leader | `onlyclans.command.promote` | `true` |
 | `/clan demote <player>` | `/olc demote <player>` | Demotes a Moderator to Member. | Leader | `onlyclans.command.demote` | `true` |
+| `/clan tag <tag>` | `/olc tag <tag>`, `/clan settag` | Changes the clan tag (supports colors, hex & MiniMessage). | Leader | `onlyclans.command.tag` | `true` |
+| `/clan decor <name\|reset>` | `/clan displayname`, `/clan color` | Decorates clan name with colors/gradients or resets to default. | Leader | `onlyclans.command.decor` | `true` |
 | `/clan disband` | `/olc disband` | Permanently deletes the clan. | Leader | `onlyclans.command.disband` | `true` |
 
 ### Admin Commands
@@ -118,6 +120,8 @@ onlyclans.admin (default: op)
     ├── onlyclans.command.kick
     ├── onlyclans.command.promote
     ├── onlyclans.command.demote
+    ├── onlyclans.command.tag
+    ├── onlyclans.command.decor
     └── onlyclans.command.disband
 ```
 
@@ -207,9 +211,12 @@ You can use these placeholders in plugins like TAB, EssentialsX Chat, DecentHolo
 
 | Placeholder | Description | Example (EN) | Example (ES) |
 |-------------|-------------|--------------|--------------|
-| `%onlyclans_name%` | Clan name | `Vikings` | `Vikings` |
-| `%onlyclans_tag%` | 3-letter clan tag | `VIK` | `VIK` |
-| `%onlyclans_tag_formatted%` | Formatted colored tag | `&#8727F5[VIK]` | `&#8727F5[VIK]` |
+| `%onlyclans_name%` | Clan name (raw identifier) | `Vikings` | `Vikings` |
+| `%onlyclans_displayname%` | Decorated clan name with colors/gradients | `&#FF0055&lVikings` | `&#FF0055&lVikings` |
+| `%onlyclans_name_formatted%` | Alias of `%onlyclans_displayname%` | `&#FF0055&lVikings` | `&#FF0055&lVikings` |
+| `%onlyclans_tag%` | Clan tag (with colors if styled) | `VIK` / `&cVIK` | `VIK` / `&cVIK` |
+| `%onlyclans_tag_raw%` | Raw clan tag stripped of all colors | `VIK` | `VIK` |
+| `%onlyclans_tag_formatted%` | Formatted colored tag with template brackets | `&#8727F5[VIK]` | `&#8727F5[VIK]` |
 | `%onlyclans_role%` | Localized role name | `Leader` / `Moderator` / `Member` | `Líder` / `Moderador` / `Miembro` |
 | `%onlyclans_role_raw%` | Raw role enum name | `LEADER` / `MODERATOR` / `MEMBER` | `LEADER` / `MODERATOR` / `MEMBER` |
 | `%onlyclans_role_formatted%` | Role badge with icon | `&#FFD700★ Leader` | `&#FFD700★ Líder` |

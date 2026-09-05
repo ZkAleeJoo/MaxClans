@@ -440,6 +440,50 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 }
                 return true;
             }
+            case "tag", "settag" -> {
+                if (!player.hasPermission("onlyclans.command.tag")) {
+                    sendNoPermission(player);
+                    return true;
+                }
+                Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
+                if (clan == null) {
+                    player.sendMessage(MessageUtils.toComponent(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("not-in-clan", "&cYou are not in a clan.")));
+                    return true;
+                }
+                if (args.length < 2) {
+                    player.sendMessage(MessageUtils.toComponent(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("usage-tag", "&cUsage: /clan tag <tag>")));
+                    return true;
+                }
+                String newTag = args[1];
+                clanManager.setClanTag(player, clan, newTag);
+                return true;
+            }
+            case "decor", "displayname", "color", "namecolor" -> {
+                if (!player.hasPermission("onlyclans.command.decor")) {
+                    sendNoPermission(player);
+                    return true;
+                }
+                Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
+                if (clan == null) {
+                    player.sendMessage(MessageUtils.toComponent(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("not-in-clan", "&cYou are not in a clan.")));
+                    return true;
+                }
+                if (args.length < 2) {
+                    player.sendMessage(MessageUtils.toComponent(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("usage-decor", "&cUsage: /clan decor <name_with_colors|reset>")));
+                    return true;
+                }
+                String decoratedName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                clanManager.setClanDisplayName(player, clan, decoratedName);
+                return true;
+            }
             default -> {
                 sender.sendMessage(MessageUtils.toComponent(
                         plugin.getMainConfigManager().getPrefix()
@@ -530,6 +574,15 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 completions.add("acceptrequest");
             if (sender.hasPermission("onlyclans.command.denyrequest"))
                 completions.add("denyrequest");
+            if (sender.hasPermission("onlyclans.command.tag")) {
+                completions.add("tag");
+                completions.add("settag");
+            }
+            if (sender.hasPermission("onlyclans.command.decor")) {
+                completions.add("decor");
+                completions.add("displayname");
+                completions.add("color");
+            }
             if (sender.hasPermission("onlyclans.command.help"))
                 completions.add("help");
             if (sender.hasPermission("onlyclans.command.reload") || sender.hasPermission("onlyclans.admin")) {
@@ -540,6 +593,26 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 2) {
             String sub = args[0].toLowerCase();
+            if ((sub.equals("tag") || sub.equals("settag")) && sender.hasPermission("onlyclans.command.tag")) {
+                if (sender instanceof Player p) {
+                    Clan clan = plugin.getClanManager().getClanByPlayer(p.getUniqueId());
+                    if (clan != null) {
+                        completions.add(clan.getTag());
+                    }
+                }
+                return filterCompletions(completions, args[1]);
+            }
+            if ((sub.equals("decor") || sub.equals("displayname") || sub.equals("color") || sub.equals("namecolor"))
+                    && sender.hasPermission("onlyclans.command.decor")) {
+                completions.add("reset");
+                if (sender instanceof Player p) {
+                    Clan clan = plugin.getClanManager().getClanByPlayer(p.getUniqueId());
+                    if (clan != null) {
+                        completions.add(clan.getName());
+                    }
+                }
+                return filterCompletions(completions, args[1]);
+            }
             if ((sub.equals("top") || sub.equals("leaderboard")) && sender.hasPermission("onlyclans.command.top")) {
                 completions.add("kdr");
                 completions.add("kills");

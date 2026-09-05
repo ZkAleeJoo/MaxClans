@@ -45,6 +45,8 @@ permissions:
       onlyclans.command.denyrequest: true
       onlyclans.command.chat: true
       onlyclans.command.top: true
+      onlyclans.command.tag: true
+      onlyclans.command.decor: true
   onlyclans.command.main:
     description: Open the main clan menu.
     default: true
@@ -110,4 +112,10 @@ permissions:
     default: true
   onlyclans.command.top:
     description: Access top clan rankings and leaderboard menu.
+    default: true
+  onlyclans.command.tag:
+    description: Change clan tag.
+    default: true
+  onlyclans.command.decor:
+    description: Decorate or color clan name.
     default: true

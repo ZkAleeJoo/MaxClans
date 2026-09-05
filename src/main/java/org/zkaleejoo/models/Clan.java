@@ -6,6 +6,7 @@ public class Clan {
 
     private final String name;
     private String tag;
+    private String displayName;
     private UUID owner;
     private final long createdAt;
     private final Map<UUID, ClanPlayer> members;
@@ -26,8 +27,13 @@ public class Clan {
     }
 
     public Clan(String name, String tag, UUID owner, boolean friendlyFire, long createdAt, int kills, int deaths, int rivalKills) {
+        this(name, tag, null, owner, friendlyFire, createdAt, kills, deaths, rivalKills);
+    }
+
+    public Clan(String name, String tag, String displayName, UUID owner, boolean friendlyFire, long createdAt, int kills, int deaths, int rivalKills) {
         this.name = name;
         this.tag = tag;
+        this.displayName = displayName;
         this.owner = owner;
         this.createdAt = createdAt;
         this.kills = kills;
@@ -44,6 +50,22 @@ public class Clan {
 
     public String getName() {
         return name;
+    }
+
+    public String getDisplayName() {
+        return (displayName != null && !displayName.isEmpty()) ? displayName : name;
+    }
+
+    public String getRawDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public boolean hasCustomDisplayName() {
+        return displayName != null && !displayName.isEmpty();
     }
 
     public String getTag() {

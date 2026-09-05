@@ -96,4 +96,17 @@ messages:
   invalid-flag: "&cNombre de flag inválido. Disponibles: friendly_fire, open_join, ally_damage, member_invites, visible_in_list, public_home, spy_chat"
   top-header: "&6&lTop Clanes &7({sort})"
   usage-top: "&cUso: /clan top [kdr|kills|members]"
+  usage-tag: "&cUso: /clan tag <tag>"
+  usage-decor: "&cUso: /clan decor <nombre_con_colores|reset>"
+  tag-updated: "&aTag del clan actualizado a {tag}&a."
+  tag-updated-broadcast: "&eEl tag del clan fue cambiado a {tag}&e por &f{player}&e."
+  tag-invalid-length: "&cEl tag del clan debe tener entre 2 y 6 caracteres."
+  decor-updated: "&aNombre decorado del clan actualizado a {name}&a."
+  decor-updated-broadcast: "&eEl nombre decorado del clan fue cambiado a {name}&e por &f{player}&e."
+  decor-reset: "&aNombre decorado del clan restablecido al original."
+  decor-reset-broadcast: "&eEl nombre decorado del clan fue restablecido a &f{clan}&e por &f{player}&e."
+  decor-mismatch: "&cEl nombre decorado debe coincidir con el nombre original del clan: &f{clan}"
+  only-leader-tag: "&cSolo el líder del clan puede cambiar el tag del clan."
+  only-leader-decor: "&cSolo el líder del clan puede decorar el nombre del clan."
+
 

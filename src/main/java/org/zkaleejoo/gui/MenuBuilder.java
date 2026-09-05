@@ -1000,7 +1000,12 @@ public class MenuBuilder {
                     : (clan.isFriendlyFire() ? "ENABLED" : "DISABLED");
             String createdDate = pm != null ? pm.formatDate(clan.getCreatedAt()) : String.valueOf(clan.getCreatedAt());
 
+            String clanDisplayName = clan.getDisplayName();
+
             text = text.replace("%clan_name%", clanName).replace("{clan_name}", clanName);
+            text = text.replace("%clan_displayname%", clanDisplayName).replace("{clan_displayname}", clanDisplayName);
+            text = text.replace("%clan_display_name%", clanDisplayName).replace("{clan_display_name}", clanDisplayName);
+            text = text.replace("%clan_name_formatted%", clanDisplayName).replace("{clan_name_formatted}", clanDisplayName);
             text = text.replace("%clan_tag%", clanTag).replace("{clan_tag}", clanTag);
             text = text.replace("%clan_members%", memberCount).replace("{clan_members}", memberCount);
             text = text.replace("%clan_members_online%", membersOnline).replace("{clan_members_online}", membersOnline);

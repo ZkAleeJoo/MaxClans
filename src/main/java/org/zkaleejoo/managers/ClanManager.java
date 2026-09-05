@@ -726,6 +726,106 @@ public class ClanManager {
         return true;
     }
 
+    public boolean setClanTag(Player player, Clan clan, String newTag) {
+        if (player == null || clan == null || newTag == null) {
+            return false;
+        }
+
+        ClanPlayer cp = clan.getMember(player.getUniqueId());
+        boolean isLeader = (cp != null && cp.isLeader()) || player.hasPermission("onlyclans.admin");
+        if (!isLeader) {
+            player.sendMessage(MessageUtils.getColoredMessage(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("only-leader-tag", "&cOnly the clan leader can change the clan tag.")));
+            return false;
+        }
+
+        String stripped = MessageUtils.stripColor(newTag);
+        if (stripped == null || stripped.trim().length() < 2 || stripped.trim().length() > 6) {
+            player.sendMessage(MessageUtils.getColoredMessage(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("tag-invalid-length", "&cClan tag must be between 2 and 6 characters.")));
+            return false;
+        }
+
+        String formattedTag = newTag.trim();
+        clan.setTag(formattedTag);
+        storage.updateClan(clan);
+
+        player.sendMessage(MessageUtils.getColoredMessage(
+                plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                        .getMessage("tag-updated", "&aClan tag updated to {tag}&a.")
+                        .replace("{tag}", formattedTag)));
+
+        String broadcastMsg = plugin.getMainConfigManager().getPrefix()
+                + plugin.getMainConfigManager()
+                        .getMessage("tag-updated-broadcast", "&eClan tag was changed to {tag}&e by &f{player}&e.")
+                        .replace("{tag}", formattedTag)
+                        .replace("{player}", player.getName());
+        broadcastToClan(clan, broadcastMsg);
+
+        return true;
+    }
+
+    public boolean setClanDisplayName(Player player, Clan clan, String newDisplayName) {
+        if (player == null || clan == null || newDisplayName == null) {
+            return false;
+        }
+
+        ClanPlayer cp = clan.getMember(player.getUniqueId());
+        boolean isLeader = (cp != null && cp.isLeader()) || player.hasPermission("onlyclans.admin");
+        if (!isLeader) {
+            player.sendMessage(MessageUtils.getColoredMessage(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("only-leader-decor", "&cOnly the clan leader can decorate the clan name.")));
+            return false;
+        }
+
+        String trimmed = newDisplayName.trim();
+        if (trimmed.equalsIgnoreCase("reset") || trimmed.equalsIgnoreCase("clear") || trimmed.equalsIgnoreCase("none")) {
+            clan.setDisplayName(null);
+            storage.updateClan(clan);
+
+            player.sendMessage(MessageUtils.getColoredMessage(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("decor-reset", "&aClan display name reset to default.")));
+
+            String broadcastMsg = plugin.getMainConfigManager().getPrefix()
+                    + plugin.getMainConfigManager()
+                            .getMessage("decor-reset-broadcast", "&eClan display name was reset to &f{clan}&e by &f{player}&e.")
+                            .replace("{clan}", clan.getName())
+                            .replace("{player}", player.getName());
+            broadcastToClan(clan, broadcastMsg);
+            return true;
+        }
+
+        String stripped = MessageUtils.stripColor(trimmed);
+        if (stripped == null || !stripped.trim().equalsIgnoreCase(clan.getName())) {
+            player.sendMessage(MessageUtils.getColoredMessage(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("decor-mismatch", "&cThe decorated name must match your clan's original name: &f{clan}")
+                            .replace("{clan}", clan.getName())));
+            return false;
+        }
+
+        clan.setDisplayName(trimmed);
+        storage.updateClan(clan);
+
+        player.sendMessage(MessageUtils.getColoredMessage(
+                plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                        .getMessage("decor-updated", "&aClan display name updated to {name}&a.")
+                        .replace("{name}", trimmed)));
+
+        String broadcastMsg = plugin.getMainConfigManager().getPrefix()
+                + plugin.getMainConfigManager()
+                        .getMessage("decor-updated-broadcast", "&eClan display name was changed to {name}&e by &f{player}&e.")
+                        .replace("{name}", trimmed)
+                        .replace("{player}", player.getName());
+        broadcastToClan(clan, broadcastMsg);
+
+        return true;
+    }
+
     public void sendClanMessage(Clan clan, Player sender, String message) {
         String formatted = plugin.getMainConfigManager().getPrefix()
                 + plugin.getMainConfigManager()
