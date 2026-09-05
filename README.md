@@ -162,7 +162,7 @@ OnlyClans features an advanced flag system allowing leaders and moderators to fi
 
 OnlyClans features its own dedicated, server-wide clan PvP combat and kill/death ratio tracking system stored directly in the database. Unlike vanilla Minecraft player statistics, this system records organized clan warfare and collective performance.
 
-### ⚔️ Recorded Database Statistics
+### Recorded Database Statistics
 * **Clan Kills (`clan_kills`)**: Total kills made by clan members against clanless players or members of rival clans.
 * **Clan Deaths (`clan_deaths`)**: Total deaths suffered by clan members at the hands of enemy players.
 * **Rival Clan Kills (`rival_kills`)**: Special war counter tracking kills specifically made against members of other clans.
@@ -170,7 +170,7 @@ OnlyClans features its own dedicated, server-wide clan PvP combat and kill/death
   $$\text{KDR} = \frac{\text{Clan Kills}}{\text{Clan Deaths}}$$
   *(If deaths equal 0, the KDR equals the total kills. Formatted to two decimal places, e.g. `4.50`)*.
 
-### 🛡️ PvP Combat & Anti-Exploit Rules
+### PvP Combat & Anti-Exploit Rules
 | Killer | Victim | Stat Effects |
 |---|---|---|
 | Member of Clan A | Clanless Player | Clan A `clan_kills + 1` |
@@ -190,7 +190,7 @@ Players and administrators can view real-time rankings of the best clans on the 
 * `/clan top kills`: Opens the leaderboard sorted by most bloodthirsty clans (total clan kills).
 * `/clan top members`: Opens the leaderboard sorted by largest and most active rosters.
 
-### 🏆 Interactive Leaderboard GUI Features
+### Interactive Leaderboard GUI Features
 * **Live Sorting Buttons**: Toggle directly between Top KDR, Top Kills, and Top Members from within the menu with one click.
 * **Dynamic Clan Heads**: Renders real-time player heads of top clan leaders.
 * **Rank Badges**: Distinct visual badges for top clans (`#1 ✦` Gold, `#2 ✦` Silver, `#3 ✦` Bronze, `#4+` Gray).
@@ -228,7 +228,7 @@ You can use these placeholders in plugins like TAB, EssentialsX Chat, DecentHolo
 | `%onlyclans_clan_rival_kills%` | Bajas contra miembros de clanes rivales | `95` | `95` |
 | `%onlyclans_created%` | Clan founding date | `29/08/2026` | `29/08/2026` |
 
-### 🏆 Global Top & Leaderboard Placeholders
+### Global Top & Leaderboard Placeholders
 Easily create Holograms, Scoreboards, and Tablists displaying the server's top-ranking clans!
 Format: `%onlyclans_top_<type>_<rank>_<property>%`
 
@@ -329,7 +329,7 @@ Decorations can be applied using MiniMessage tags or standard legacy style codes
 
 ---
 
-### 🖱️ Interactive Click & Hover Events (Chat)
+### Interactive Click & Hover Events (Chat)
 You can embed clickable actions and hover tooltips directly inside chat messages and clan broadcasts:
 
 * **Execute Command on Click**:
@@ -355,7 +355,7 @@ You can embed clickable actions and hover tooltips directly inside chat messages
 
 ---
 
-### 📐 Pixel-Perfect Chat Centering (`<center>`)
+### Pixel-Perfect Chat Centering (`<center>`)
 OnlyClans features a built-in text centering system that works seamlessly with MiniMessage!
 
 When you prefix a line with `<center>` (or wrap it in `<center>...</center>`), the plugin calculates the pixel width of every character according to Minecraft's vanilla font glyph metrics:
@@ -376,7 +376,7 @@ clan_invite_received:
 
 ---
 
-### 🔄 Dual-Engine & Hybrid Syntax
+### Dual-Engine & Hybrid Syntax
 You do not need to rewrite your existing configuration files. OnlyClans transparently converts legacy `&` codes into the Adventure component tree while leaving native MiniMessage tags intact:
 
 ```yaml
