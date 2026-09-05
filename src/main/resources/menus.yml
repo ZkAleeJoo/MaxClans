@@ -89,15 +89,15 @@ menus:
         slot: 21
         material: PLAYER_HEAD
         owner: "%player%"
-        name: '&#00E5FF&lʏᴏᴜʀ ᴄʟᴀɴ: &#FFFFFF%clan_name%'
+        name: '&#00E5FF&lʏᴏᴜʀ ᴄʟᴀɴ: &f%clan_name%'
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-        - '&#718096▪ &#A0AEC0Name: &#FFFFFF%clan_name%'
-        - '&#718096▪ &#A0AEC0Tag: &#FFFFFF[%clan_tag%]'
-        - '&#718096▪ &#A0AEC0Leader: &#FFFFFF%clan_leader%'
-        - '&#718096▪ &#A0AEC0Your Role: &#FFFFFF%clan_role%'
-        - '&#718096▪ &#A0AEC0KDR: &#00FF88%clan_kdr% &#718096(&#FFFFFF%clan_kills% &#718096K / &#FFFFFF%clan_deaths% &#718096D)'
-        - '&#718096▪ &#A0AEC0Members: &#FFFFFF%clan_members_online%&#718096/&#FFFFFF%clan_members%'
+        - '&#718096▪ &#A0AEC0Name: &f%clan_name%'
+        - '&#718096▪ &#A0AEC0Tag: &f[%clan_tag%]'
+        - '&#718096▪ &#A0AEC0Leader: &f%clan_leader%'
+        - '&#718096▪ &#A0AEC0Your Role: &f%clan_role%'
+        - '&#718096▪ &#A0AEC0KDR: &#00FF88%clan_kdr% &#718096(&f%clan_kills% &#718096K / &f%clan_deaths% &#718096D)'
+        - '&#718096▪ &#A0AEC0Members: &f%clan_members_online%&#718096/&f%clan_members%'
         - '&#718096▪ &#A0AEC0Ally PvP: %clan_ff%'
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         - '&#00E5FFClick to view dashboard'
@@ -209,9 +209,9 @@ menus:
       name: '&#00FF88&l%clan_name% &#718096[%clan_tag%]'
       lore:
       - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-      - '&#718096▪ &#A0AEC0Leader: &#FFFFFF%clan_leader%'
-      - '&#718096▪ &#A0AEC0Tag: &#FFFFFF[%clan_tag%]'
-      - '&#718096▪ &#A0AEC0Members: &#FFFFFF%clan_members_online%&#718096/&#FFFFFF%clan_members%'
+      - '&#718096▪ &#A0AEC0Leader: &f%clan_leader%'
+      - '&#718096▪ &#A0AEC0Tag: &f[%clan_tag%]'
+      - '&#718096▪ &#A0AEC0Members: &f%clan_members_online%&#718096/&f%clan_members%'
       - '&#718096▪ &#A0AEC0Friendly Fire: %clan_ff%'
       - '&#718096▪ &#A0AEC0Staff: %clan_staff_status%'
       - '&#718096▪ &#A0AEC0Founded: &#E2E8F0%clan_created%'
@@ -268,7 +268,7 @@ menus:
         slot: 49
         material: PLAYER_HEAD
         base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTU4NTlkOTU3MDQzMWNhZTk2MGEzODZhY2I3MTE1NGFiMDc3MjlhN2Y0ZTFmOWIwMDU2ZTdiYWFmMWM5NmViYyJ9fX0=
-        name: '&#FFD700&lᴘᴀɢᴇ: &#FFFFFF%page% / %max_pages%'
+        name: '&#FFD700&lᴘᴀɢᴇ: &f%page% / %max_pages%'
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         - '&#718096▪ &#A0AEC0Total Clans: &#FFD700%total_clans%'
@@ -508,12 +508,12 @@ menus:
     - 33
     - 34
     member_item:
-      name: '%member_role_formatted% &#FFFFFF%member_name%'
+      name: '%member_role_formatted% &f%member_name%'
       lore:
       - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
       - '&#A0AEC0Status: %member_status%'
       - '&#A0AEC0Role: %member_role_formatted%'
-      - '&#A0AEC0KDR: &#00FF88%member_kdr% &#718096(&#FFFFFF%member_kills% &#718096K / &#FFFFFF%member_deaths% &#718096D)'
+      - '&#A0AEC0KDR: &#00FF88%member_kdr% &#718096(&f%member_kills% &#718096K / &f%member_deaths% &#718096D)'
       - '&#A0AEC0Playtime: &#00E5FF%member_playtime%'
       - '&#A0AEC0Joined: &#E2E8F0%member_joined%'
     filler: BLACK_STAINED_GLASS_PANE
@@ -861,7 +861,7 @@ menus:
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         - '&#A0AEC0I confirm that I want to disband'
-        - '&#A0AEC0the clan &#FFFFFF%clan_name%&#A0AEC0.'
+        - '&#A0AEC0the clan &f%clan_name%&#A0AEC0.'
         - ''
         - '&#718096▪ &#FF0000All data will be permanently deleted.'
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
@@ -937,10 +937,10 @@ menus:
       name: '%clan_rank% &#00FF88&l%clan_name% &#718096[%clan_tag%]'
       lore:
       - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-      - '&#718096▪ &#A0AEC0Leader: &#FFFFFF%clan_leader%'
-      - '&#718096▪ &#A0AEC0KDR: &#00FF88%clan_kdr% &#718096(&#FFFFFF%clan_kills% &#718096K / &#FFFFFF%clan_deaths% &#718096D)'
+      - '&#718096▪ &#A0AEC0Leader: &f%clan_leader%'
+      - '&#718096▪ &#A0AEC0KDR: &#00FF88%clan_kdr% &#718096(&f%clan_kills% &#718096K / &f%clan_deaths% &#718096D)'
       - '&#718096▪ &#A0AEC0Rival Kills: &#FF3366%clan_rival_kills%'
-      - '&#718096▪ &#A0AEC0Members: &#00E5FF%clan_members_online%&#718096/&#FFFFFF%clan_members%'
+      - '&#718096▪ &#A0AEC0Members: &#00E5FF%clan_members_online%&#718096/&f%clan_members%'
       - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
     items:
       filter_kdr:
@@ -995,7 +995,7 @@ menus:
       info_page:
         slot: 49
         material: PAPER
-        name: '&#FFD700&lᴘᴀɢᴇ &#FFFFFF%page%&#718096/&#FFFFFF%max_pages%'
+        name: '&#FFD700&lᴘᴀɢᴇ &f%page%&#718096/&f%max_pages%'
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         - '&#718096▪ &#A0AEC0Category: %top_sort_mode%'
