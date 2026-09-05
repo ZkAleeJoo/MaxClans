@@ -51,8 +51,9 @@ public class OnlyClans extends JavaPlugin {
 
         menuBuilder = new MenuBuilder(this);
 
-        getCommand("onlyclans").setExecutor(new MainCommand(this));
-        getCommand("onlyclans").setTabCompleter(new MainCommand(this));
+        MainCommand mainCommand = new MainCommand(this);
+        getCommand("onlyclans").setExecutor(mainCommand);
+        getCommand("onlyclans").setTabCompleter(mainCommand);
 
         ChatCommand chatCommand = new ChatCommand(this);
         getCommand("clanchat").setExecutor(chatCommand);

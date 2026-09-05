@@ -1,0 +1,57 @@
+package org.zkaleejoo.commands.subcommands.member;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.commands.SubCommand;
+import org.zkaleejoo.utils.MessageUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class KickSubCommand extends SubCommand {
+
+    public KickSubCommand(OnlyClans plugin) {
+        super(plugin, "kick");
+    }
+
+    @Override
+    public String getPermission() {
+        return "onlyclans.command.kick";
+    }
+
+    @Override
+    public void execute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+
+        if (args.length < 2) {
+            player.sendMessage(MessageUtils.toComponent(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("usage-kick", "&cUsage: /clan kick <player>")));
+            return;
+        }
+
+        Player target = Bukkit.getPlayer(args[1]);
+        if (target == null || !target.isOnline()) {
+            player.sendMessage(MessageUtils.toComponent(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("player-not-found", "&cPlayer not found or offline.")));
+            return;
+        }
+
+        plugin.getClanManager().kickPlayer(player, target);
+    }
+
+    @Override
+    public List<String> tabComplete(CommandSender sender, String[] args) {
+        if (args.length == 2) {
+            List<String> completions = new ArrayList<>();
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                completions.add(p.getName());
+            }
+            return filterCompletions(completions, args[1]);
+        }
+        return super.tabComplete(sender, args);
+    }
+}
