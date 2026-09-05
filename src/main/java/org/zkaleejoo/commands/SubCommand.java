@@ -58,7 +58,8 @@ public abstract class SubCommand {
     }
 
     /**
-     * Subcommands or aliases to suggest in the first argument completion (e.g. /clan <subcommand>).
+     * Subcommands or aliases to suggest in the first argument completion (e.g.
+     * /clan <subcommand>).
      */
     public List<String> getTabSuggestions(CommandSender sender) {
         if (!hasPermission(sender)) {

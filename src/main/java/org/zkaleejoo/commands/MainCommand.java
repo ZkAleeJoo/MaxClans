@@ -10,14 +10,18 @@ import org.zkaleejoo.commands.subcommands.admin.ReloadSubCommand;
 import org.zkaleejoo.commands.subcommands.admin.SpySubCommand;
 import org.zkaleejoo.commands.subcommands.general.ChatSubCommand;
 import org.zkaleejoo.commands.subcommands.general.HelpSubCommand;
+import org.zkaleejoo.commands.subcommands.general.HomeSubCommand;
+import org.zkaleejoo.commands.subcommands.general.HomesSubCommand;
 import org.zkaleejoo.commands.subcommands.general.InfoSubCommand;
 import org.zkaleejoo.commands.subcommands.general.ListSubCommand;
 import org.zkaleejoo.commands.subcommands.general.TopSubCommand;
 import org.zkaleejoo.commands.subcommands.management.CreateSubCommand;
 import org.zkaleejoo.commands.subcommands.management.DecorSubCommand;
+import org.zkaleejoo.commands.subcommands.management.DelHomeSubCommand;
 import org.zkaleejoo.commands.subcommands.management.DisbandSubCommand;
 import org.zkaleejoo.commands.subcommands.management.FlagSubCommand;
 import org.zkaleejoo.commands.subcommands.management.FlagsSubCommand;
+import org.zkaleejoo.commands.subcommands.management.SetHomeSubCommand;
 import org.zkaleejoo.commands.subcommands.management.TagSubCommand;
 import org.zkaleejoo.commands.subcommands.member.AcceptRequestSubCommand;
 import org.zkaleejoo.commands.subcommands.member.AcceptSubCommand;
@@ -60,6 +64,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         subCommands.add(new TopSubCommand(plugin));
         subCommands.add(new ChatSubCommand(plugin));
         subCommands.add(new InfoSubCommand(plugin));
+        subCommands.add(new HomeSubCommand(plugin));
+        subCommands.add(new HomesSubCommand(plugin));
 
         // Management
         subCommands.add(new CreateSubCommand(plugin));
@@ -68,6 +74,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         subCommands.add(new FlagSubCommand(plugin));
         subCommands.add(new FlagsSubCommand(plugin));
         subCommands.add(new TagSubCommand(plugin));
+        subCommands.add(new SetHomeSubCommand(plugin));
+        subCommands.add(new DelHomeSubCommand(plugin));
 
         // Member
         subCommands.add(new InviteSubCommand(plugin));

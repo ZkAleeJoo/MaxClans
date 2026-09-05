@@ -14,6 +14,8 @@ public class Clan {
     private final Set<UUID> joinRequests;
     private final Set<String> allies;
     private final Map<ClanFlag, Boolean> flags;
+    private final Map<String, ClanHome> homes;
+    private int level;
     private int kills;
     private int deaths;
     private int rivalKills;
@@ -36,6 +38,7 @@ public class Clan {
         this.displayName = displayName;
         this.owner = owner;
         this.createdAt = createdAt;
+        this.level = 1;
         this.kills = kills;
         this.deaths = deaths;
         this.rivalKills = rivalKills;
@@ -43,6 +46,7 @@ public class Clan {
         this.pendingInvites = new HashSet<>();
         this.joinRequests = new HashSet<>();
         this.allies = new HashSet<>();
+        this.homes = new LinkedHashMap<>();
         this.flags = new EnumMap<>(ClanFlag.class);
         initDefaultFlags();
         setFlag(ClanFlag.FRIENDLY_FIRE, friendlyFire);
@@ -319,5 +323,50 @@ public class Clan {
 
     public String getFormattedKDR() {
         return String.format(java.util.Locale.US, "%.2f", getKDR());
+    }
+
+    public int getLevel() {
+        return Math.max(1, level);
+    }
+
+    public void setLevel(int level) {
+        this.level = Math.max(1, level);
+    }
+
+    public Map<String, ClanHome> getHomes() {
+        return Collections.unmodifiableMap(homes);
+    }
+
+    public ClanHome getHome(String name) {
+        if (name == null) return null;
+        return homes.get(name.toLowerCase());
+    }
+
+    public void setHome(ClanHome home) {
+        if (home != null) {
+            homes.put(home.getName().toLowerCase(), home);
+        }
+    }
+
+    public boolean removeHome(String name) {
+        if (name == null) return false;
+        return homes.remove(name.toLowerCase()) != null;
+    }
+
+    public boolean hasHome(String name) {
+        if (name == null) return false;
+        return homes.containsKey(name.toLowerCase());
+    }
+
+    public int getHomeCount() {
+        return homes.size();
+    }
+
+    public List<String> getHomeNames() {
+        List<String> names = new ArrayList<>();
+        for (ClanHome home : homes.values()) {
+            names.add(home.getName());
+        }
+        return names;
     }
 }

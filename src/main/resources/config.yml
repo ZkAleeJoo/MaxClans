@@ -26,6 +26,32 @@ database:
   password: ''
 
 # ==================================================================== #
+#                        Clan Homes Configuration                      #
+# ==================================================================== #
+homes:
+  # Teleport warmup delay in seconds (players must stay still and not take damage).
+  # Set to 0 to teleport instantly.
+  warmup-seconds: 3
+  # Cooldown between teleports in seconds (e.g. 300 = 5 minutes). Set to 0 to disable.
+  cooldown-seconds: 300
+  # Cancel teleport if player moves (walking / jumping).
+  cancel-on-move: true
+  # Cancel teleport if player takes damage.
+  cancel-on-damage: true
+  # Allow allied clans to teleport to home if the 'public_home' flag is enabled.
+  allow-allies-if-public: true
+  # Default maximum homes if clan level is not matched or levels not configured.
+  default-max-homes: 1
+  # Maximum clan homes unlocked based on Clan Level.
+  levels:
+    1: 1
+    2: 2
+    3: 3
+    4: 5
+    5: 10
+
+
+# ==================================================================== #
 #                      Placeholder Configuration                       #
 # ==================================================================== #
 # Configure all internal placeholders and PlaceholderAPI placeholders.

@@ -37,7 +37,8 @@ public class ChatCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 0) {
             player.sendMessage(MessageUtils.toComponent(
-                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMessage("usage-chat", "&cUsage: /c <message>")));
+                    plugin.getMainConfigManager().getPrefix()
+                            + plugin.getMainConfigManager().getMessage("usage-chat", "&cUsage: /c <message>")));
             return true;
         }
 
@@ -46,7 +47,8 @@ public class ChatCommand implements CommandExecutor, TabCompleter {
 
         if (clan == null) {
             player.sendMessage(MessageUtils.toComponent(
-                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMessage("not-in-clan", "&cYou are not in a clan.")));
+                    plugin.getMainConfigManager().getPrefix()
+                            + plugin.getMainConfigManager().getMessage("not-in-clan", "&cYou are not in a clan.")));
             return true;
         }
 

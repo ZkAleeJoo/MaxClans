@@ -35,6 +35,14 @@ public class MainConfigManager {
     private String msgUpdateCurrent;
     private String msgUpdateDownload;
 
+    private int homeWarmupSeconds;
+    private int homeCooldownSeconds;
+    private boolean homeCancelOnMove;
+    private boolean homeCancelOnDamage;
+    private boolean homeAllowAlliesIfPublic;
+    private int homeDefaultMax;
+    private final java.util.NavigableMap<Integer, Integer> homeLevelMax = new java.util.TreeMap<>();
+
     public MainConfigManager(OnlyClans plugin) {
         this.plugin = plugin;
         configFile = new CustomConfig("config.yml", null, plugin, false);
@@ -85,6 +93,26 @@ public class MainConfigManager {
         msgUpdateAvailable = lang.getString("messages.update-available", "&eNew version: {version}");
         msgUpdateCurrent = lang.getString("messages.update-current", "&7Current: {version}");
         msgUpdateDownload = lang.getString("messages.update-download", "&eDownload it!");
+
+        homeWarmupSeconds = config.getInt("homes.warmup-seconds", 3);
+        homeCooldownSeconds = config.getInt("homes.cooldown-seconds", 300);
+        homeCancelOnMove = config.getBoolean("homes.cancel-on-move", true);
+        homeCancelOnDamage = config.getBoolean("homes.cancel-on-damage", true);
+        homeAllowAlliesIfPublic = config.getBoolean("homes.allow-allies-if-public", true);
+        homeDefaultMax = config.getInt("homes.default-max-homes", 1);
+
+        homeLevelMax.clear();
+        org.bukkit.configuration.ConfigurationSection levelsSec = config.getConfigurationSection("homes.levels");
+        if (levelsSec != null) {
+            for (String key : levelsSec.getKeys(false)) {
+                try {
+                    int lvl = Integer.parseInt(key);
+                    int maxHomes = levelsSec.getInt(key);
+                    homeLevelMax.put(lvl, maxHomes);
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
     }
 
     public void reloadConfig() {
@@ -195,5 +223,44 @@ public class MainConfigManager {
 
     public String getMessage(String path) {
         return getMessage(path, "&cMessage not found: " + path);
+    }
+
+    public int getHomeWarmupSeconds() {
+        return homeWarmupSeconds;
+    }
+
+    public int getHomeCooldownSeconds() {
+        return homeCooldownSeconds;
+    }
+
+    public boolean isHomeCancelOnMove() {
+        return homeCancelOnMove;
+    }
+
+    public boolean isHomeCancelOnDamage() {
+        return homeCancelOnDamage;
+    }
+
+    public boolean isHomeAllowAlliesIfPublic() {
+        return homeAllowAlliesIfPublic;
+    }
+
+    public int getHomeDefaultMax() {
+        return homeDefaultMax;
+    }
+
+    public int getMaxHomesForLevel(int level) {
+        if (homeLevelMax.isEmpty()) {
+            return Math.max(1, homeDefaultMax);
+        }
+        Integer exact = homeLevelMax.get(level);
+        if (exact != null) {
+            return Math.max(1, exact);
+        }
+        java.util.Map.Entry<Integer, Integer> floor = homeLevelMax.floorEntry(level);
+        if (floor != null) {
+            return Math.max(1, floor.getValue());
+        }
+        return Math.max(1, homeDefaultMax);
     }
 }

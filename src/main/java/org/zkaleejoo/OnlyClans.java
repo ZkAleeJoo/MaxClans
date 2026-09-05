@@ -14,6 +14,7 @@ import org.zkaleejoo.listeners.ClanDamageListener;
 import org.zkaleejoo.listeners.MenuListener;
 import org.zkaleejoo.listeners.PlayerJoinListener;
 import org.zkaleejoo.managers.ClanManager;
+import org.zkaleejoo.managers.ClanTeleportManager;
 import org.zkaleejoo.managers.PlaceholderManager;
 import org.zkaleejoo.utils.FoliaCompat;
 import org.zkaleejoo.utils.FoliaCompat.WrappedTask;
@@ -30,6 +31,7 @@ public class OnlyClans extends JavaPlugin {
     private DatabaseManager databaseManager;
     private ClanStorage clanStorage;
     private ClanManager clanManager;
+    private ClanTeleportManager clanTeleportManager;
     private MenuBuilder menuBuilder;
     private String latestVersion;
     private Metrics metrics;
@@ -49,6 +51,8 @@ public class OnlyClans extends JavaPlugin {
         clanManager = new ClanManager(this, clanStorage);
         clanManager.loadClans();
 
+        clanTeleportManager = new ClanTeleportManager(this);
+
         menuBuilder = new MenuBuilder(this);
 
         MainCommand mainCommand = new MainCommand(this);
@@ -63,6 +67,7 @@ public class OnlyClans extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MenuListener(this), this);
         getServer().getPluginManager().registerEvents(new ClanDamageListener(this), this);
         getServer().getPluginManager().registerEvents(new ClanChatListener(this), this);
+        getServer().getPluginManager().registerEvents(new org.zkaleejoo.listeners.ClanTeleportListener(this), this);
 
         FoliaCompat.runGlobalTimer(this, new org.zkaleejoo.gui.MenuUpdateTask(this), 1L, 1L);
 
@@ -152,6 +157,11 @@ public class OnlyClans extends JavaPlugin {
             metrics = null;
         }
 
+        if (clanTeleportManager != null) {
+            clanTeleportManager.cancelAll();
+            clanTeleportManager = null;
+        }
+
         if (databaseManager != null) {
             databaseManager.close();
         }
@@ -169,6 +179,14 @@ public class OnlyClans extends JavaPlugin {
 
     public ClanManager getClanManager() {
         return clanManager;
+    }
+
+    public ClanTeleportManager getClanTeleportManager() {
+        return clanTeleportManager;
+    }
+
+    public ClanStorage getClanStorage() {
+        return clanStorage;
     }
 
     public MenuBuilder getMenuBuilder() {

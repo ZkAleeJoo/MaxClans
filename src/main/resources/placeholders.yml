@@ -326,6 +326,11 @@ catalog:
       - '%onlyclans_player_deaths%'
       - '%onlyclans_player_kdr%'
       - '%onlyclans_player_playtime%'
+    homes:
+      - '%onlyclans_clan_level%'
+      - '%onlyclans_homes_count%'
+      - '%onlyclans_homes_max%'
+      - '%onlyclans_homes_list%'
     leaderboard:
       - '%onlyclans_top_<kdr|kills|members>_<rank>_<property>%'
     modifiers:

@@ -20,6 +20,8 @@ permissions:
     children:
       onlyclans.command.reload: true
       onlyclans.spy: true
+      onlyclans.bypass.warmup: true
+      onlyclans.bypass.cooldown: true
       onlyclans.use: true
   onlyclans.use:
     description: Access to all player clan commands and menus.
@@ -47,6 +49,10 @@ permissions:
       onlyclans.command.top: true
       onlyclans.command.tag: true
       onlyclans.command.decor: true
+      onlyclans.command.home: true
+      onlyclans.command.sethome: true
+      onlyclans.command.delhome: true
+      onlyclans.command.homes: true
   onlyclans.command.main:
     description: Open the main clan menu.
     default: true
@@ -119,3 +125,22 @@ permissions:
   onlyclans.command.decor:
     description: Decorate or color clan name.
     default: true
+  onlyclans.command.home:
+    description: Teleport to clan home or base.
+    default: true
+  onlyclans.command.sethome:
+    description: Set clan base spawn point.
+    default: true
+  onlyclans.command.delhome:
+    description: Delete a clan home or base.
+    default: true
+  onlyclans.command.homes:
+    description: List all clan homes.
+    default: true
+  onlyclans.bypass.warmup:
+    description: Bypass clan teleport warmup delay.
+    default: op
+  onlyclans.bypass.cooldown:
+    description: Bypass clan teleport cooldown.
+    default: op
+

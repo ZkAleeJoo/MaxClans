@@ -88,6 +88,7 @@ public class DatabaseManager {
                     + "kills INT DEFAULT 0,"
                     + "deaths INT DEFAULT 0,"
                     + "rival_kills INT DEFAULT 0,"
+                    + "level INT DEFAULT 1,"
                     + "created_at BIGINT NOT NULL"
                     + ")" + engine);
 
@@ -98,6 +99,25 @@ public class DatabaseManager {
                     + "joined_at BIGINT NOT NULL DEFAULT 0,"
                     + "FOREIGN KEY (clan_name) REFERENCES clans(name) ON DELETE CASCADE"
                     + ")" + engine);
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS clan_homes ("
+                    + "clan_name VARCHAR(64) NOT NULL,"
+                    + "name VARCHAR(32) NOT NULL,"
+                    + "world VARCHAR(64) NOT NULL,"
+                    + "x DOUBLE NOT NULL,"
+                    + "y DOUBLE NOT NULL,"
+                    + "z DOUBLE NOT NULL,"
+                    + "yaw FLOAT NOT NULL,"
+                    + "pitch FLOAT NOT NULL,"
+                    + "created_at BIGINT NOT NULL,"
+                    + "PRIMARY KEY (clan_name, name),"
+                    + "FOREIGN KEY (clan_name) REFERENCES clans(name) ON DELETE CASCADE"
+                    + ")" + engine);
+
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN level INT DEFAULT 1");
+            } catch (SQLException ignored) {
+            }
 
             try {
                 stmt.executeUpdate("ALTER TABLE clan_players ADD COLUMN joined_at BIGINT DEFAULT 0");

@@ -532,6 +532,24 @@ public class PlaceholderManager {
             return formatDate(joinedAt);
         }
 
+        if (cleanParam.equals("level") || cleanParam.equals("clan_level")) {
+            return clan != null ? String.valueOf(clan.getLevel()) : "1";
+        }
+
+        if (cleanParam.equals("homes_count") || cleanParam.equals("home_count") || cleanParam.equals("homes")) {
+            return clan != null ? String.valueOf(clan.getHomeCount()) : "0";
+        }
+
+        if (cleanParam.equals("homes_max") || cleanParam.equals("home_max") || cleanParam.equals("max_homes")) {
+            if (clan == null) return "0";
+            return String.valueOf(plugin.getMainConfigManager().getMaxHomesForLevel(clan.getLevel()));
+        }
+
+        if (cleanParam.equals("homes_list") || cleanParam.equals("home_list")) {
+            if (clan == null || clan.getHomeCount() == 0) return getNoneText(lang);
+            return String.join(", ", clan.getHomeNames());
+        }
+
         return null;
     }
 }
