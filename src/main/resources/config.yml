@@ -36,6 +36,14 @@ database:
 #   %onlyclans_ff_status_en%, %onlyclans_ff_status_es%
 # ==================================================================== #
 placeholders:
+  # Output format for PlaceholderAPI:
+  #   'minimessage' - Returns Adventure MiniMessage tags (<color>, <bold>, etc.).
+  #                   REQUIRED for LPC, modern chat plugins, Paper/Folia chat.
+  #   'legacy'      - Returns Spigot legacy color codes (§a, §x§1§2§3§4§5§6).
+  #                   Use this if your scoreboards/tab plugins only support legacy § colors.
+  # Note: You can also explicitly request either format by adding _mm or _legacy
+  # to any placeholder (e.g. %onlyclans_tag_mm% or %onlyclans_tag_legacy%).
+  format-mode: 'minimessage'
   # Date formatting pattern (e.g. dd/MM/yyyy or MM/dd/yyyy)
   date-format: 'dd/MM/yyyy'
   # Tag formatting template ({tag} is replaced with the clan tag)

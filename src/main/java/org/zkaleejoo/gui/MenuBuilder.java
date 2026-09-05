@@ -415,7 +415,7 @@ public class MenuBuilder {
                     skullMeta.setOwningPlayer(offPlayer);
                 }
 
-                String roleBadge = plugin.getPlaceholderManager().getRoleFormatted(cp.getRole(), lang);
+                String roleBadge = plugin.getPlaceholderManager().getRoleFormatted(cp.getRole(), lang, true);
                 String rawRole = plugin.getPlaceholderManager().getRoleName(cp.getRole(), lang);
 
                 String statusLabel = plugin.getPlaceholderManager().getGuiText("status-label", lang,
@@ -991,22 +991,25 @@ public class MenuBuilder {
                     : (pm != null ? pm.getUnknownText(lang) : "Unknown");
 
             ClanPlayer cp = clan.getMember(player.getUniqueId());
-            String roleFormatted = pm != null ? pm.getRoleFormatted(cp != null ? cp.getRole() : null, lang)
-                    : "&#718096None";
+            String roleFormatted = pm != null ? pm.getRoleFormatted(cp != null ? cp.getRole() : null, lang, true)
+                    : "<#718096>None";
 
-            String ffText = pm != null ? pm.getFriendlyFireStatus(clan.isFriendlyFire(), lang)
+            String ffText = pm != null ? pm.getFriendlyFireStatus(clan.isFriendlyFire(), lang, true)
                     : (clan.isFriendlyFire() ? "ON" : "OFF");
-            String ffBadge = pm != null ? pm.getFriendlyFireBadge(clan.isFriendlyFire(), lang)
+            String ffBadge = pm != null ? pm.getFriendlyFireBadge(clan.isFriendlyFire(), lang, true)
                     : (clan.isFriendlyFire() ? "ENABLED" : "DISABLED");
             String createdDate = pm != null ? pm.formatDate(clan.getCreatedAt()) : String.valueOf(clan.getCreatedAt());
 
             String clanDisplayName = clan.getDisplayName();
+            String clanDisplayNameFormatted = pm != null ? pm.formatOutput(clanDisplayName, true) : clanDisplayName;
+            String tagFormatted = pm != null ? pm.formatTag(clanTag, true) : "[" + clanTag + "]";
 
             text = text.replace("%clan_name%", clanName).replace("{clan_name}", clanName);
             text = text.replace("%clan_displayname%", clanDisplayName).replace("{clan_displayname}", clanDisplayName);
             text = text.replace("%clan_display_name%", clanDisplayName).replace("{clan_display_name}", clanDisplayName);
-            text = text.replace("%clan_name_formatted%", clanDisplayName).replace("{clan_name_formatted}", clanDisplayName);
-            text = text.replace("%clan_tag%", clanTag).replace("{clan_tag}", clanTag);
+            text = text.replace("%clan_name_formatted%", clanDisplayNameFormatted).replace("{clan_name_formatted}", clanDisplayNameFormatted);
+            text = text.replace("%clan_tag_formatted%", tagFormatted).replace("{clan_tag_formatted}", tagFormatted);
+            text = text.replace("%clan_tag%", clanTag + "<reset>").replace("{clan_tag}", clanTag + "<reset>");
             text = text.replace("%clan_members%", memberCount).replace("{clan_members}", memberCount);
             text = text.replace("%clan_members_online%", membersOnline).replace("{clan_members_online}", membersOnline);
             text = text.replace("%clan_leader%", leaderName).replace("{clan_leader}", leaderName);
@@ -1021,8 +1024,8 @@ public class MenuBuilder {
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = clan.getFlag(flag);
-                String flagStatus = pm != null ? pm.getFlagStatus(flag, val, lang) : (val ? "ON" : "OFF");
-                String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang) : (val ? "ENABLED" : "DISABLED");
+                String flagStatus = pm != null ? pm.getFlagStatus(flag, val, lang, true) : (val ? "ON" : "OFF");
+                String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang, true) : (val ? "ENABLED" : "DISABLED");
                 text = text.replace("%clan_flag_" + flag.getKey() + "%", flagStatus)
                         .replace("{clan_flag_" + flag.getKey() + "}", flagStatus)
                         .replace("%clan_flag_" + flag.getKey() + "_badge%", flagBadge)
@@ -1031,13 +1034,15 @@ public class MenuBuilder {
         } else {
             String noneText = pm != null ? pm.getNotInClanText(lang) : "None";
             String noClanTag = pm != null ? pm.getNoClanTag(lang) : "---";
-            String noRole = pm != null ? pm.getRoleFormatted(null, lang) : "&#718096None";
-            String noFfText = pm != null ? pm.getFriendlyFireStatus(false, lang) : "OFF";
-            String noFfBadge = pm != null ? pm.getFriendlyFireBadge(false, lang) : "DISABLED";
+            String noClanTagFormatted = pm != null ? pm.formatTag(noClanTag, true) : "---";
+            String noRole = pm != null ? pm.getRoleFormatted(null, lang, true) : "<#718096>None";
+            String noFfText = pm != null ? pm.getFriendlyFireStatus(false, lang, true) : "OFF";
+            String noFfBadge = pm != null ? pm.getFriendlyFireBadge(false, lang, true) : "DISABLED";
             String noCreated = pm != null ? pm.getNoneText(lang) : "N/A";
 
             text = text.replace("%clan_name%", noneText).replace("{clan_name}", noneText);
             text = text.replace("%clan_tag%", noClanTag).replace("{clan_tag}", noClanTag);
+            text = text.replace("%clan_tag_formatted%", noClanTagFormatted).replace("{clan_tag_formatted}", noClanTagFormatted);
             text = text.replace("%clan_members%", "0").replace("{clan_members}", "0");
             text = text.replace("%clan_members_online%", "0").replace("{clan_members_online}", "0");
             text = text.replace("%clan_leader%", noneText).replace("{clan_leader}", noneText);
@@ -1052,8 +1057,8 @@ public class MenuBuilder {
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = flag.getDefaultValue();
-                String flagStatus = pm != null ? pm.getFlagStatus(flag, val, lang) : "OFF";
-                String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang) : "DISABLED";
+                String flagStatus = pm != null ? pm.getFlagStatus(flag, val, lang, true) : "OFF";
+                String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang, true) : "DISABLED";
                 text = text.replace("%clan_flag_" + flag.getKey() + "%", flagStatus)
                         .replace("{clan_flag_" + flag.getKey() + "}", flagStatus)
                         .replace("%clan_flag_" + flag.getKey() + "_badge%", flagBadge)

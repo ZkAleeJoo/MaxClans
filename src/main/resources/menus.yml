@@ -9,6 +9,7 @@
 #   %player%              - Player name
 #   %clan_name%           - Clan name (or 'None')
 #   %clan_tag%            - Clan tag (or '---')
+#   %clan_tag_formatted%  - Clan tag formatted with brackets (configured in config.yml)
 #   %clan_members%        - Total member count
 #   %clan_members_online% - Currently online members
 #   %clan_leader%         - Clan leader name
@@ -93,7 +94,7 @@ menus:
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         - '&#718096▪ &#A0AEC0Name: &f%clan_name%'
-        - '&#718096▪ &#A0AEC0Tag: &f[%clan_tag%]'
+        - '&#718096▪ &#A0AEC0Tag: %clan_tag_formatted%'
         - '&#718096▪ &#A0AEC0Leader: &f%clan_leader%'
         - '&#718096▪ &#A0AEC0Your Role: &f%clan_role%'
         - '&#718096▪ &#A0AEC0KDR: &#00FF88%clan_kdr% &#718096(&f%clan_kills% &#718096K / &f%clan_deaths% &#718096D)'
@@ -206,11 +207,11 @@ menus:
     - 33
     - 34
     clan_item:
-      name: '&#00FF88&l%clan_name% &#718096[%clan_tag%]'
+      name: '&#00FF88&l%clan_name% %clan_tag_formatted%'
       lore:
       - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
       - '&#718096▪ &#A0AEC0Leader: &f%clan_leader%'
-      - '&#718096▪ &#A0AEC0Tag: &f[%clan_tag%]'
+      - '&#718096▪ &#A0AEC0Tag: %clan_tag_formatted%'
       - '&#718096▪ &#A0AEC0Members: &f%clan_members_online%&#718096/&f%clan_members%'
       - '&#718096▪ &#A0AEC0Friendly Fire: %clan_ff%'
       - '&#718096▪ &#A0AEC0Staff: %clan_staff_status%'
@@ -637,7 +638,7 @@ menus:
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         - '&#718096▪ &#A0AEC0Leader: &#FFD700%clan_leader%'
-        - '&#718096▪ &#A0AEC0Tag: &#00E5FF[%clan_tag%]'
+        - '&#718096▪ &#A0AEC0Tag: %clan_tag_formatted%'
         - '&#718096▪ &#A0AEC0Created: &#E2E8F0%clan_created%'
         - ''
         - '&#718096▪ &#A0AEC0Leaders and Moderators can'
@@ -934,7 +935,7 @@ menus:
     - 33
     - 34
     top_item:
-      name: '%clan_rank% &#00FF88&l%clan_name% &#718096[%clan_tag%]'
+      name: '%clan_rank% &#00FF88&l%clan_name% %clan_tag_formatted%'
       lore:
       - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
       - '&#718096▪ &#A0AEC0Leader: &f%clan_leader%'

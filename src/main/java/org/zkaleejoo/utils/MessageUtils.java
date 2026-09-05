@@ -37,12 +37,8 @@ public class MessageUtils {
         StringBuilder sb = new StringBuilder();
         while (spigotMatcher.find()) {
             String match = spigotMatcher.group();
-            StringBuilder hex = new StringBuilder("<reset><#");
-            for (int i = 2; i < match.length(); i += 2) {
-                hex.append(match.charAt(i));
-            }
-            hex.append(">");
-            spigotMatcher.appendReplacement(sb, Matcher.quoteReplacement(hex.toString()));
+            String hex = match.replaceAll("(?i)[&§x]", "");
+            spigotMatcher.appendReplacement(sb, Matcher.quoteReplacement("<reset><#" + hex + ">"));
         }
         spigotMatcher.appendTail(sb);
         message = sb.toString();
@@ -93,7 +89,9 @@ public class MessageUtils {
                     continue;
                 }
             }
-            result.append(c);
+            if (c != '§') {
+                result.append(c);
+            }
         }
         return result.toString();
     }
@@ -127,6 +125,24 @@ public class MessageUtils {
             return "";
         }
         return LEGACY_SERIALIZER.serialize(toComponent(message));
+    }
+
+    public static String toLegacy(String message) {
+        return getColoredMessage(message);
+    }
+
+    public static String toMiniMessage(String message) {
+        if (message == null || message.isEmpty()) {
+            return "";
+        }
+        return MINI_MESSAGE.serialize(toComponent(message));
+    }
+
+    public static String toMiniMessage(Component component) {
+        if (component == null) {
+            return "";
+        }
+        return MINI_MESSAGE.serialize(component);
     }
 
     public static void sendMessage(CommandSender sender, String message) {

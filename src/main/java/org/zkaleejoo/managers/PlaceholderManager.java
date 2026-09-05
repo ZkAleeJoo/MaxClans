@@ -21,6 +21,7 @@ public class PlaceholderManager {
     private final OnlyClans plugin;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String tagFormat = "&#8727F5[{tag}]";
+    private String outputFormatMode = "minimessage";
 
     public PlaceholderManager(OnlyClans plugin) {
         this.plugin = plugin;
@@ -35,6 +36,18 @@ public class PlaceholderManager {
         }
 
         this.tagFormat = config.getString("placeholders.tag-format", "&#8727F5[{tag}]");
+        this.outputFormatMode = config.getString("placeholders.format-mode", "minimessage").toLowerCase();
+    }
+
+    public boolean isMiniMessageMode() {
+        return !"legacy".equalsIgnoreCase(outputFormatMode);
+    }
+
+    public String formatOutput(String text, boolean miniMessage) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+        return miniMessage ? MessageUtils.toMiniMessage(text) : MessageUtils.getColoredMessage(text);
     }
 
     public String getActiveLanguage() {
@@ -95,14 +108,18 @@ public class PlaceholderManager {
     }
 
     public String getRoleFormatted(ClanRole role, String lang) {
+        return getRoleFormatted(role, lang, isMiniMessageMode());
+    }
+
+    public String getRoleFormatted(ClanRole role, String lang, boolean miniMessage) {
         if (role == null) {
-            return MessageUtils.getColoredMessage(getString(lang, "roles-formatted.none", "&#718096None"));
+            return formatOutput(getString(lang, "roles-formatted.none", "&#718096None"), miniMessage);
         }
-        return MessageUtils.getColoredMessage(switch (role) {
+        return formatOutput(switch (role) {
             case LEADER -> getString(lang, "roles-formatted.leader", "&#FFD700★ Leader");
             case MODERATOR -> getString(lang, "roles-formatted.moderator", "&#00E5FF◆ Moderator");
             case MEMBER -> getString(lang, "roles-formatted.member", "&#A0AEC0● Member");
-        });
+        }, miniMessage);
     }
 
     public String getFriendlyFireRaw(boolean ff, String lang) {
@@ -110,35 +127,60 @@ public class PlaceholderManager {
     }
 
     public String getFriendlyFireBadge(boolean ff, String lang) {
-        return MessageUtils.getColoredMessage(ff ? getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED")
-                : getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED"));
+        return getFriendlyFireBadge(ff, lang, isMiniMessageMode());
+    }
+
+    public String getFriendlyFireBadge(boolean ff, String lang, boolean miniMessage) {
+        return formatOutput(ff ? getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED")
+                : getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED"), miniMessage);
     }
 
     public String getFriendlyFireStatus(boolean ff, String lang) {
-        return MessageUtils.getColoredMessage(ff ? getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled")
-                : getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled"));
+        return getFriendlyFireStatus(ff, lang, isMiniMessageMode());
+    }
+
+    public String getFriendlyFireStatus(boolean ff, String lang, boolean miniMessage) {
+        return formatOutput(ff ? getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled")
+                : getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled"), miniMessage);
     }
 
     public String getFlagStatus(ClanFlag flag, boolean value, String lang) {
-        return MessageUtils.getColoredMessage(value
+        return getFlagStatus(flag, value, lang, isMiniMessageMode());
+    }
+
+    public String getFlagStatus(ClanFlag flag, boolean value, String lang, boolean miniMessage) {
+        return formatOutput(value
                 ? getString(lang, "flags.status-enabled", getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled"))
-                : getString(lang, "flags.status-disabled", getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled")));
+                : getString(lang, "flags.status-disabled", getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled")), miniMessage);
     }
 
     public String getFlagBadge(ClanFlag flag, boolean value, String lang) {
-        return MessageUtils.getColoredMessage(value
+        return getFlagBadge(flag, value, lang, isMiniMessageMode());
+    }
+
+    public String getFlagBadge(ClanFlag flag, boolean value, String lang, boolean miniMessage) {
+        return formatOutput(value
                 ? getString(lang, "flags.badge-enabled", getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED"))
-                : getString(lang, "flags.badge-disabled", getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED")));
+                : getString(lang, "flags.badge-disabled", getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED")), miniMessage);
     }
 
     public String getGuiText(String key, String lang, String def) {
-        return MessageUtils.getColoredMessage(getString(lang, "gui." + key, def));
+        return getGuiText(key, lang, def, isMiniMessageMode());
+    }
+
+    public String getGuiText(String key, String lang, String def, boolean miniMessage) {
+        return formatOutput(getString(lang, "gui." + key, def), miniMessage);
     }
 
     public String formatTag(String tag) {
+        return formatTag(tag, isMiniMessageMode());
+    }
+
+    public String formatTag(String tag, boolean miniMessage) {
         if (tag == null || tag.isEmpty())
             return "";
-        return MessageUtils.getColoredMessage(tagFormat.replace("{tag}", tag));
+        String replaced = tagFormat.replace("{tag}", tag);
+        return formatOutput(replaced, miniMessage);
     }
 
     public String formatDate(long timestamp) {
@@ -190,6 +232,10 @@ public class PlaceholderManager {
     }
 
     public String resolveTopPlaceholder(String param, String lang) {
+        return resolveTopPlaceholder(param, lang, isMiniMessageMode());
+    }
+
+    public String resolveTopPlaceholder(String param, String lang, boolean useMiniMessage) {
         String rest = param.substring(4);
         TopSortType sortType = null;
         String afterType = null;
@@ -221,13 +267,13 @@ public class PlaceholderManager {
                     if (prop.equals("name")) {
                         return topClan != null ? topClan.getName() : getNoneText(lang);
                     } else if (prop.equals("displayname") || prop.equals("display_name") || prop.equals("name_formatted")) {
-                        return topClan != null ? MessageUtils.getColoredMessage(topClan.getDisplayName()) : getNoneText(lang);
+                        return topClan != null ? formatOutput(topClan.getDisplayName(), useMiniMessage) : getNoneText(lang);
                     } else if (prop.equals("tag")) {
-                        return topClan != null ? MessageUtils.getColoredMessage(topClan.getTag()) : getNoClanTag(lang);
+                        return topClan != null ? formatOutput(topClan.getTag(), useMiniMessage) : getNoClanTag(lang);
                     } else if (prop.equals("tag_raw")) {
                         return topClan != null ? MessageUtils.stripColor(topClan.getTag()) : getNoClanTag(lang);
                     } else if (prop.equals("tag_formatted")) {
-                        return topClan != null ? formatTag(topClan.getTag()) : "";
+                        return topClan != null ? formatTag(topClan.getTag(), useMiniMessage) : "";
                     } else if (prop.equals("leader")) {
                         if (topClan == null) return getNoneText(lang);
                         OfflinePlayer leader = Bukkit.getOfflinePlayer(topClan.getOwner());
@@ -267,6 +313,21 @@ public class PlaceholderManager {
         String param = rawParam.toLowerCase();
         String lang = getActiveLanguage();
 
+        boolean forceMiniMessage = false;
+        boolean forceLegacy = false;
+        boolean forceRaw = false;
+
+        if (param.endsWith("_mm")) {
+            forceMiniMessage = true;
+            param = param.substring(0, param.length() - 3);
+        } else if (param.endsWith("_minimessage")) {
+            forceMiniMessage = true;
+            param = param.substring(0, param.length() - 12);
+        } else if (param.endsWith("_legacy")) {
+            forceLegacy = true;
+            param = param.substring(0, param.length() - 7);
+        }
+
         if (param.endsWith("_en") || param.endsWith("_es")) {
             lang = param.substring(param.length() - 2);
             param = param.substring(0, param.length() - 3);
@@ -275,8 +336,24 @@ public class PlaceholderManager {
             param = param.substring(3);
         }
 
+        if (!forceMiniMessage && !forceLegacy) {
+            if (param.endsWith("_mm")) {
+                forceMiniMessage = true;
+                param = param.substring(0, param.length() - 3);
+            } else if (param.endsWith("_minimessage")) {
+                forceMiniMessage = true;
+                param = param.substring(0, param.length() - 12);
+            } else if (param.endsWith("_legacy")) {
+                forceLegacy = true;
+                param = param.substring(0, param.length() - 7);
+            }
+        }
+
+        boolean useMiniMessage = forceMiniMessage || (!forceLegacy && isMiniMessageMode());
+
         if (param.startsWith("top_")) {
-            return resolveTopPlaceholder(param, lang);
+            String res = resolveTopPlaceholder(param, lang, useMiniMessage);
+            return forceRaw && res != null ? MessageUtils.stripColor(res) : res;
         }
 
         if (player == null) {
@@ -305,11 +382,13 @@ public class PlaceholderManager {
         }
 
         if (cleanParam.equals("displayname") || cleanParam.equals("display_name") || cleanParam.equals("name_formatted")) {
-            return clan != null ? MessageUtils.getColoredMessage(clan.getDisplayName()) : "";
+            if (clan == null) return "";
+            return formatOutput(clan.getDisplayName(), useMiniMessage);
         }
 
         if (cleanParam.equals("tag")) {
-            return clan != null ? MessageUtils.getColoredMessage(clan.getTag()) : "";
+            if (clan == null) return "";
+            return formatOutput(clan.getTag(), useMiniMessage);
         }
 
         if (cleanParam.equals("tag_raw")) {
@@ -317,7 +396,7 @@ public class PlaceholderManager {
         }
 
         if (cleanParam.equals("tag_formatted")) {
-            return clan != null ? formatTag(clan.getTag()) : "";
+            return clan != null ? formatTag(clan.getTag(), useMiniMessage) : "";
         }
 
         if (cleanParam.equals("role_raw")) {
@@ -338,7 +417,7 @@ public class PlaceholderManager {
             if (clan == null)
                 return "";
             ClanPlayer cp = clan.getMember(player.getUniqueId());
-            return cp != null ? getRoleFormatted(cp.getRole(), lang) : "";
+            return cp != null ? getRoleFormatted(cp.getRole(), lang, useMiniMessage) : "";
         }
 
         if (cleanParam.equals("members_count") || cleanParam.equals("members")) {
@@ -370,14 +449,14 @@ public class PlaceholderManager {
 
         if (cleanParam.equals("ff_badge")) {
             if (clan == null)
-                return getFriendlyFireBadge(false, lang);
-            return getFriendlyFireBadge(clan.isFriendlyFire(), lang);
+                return getFriendlyFireBadge(false, lang, useMiniMessage);
+            return getFriendlyFireBadge(clan.isFriendlyFire(), lang, useMiniMessage);
         }
 
         if (cleanParam.equals("ff_status")) {
             if (clan == null)
-                return getFriendlyFireStatus(false, lang);
-            return getFriendlyFireStatus(clan.isFriendlyFire(), lang);
+                return getFriendlyFireStatus(false, lang, useMiniMessage);
+            return getFriendlyFireStatus(clan.isFriendlyFire(), lang, useMiniMessage);
         }
 
         if (cleanParam.startsWith("flag_")) {
@@ -395,9 +474,9 @@ public class PlaceholderManager {
             if (flag != null) {
                 boolean val = clan != null ? clan.getFlag(flag) : flag.getDefaultValue();
                 if (isBadge) {
-                    return getFlagBadge(flag, val, lang);
+                    return getFlagBadge(flag, val, lang, useMiniMessage);
                 } else {
-                    return getFlagStatus(flag, val, lang);
+                    return getFlagStatus(flag, val, lang, useMiniMessage);
                 }
             }
         }
