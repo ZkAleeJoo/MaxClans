@@ -4,6 +4,7 @@
     <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version">
     <img src="https://img.shields.io/badge/Java-21+-red" alt="Java">
     <img src="https://img.shields.io/badge/Paper--Folia-1.21--26.1.2+-green" alt="Paper-Folia">
+    <img src="https://img.shields.io/badge/Adventure-MiniMessage-brightgreen" alt="MiniMessage">
     <img src="https://img.shields.io/badge/Languages-EN_|_ES-blue" alt="Languages">
   </p>
 </div>
@@ -17,16 +18,18 @@ Welcome to the **OnlyClans** Official Wiki! Here you will find all the informati
 4. [Clan KDR & Global Statistics](#-clan-kdr--global-statistics)
 5. [Leaderboard & Top Clans (/clan top)](#-leaderboard--top-clans-clan-top)
 6. [Placeholders](#-placeholders)
-7. [Menus Guide](#-menus-guide)
-8. [Performance & Rate Limits Guide](#-performance--rate-limits-guide)
-9. [Database Configuration](#-database-configuration)
-10. [Future Updates](#-future-updates)
+7. [Color & Text Formatting Guide (MiniMessage & Legacy)](#-color--text-formatting-guide-minimessage--legacy)
+8. [Menus Guide](#-menus-guide)
+9. [Performance & Rate Limits Guide](#-performance--rate-limits-guide)
+10. [Database Configuration](#-database-configuration)
+11. [Future Updates](#-future-updates)
 
 ---
 
 ## Features
 OnlyClans is designed to be a lightweight, highly customizable, and easy-to-use clan system for modern Minecraft servers.
 - **Full GUI Support**: Create, manage, and view your clan through interactive inventory menus.
+- **Full MiniMessage & Rich Text Support**: Native support for Adventure MiniMessage (`<gradient>`, `<rainbow>`, `<#hex>`, `<b>`, `<i>`, `<click>`, `<hover>`), Spigot hex (`&#RRGGBB`), and legacy color codes (`&`, `§`) across all menus, config files, messages, and clan chat.
 - **Clan Roles**: Leader, Moderator, and Member roles with different permissions (invite, kick, promote, demote).
 - **Clan KDR & Global Statistics**: Real-time database tracking for clan kills, deaths, rival war kills, and ratio ($KDR = \frac{Kills}{Deaths}$).
 - **Leaderboard & Top Clans (`/clan top`)**: Interactive paginated GUI and commands to rank top clans by KDR, Kills, or Member roster size.
@@ -273,9 +276,122 @@ If your network supports multiple languages at once, you can explicitly request 
 
 ---
 
+## Color & Text Formatting Guide (MiniMessage & Legacy)
+
+OnlyClans natively implements the official **[PaperMC Adventure MiniMessage](https://docs.papermc.io/adventure/minimessage/)** format engine alongside an intelligent legacy preprocessor. This gives you ultimate styling freedom: you can write modern MiniMessage tags, smooth multi-color gradients, rainbow patterns, standard Spigot hex (`&#RRGGBB`), or classic legacy Minecraft codes (`&` / `§`) across all plugin configurations (`config.yml`, `menus.yml`, `messages_en.yml`, `messages_es.yml`), clan chat, and clan tags. You can even combine them in the very same line!
+
+---
+
+### Gradients & Rainbows
+Smooth transitions between two or more hexadecimal colors or standard Minecraft color names:
+
+| Format | Syntax Example | Description |
+|---|---|---|
+| **Two-Color Gradient** | `<gradient:#2F6AFA:#00E5FF>OnlyClans</gradient>` | Smooth linear fade between two hex colors. |
+| **Multi-Stop Gradient** | `<gradient:#FF007A:#7928CA:#00DFD8>Top Clan</gradient>` | Linear interpolation across three or more colors. |
+| **Phased Gradient** | `<gradient:red:blue:0.5>Dynamic Title</gradient>` | Moves the color gradient phase forward (between -1.0 and 1.0). |
+| **Standard Rainbow** | `<rainbow>OnlyClans</rainbow>` | Full spectrum rainbow cycle. |
+| **Inverted / Phased Rainbow** | `<rainbow:!>Reversed</rainbow>` or `<rainbow:5>Offset</rainbow>` | Inverts color direction or shifts initial phase. |
+
+---
+
+### Hex & Named Colors
+You can use any modern Adventure color tag, standard Spigot hex, or legacy color codes:
+
+| Style | Syntax | Example |
+|---|---|---|
+| **MiniMessage Hex** | `<#RRGGBB>Text</#RRGGBB>` or `<#RRGGBB>Text` | `<#00E5FF>Cyan Clan Name` |
+| **MiniMessage Tagged** | `<color:#RRGGBB>Text</color>` | `<color:#FFAA00>Gold Clan Tag</color>` |
+| **MiniMessage Named** | `<color_name>Text</color_name>` | `<gold>Gold</gold>`, `<yellow>Yellow</yellow>`, `<green>Green</green>` |
+| **Spigot Hex** | `&#RRGGBBText` | `&#00E5FFCyan Clan Name` |
+| **Legacy Hex (Bungee)**| `&x&r&r&g&g&b&bText` | `&x&0&0&E&5&F&FCyan Clan Name` |
+| **Classic Codes** | `&0`–`&9`, `&a`–`&f` | `&aGreen &6Gold &cRed` |
+
+> [!TIP]
+> Standard supported Adventure color names include: `black`, `dark_blue`, `dark_green`, `dark_aqua`, `dark_red`, `dark_purple`, `gold`, `gray`, `dark_gray`, `blue`, `green`, `aqua`, `red`, `light_purple`, `yellow`, and `white`.
+
+---
+
+### Text Styles & Decorations
+Decorations can be applied using MiniMessage tags or standard legacy style codes:
+
+| Decoration | MiniMessage Tags | Legacy Code |
+|---|---|---|
+| **Bold** | `<b>Text</b>` or `<bold>Text</bold>` | `&l` |
+| **Italic** | `<i>Text</i>` or `<italic>Text</italic>` | `&o` |
+| **Underlined** | `<u>Text</u>` or `<underlined>Text</underlined>` | `&n` |
+| **Strikethrough**| `<s>Text</s>` or `<strikethrough>Text</strikethrough>` | `&m` |
+| **Obfuscated** | `<obf>Text</obf>` or `<obfuscated>Text</obfuscated>` | `&k` |
+| **Reset** | `<reset>` | `&r` |
+
+> [!NOTE]
+> **No-Italic GUI Protection**: In vanilla Minecraft, custom item display names and lore in inventory menus are forced into *italics* by default. OnlyClans automatically disables italics (`italic: false`) on all GUI items so your menu text remains crisp, straight, and clean. If you intentionally want italics on an item or a specific line of lore, simply add `<i>...</i>` or `&o`.
+
+---
+
+### 🖱️ Interactive Click & Hover Events (Chat)
+You can embed clickable actions and hover tooltips directly inside chat messages and clan broadcasts:
+
+* **Execute Command on Click**:
+  ```yaml
+  "<click:run_command:/clan accept><green>[ACCEPT]</green></click>"
+  ```
+* **Suggest Command into Player's Chat Bar**:
+  ```yaml
+  "<click:suggest_command:/clan invite ><yellow>[INVITE]</yellow></click>"
+  ```
+* **Open External URL**:
+  ```yaml
+  "<click:open_url:https://discord.gg/yourserver><aqua>[DISCORD]</aqua></click>"
+  ```
+* **Hover Tooltip**:
+  ```yaml
+  "<hover:show_text:'<gray>Click to view stats'><gold>%clan_name%</gold></hover>"
+  ```
+* **Combined Click + Hover Button**:
+  ```yaml
+  "<click:run_command:/clan accept><hover:show_text:'<green>Click to accept the invitation!'>&a&l[ACCEPT]</hover></click>"
+  ```
+
+---
+
+### 📐 Pixel-Perfect Chat Centering (`<center>`)
+OnlyClans features a built-in text centering system that works seamlessly with MiniMessage!
+
+When you prefix a line with `<center>` (or wrap it in `<center>...</center>`), the plugin calculates the pixel width of every character according to Minecraft's vanilla font glyph metrics:
+- All MiniMessage tags (`<gradient:...>`, `</gradient>`, `<hover:...>`, etc.), Hex codes, and legacy color codes are cleanly ignored during measurement.
+- Bold formatting (`<b>` or `&l`) is automatically taken into account (each character is 1 pixel wider).
+- The text is padded with spaces to center it in the default Minecraft chat window (320 pixels wide).
+
+**Example in `messages_en.yml`:**
+```yaml
+clan_invite_received:
+  - "&8━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  - "<center><gradient:#2F6AFA:#00E5FF><b>CLAN INVITATION</b></gradient></center>"
+  - "<center>&7You have been invited to join <gold>%clan%</gold> by <yellow>%inviter%</yellow></center>"
+  - ""
+  - "<center><click:run_command:/clan accept><hover:show_text:'&aClick to join %clan%'>&a&l[ACCEPT]</hover></click>     <click:run_command:/clan deny><hover:show_text:'&cClick to reject'>&c&l[DENY]</hover></click></center>"
+  - "&8━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+```
+
+---
+
+### 🔄 Dual-Engine & Hybrid Syntax
+You do not need to rewrite your existing configuration files. OnlyClans transparently converts legacy `&` codes into the Adventure component tree while leaving native MiniMessage tags intact:
+
+```yaml
+# Mixing legacy codes, MiniMessage gradients, and placeholders in menus.yml:
+title: "&8» <gradient:#2F6AFA:#00E5FF>Clan Members</gradient> &7(Page {PAGE})"
+
+# Using gradients in item names:
+name: "<gradient:#FFD700:#FFA500><b>★ Clan Leader:</b></gradient> &f%clan_leader%"
+```
+
+---
+
 ## Menus Guide
 
-OnlyClans features a fully customizable, animated GUI system in `menus.yml` with support for HEX gradients, custom sound effects, multi-slot decorative frames, custom Base64 heads, and dynamic member rendering.
+OnlyClans features a fully customizable, animated GUI system in `menus.yml` with support for MiniMessage, HEX gradients, custom sound effects, multi-slot decorative frames, custom Base64 heads, and dynamic member rendering.
 
 ### Modifying `menus.yml`
 Each menu supports configurable sizes, opening sounds, background fillers, and item definitions.
@@ -286,15 +402,15 @@ Each menu supports configurable sizes, opening sounds, background fillers, and i
         slot: 22                             # Single slot (0 to size-1)
         material: PLAYER_HEAD                # Item Material
         owner: "%player%"                    # Dynamic player skull (see Player Heads guide below)
-        name: "&#00E5FF&l🛡 Tu Clan: &#FFFFFF%clan_name%" # Item display name (Supports HEX)
+        name: "<gradient:#00E5FF:#0070F3><b>🛡 Tu Clan:</b></gradient> <white>%clan_name%</white>" # Supports MiniMessage, HEX & Legacy
         lore:
           - "&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          - "&#718096▪ &#A0AEC0Líder: &#FFD700%clan_leader%"
+          - "&#718096▪ &#A0AEC0Líder: <gold>%clan_leader%</gold>"
           - "&#718096▪ &#A0AEC0Tu Rango: %clan_role%"
-          - "&#718096▪ &#A0AEC0Miembros: &#00FF88%clan_members_online%&#718096/&#FFFFFF%clan_members%"
+          - "&#718096▪ &#A0AEC0Miembros: <green>%clan_members_online%</green>&#718096/<white>%clan_members%</white>"
           - "&#718096▪ &#A0AEC0PvP Aliado: %clan_ff%"
           - "&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          - "&#00E5FF▶ Clic para abrir el panel"
+          - "<gradient:#00E5FF:#2F6AFA>▶ Clic para abrir el panel</gradient>"
         glow: true                           # Glowing enchantment effect
         sound: "UI_BUTTON_CLICK"             # Sound played when clicked
         sound_volume: 1.0                    # Sound volume (default 1.0)
@@ -396,7 +512,7 @@ When a player clicks an item in the GUI, you can assign it an action:
 
 ### Menu General Settings
 Each menu in `menus.yml` can be configured with:
-* `title`: Display title of the GUI (supports HEX colors and placeholders).
+* `title`: Display title of the GUI (supports MiniMessage tags, HEX gradients, legacy colors, and placeholders).
 * `size`: Inventory size (9, 18, 27, 36, 45, 54).
 * `open_sound`: Sound played when the menu opens (e.g. `BLOCK_CHEST_OPEN` or `none`).
 * `filler`: Background glass pane material (e.g. `BLACK_STAINED_GLASS_PANE` or `none`).
