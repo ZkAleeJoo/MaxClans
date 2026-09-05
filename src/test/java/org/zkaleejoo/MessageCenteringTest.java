@@ -40,4 +40,38 @@ public class MessageCenteringTest {
         Component row = MessageUtils.buildCenteredButtonRow(accept, deny, 6);
         assertNotNull(row);
     }
+
+    @Test
+    public void testMiniMessageAndGradients() {
+        Component comp = MessageUtils.toComponent("<gradient:#ff0000:#0000ff>Gradient Text</gradient>");
+        assertNotNull(comp);
+
+        String colored = MessageUtils.getColoredMessage("<gradient:#ff0000:#0000ff>Gradient Text</gradient>");
+        assertTrue(colored.contains("§x"));
+
+        Component rainbow = MessageUtils.toComponent("<rainbow>Rainbow Clan</rainbow>");
+        assertNotNull(rainbow);
+
+        String mixed = "&8[&9OnlyClans&8] &aHola <gradient:#FFD700:#FFA500>Usuario</gradient> &#00E5FF[10] &7!";
+        Component mixedComp = MessageUtils.toComponent(mixed);
+        assertNotNull(mixedComp);
+        assertEquals("[OnlyClans] Hola Usuario [10] !", MessageUtils.stripColor(mixed));
+    }
+
+    @Test
+    public void testMiniMessageCentering() {
+        String tagMessage = "<gradient:#2F6AFA:#00E5FF><bold>CLAN LIST</bold></gradient>";
+        int px = MessageUtils.getPixelWidth(tagMessage);
+        assertTrue(px > 0 && px < 150);
+
+        String centered = MessageUtils.getCenteredMessage(tagMessage);
+        assertNotNull(centered);
+        assertTrue(centered.startsWith(" "));
+    }
+
+    @Test
+    public void testToComponentNoItalic() {
+        Component normal = MessageUtils.toComponentNoItalic("<gradient:#00E5FF:#00FF88>Clan Menu</gradient>");
+        assertEquals(TextDecoration.State.FALSE, normal.decoration(TextDecoration.ITALIC));
+    }
 }

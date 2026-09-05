@@ -71,18 +71,18 @@ public class OnlyClans extends JavaPlugin {
 
         startUpdateChecks();
 
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&9&lOnlyClans &8» &fPlugin Enabled!"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent("&9&lOnlyClans &8» &fPlugin Enabled!"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                 "&9&lOnlyClans &8» &9________         .__         _________ .__                        "));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                 "&9&lOnlyClans &8» &9\\_____  \\   ____ |  | ___.__.\\_   ___ \\|  | _____    ____   ______"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                 "&9&lOnlyClans &8» &9 /   |   \\ /    \\|  |<   |  |/    \\  \\/|  | \\__  \\  /    \\ /  ___/"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                 "&9&lOnlyClans &8» &9/    |    \\   |  \\  |_\\___  |\\     \\___|  |__/ __ \\|   |  \\\\___ \\ "));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                 "&9&lOnlyClans &8» &9\\_______  /___|  /____/ ____| \\______  /____(____  /___|  /____  >"));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                 "&9&lOnlyClans &8» &9        \\/     \\/     \\/             \\/          \\/     \\/     \\/ "));
     }
 
@@ -93,14 +93,14 @@ public class OnlyClans extends JavaPlugin {
         new UpdateChecker(this).getVersion(version -> {
             if (this.getPluginMeta().getVersion().equalsIgnoreCase(version)) {
                 this.latestVersion = null;
-                Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                         "&5&lOnlyClans &8» &fA check for updates was performed and nothing was found."));
             } else {
                 this.latestVersion = version;
-                Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage(
+                Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
                         "&9&lOnlyClans &8» &f&lNEW VERSION: &7" + version));
                 Bukkit.getConsoleSender().sendMessage(
-                        MessageUtils.getColoredMessage(
+                        MessageUtils.toComponent(
                                 "&9&lOnlyClans &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/onlyclans"));
             }
         });
@@ -155,7 +155,7 @@ public class OnlyClans extends JavaPlugin {
             databaseManager.close();
         }
 
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.getColoredMessage("&9&lOnlyClans &8» &cPlugin Disabled!"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent("&9&lOnlyClans &8» &cPlugin Disabled!"));
     }
 
     public MainConfigManager getMainConfigManager() {

@@ -731,11 +731,12 @@ public class ClanManager {
                 + plugin.getMainConfigManager()
                         .getMessage("clan-chat-format", "&b[Clan Chat] &f{player}&7: &f{message}")
                         .replace("{player}", sender.getName()).replace("{message}", message);
+        Component comp = MessageUtils.toComponent(formatted);
 
         for (UUID uuid : clan.getMembers().keySet()) {
             Player member = Bukkit.getPlayer(uuid);
             if (member != null && member.isOnline()) {
-                member.sendMessage(MessageUtils.getColoredMessage(formatted));
+                member.sendMessage(comp);
             }
         }
 
@@ -750,7 +751,7 @@ public class ClanManager {
                                         .replace("{clan}", clan.getName())
                                         .replace("{player}", sender.getName())
                                         .replace("{message}", message);
-                        online.sendMessage(MessageUtils.getColoredMessage(spyFormatted));
+                        online.sendMessage(MessageUtils.toComponent(spyFormatted));
                     }
                 }
             }
@@ -873,10 +874,11 @@ public class ClanManager {
     }
 
     private void broadcastToClan(Clan clan, String message) {
+        Component comp = MessageUtils.toComponent(message);
         for (UUID uuid : clan.getMembers().keySet()) {
             Player member = Bukkit.getPlayer(uuid);
             if (member != null && member.isOnline()) {
-                member.sendMessage(MessageUtils.getColoredMessage(message));
+                member.sendMessage(comp);
             }
         }
     }

@@ -25,12 +25,12 @@ public class PlayerJoinListener implements Listener {
             String latest = plugin.getLatestVersion();
             if (latest != null && !plugin.getPluginMeta().getVersion().equalsIgnoreCase(latest)) {
                 player.sendMessage(" ");
-                player.sendMessage(MessageUtils.getColoredMessage(
+                player.sendMessage(MessageUtils.toComponent(
                         config.getPrefix() + config.getMsgUpdateAvailable().replace("{version}", latest)));
-                player.sendMessage(MessageUtils.getColoredMessage(
+                player.sendMessage(MessageUtils.toComponent(
                         config.getPrefix() + config.getMsgUpdateCurrent().replace("{version}",
                                 plugin.getPluginMeta().getVersion())));
-                player.sendMessage(MessageUtils.getColoredMessage(config.getPrefix() + config.getMsgUpdateDownload()));
+                player.sendMessage(MessageUtils.toComponent(config.getPrefix() + config.getMsgUpdateDownload()));
                 player.sendMessage(" ");
             }
         }

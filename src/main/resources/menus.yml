@@ -1,6 +1,10 @@
 # ====================================================================#
 #                     OnlyClans - Menus Configuration               #
 # ====================================================================#
+# Formatting Support (titles, item names, and lore):
+#   - MiniMessage: <red>, <bold>, <gradient:#color1:#color2>text</gradient>, <rainbow>text</rainbow>
+#   - Legacy & Hex: &a, &c, &l, &r, &#2F6AFA, &x&1&2&3&4&5&6, § codes
+#
 # Available Placeholders:
 #   %player%              - Player name
 #   %clan_name%           - Clan name (or 'None')

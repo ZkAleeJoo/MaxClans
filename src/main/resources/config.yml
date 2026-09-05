@@ -1,8 +1,14 @@
 # ==================================================================== #
 #                      OnlyClans - Main Configuration                  #
 # ==================================================================== #
+# Formatting Support across the entire plugin:
+#   - MiniMessage: <red>, <bold>, <gradient:#color1:#color2>text</gradient>, <rainbow>text</rainbow>
+#   - Interactive: <click:run_command:/cmd>, <hover:show_text:'tooltip'>
+#   - Legacy & Hex: &a, &c, &l, &r, &#2F6AFA, &x&1&2&3&4&5&6, § codes
+# ==================================================================== #
 
 general:
+  # Plugin prefix (supports MiniMessage, Gradients, and Legacy)
   prefix: '&#2F6AFA&lOnlyClans &8» '
   # Plugin language (options: 'en', 'es', or any custom messages_<lang>.yml)
   language: 'en'

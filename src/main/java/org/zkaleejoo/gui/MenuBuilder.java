@@ -102,7 +102,7 @@ public class MenuBuilder {
         ConfigurationSection menuSection = menusConfig.getConfigurationSection("menus." + menuId);
 
         if (menuSection == null) {
-            player.sendMessage(MessageUtils.getColoredMessage(
+            player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix()
                             + plugin.getMainConfigManager().getMessage("menu-not-found", "&cMenu '{menu}' not found.")
                                     .replace("{menu}", menuId)));
@@ -442,7 +442,7 @@ public class MenuBuilder {
                             .replace("%member_deaths%", String.valueOf(deaths))
                             .replace("%member_playtime%", playtimeFormatted)
                             .replace("%member_joined%", joinedFormatted);
-                    skullMeta.displayName(MessageUtils.legacyToComponentNoItalic(processedTitle));
+                    skullMeta.displayName(MessageUtils.toComponentNoItalic(processedTitle));
 
                     List<String> rawLore = memberItemConfig.getStringList("lore");
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
@@ -456,40 +456,40 @@ public class MenuBuilder {
                                 .replace("%member_deaths%", String.valueOf(deaths))
                                 .replace("%member_playtime%", playtimeFormatted)
                                 .replace("%member_joined%", joinedFormatted);
-                        lore.add(MessageUtils.legacyToComponentNoItalic(processedLine));
+                        lore.add(MessageUtils.toComponentNoItalic(processedLine));
                     }
 
                     ClanPlayer viewerCp = clan.getMember(viewer.getUniqueId());
                     if (viewerCp != null && viewerCp.isLeader() && !cp.getUuid().equals(viewer.getUniqueId())) {
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
-                        lore.add(MessageUtils.legacyToComponentNoItalic(managementTitle));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096• &#00E5FF/clan promote " + memberName));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096• &#FFAA00/clan demote " + memberName));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096• &#FF3366/clan kick " + memberName));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
+                        lore.add(MessageUtils.toComponentNoItalic(managementTitle));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096• &#00E5FF/clan promote " + memberName));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096• &#FFAA00/clan demote " + memberName));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096• &#FF3366/clan kick " + memberName));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
                     }
                     skullMeta.lore(lore);
                 } else {
                     String title = roleBadge + " &#FFFFFF" + memberName;
-                    skullMeta.displayName(MessageUtils.legacyToComponentNoItalic(title));
+                    skullMeta.displayName(MessageUtils.toComponentNoItalic(title));
 
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
-                    lore.add(MessageUtils.legacyToComponentNoItalic(statusLabel + statusText));
-                    lore.add(MessageUtils.legacyToComponentNoItalic(roleLabel + roleBadge));
-                    lore.add(MessageUtils.legacyToComponentNoItalic(kdrLabel + "&#00FF88" + kdr + " &#718096(&#FFFFFF"
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
+                    lore.add(MessageUtils.toComponentNoItalic(statusLabel + statusText));
+                    lore.add(MessageUtils.toComponentNoItalic(roleLabel + roleBadge));
+                    lore.add(MessageUtils.toComponentNoItalic(kdrLabel + "&#00FF88" + kdr + " &#718096(&#FFFFFF"
                             + kills + " &#718096K / &#FFFFFF" + deaths + " &#718096D)"));
-                    lore.add(MessageUtils.legacyToComponentNoItalic(playtimeLabel + "&#00E5FF" + playtimeFormatted));
-                    lore.add(MessageUtils.legacyToComponentNoItalic(joinedLabel + "&#E2E8F0" + joinedFormatted));
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
+                    lore.add(MessageUtils.toComponentNoItalic(playtimeLabel + "&#00E5FF" + playtimeFormatted));
+                    lore.add(MessageUtils.toComponentNoItalic(joinedLabel + "&#E2E8F0" + joinedFormatted));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
 
                     ClanPlayer viewerCp = clan.getMember(viewer.getUniqueId());
                     if (viewerCp != null && viewerCp.isLeader() && !cp.getUuid().equals(viewer.getUniqueId())) {
-                        lore.add(MessageUtils.legacyToComponentNoItalic(managementTitle));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096• &#00E5FF/clan promote " + memberName));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096• &#FFAA00/clan demote " + memberName));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096• &#FF3366/clan kick " + memberName));
-                        lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
+                        lore.add(MessageUtils.toComponentNoItalic(managementTitle));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096• &#00E5FF/clan promote " + memberName));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096• &#FFAA00/clan demote " + memberName));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096• &#FF3366/clan kick " + memberName));
+                        lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━"));
                     }
 
                     skullMeta.lore(lore);
@@ -586,7 +586,7 @@ public class MenuBuilder {
                         ? itemTemplate.getString("name", "&#00FF88&l%clan_name% &#718096[%clan_tag%]")
                         : "&#00FF88&l%clan_name% &#718096[%clan_tag%]";
                 String processedTitle = replacePlaceholders(rawTitle, viewer, clan, page);
-                skullMeta.displayName(MessageUtils.legacyToComponentNoItalic(processedTitle));
+                skullMeta.displayName(MessageUtils.toComponentNoItalic(processedTitle));
 
                 List<String> rawLore = itemTemplate != null ? itemTemplate.getStringList("lore") : null;
                 List<net.kyori.adventure.text.Component> loreComponents = new ArrayList<>();
@@ -623,34 +623,34 @@ public class MenuBuilder {
                                 .replace("%clan_staff_status%", staffStatus)
                                 .replace("%action_hint%", actionHint);
 
-                        loreComponents.add(MessageUtils.legacyToComponentNoItalic(processedLine));
+                        loreComponents.add(MessageUtils.toComponentNoItalic(processedLine));
                     }
                 } else {
-                    loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    loreComponents.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                     loreComponents.add(
-                            MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Leader: &#FFFFFF" + leaderName));
+                            MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Leader: &#FFFFFF" + leaderName));
                     loreComponents.add(MessageUtils
-                            .legacyToComponentNoItalic("&#718096▪ &#A0AEC0Tag: &#FFFFFF[" + clan.getTag() + "]"));
-                    loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Members: &#FFFFFF"
+                            .toComponentNoItalic("&#718096▪ &#A0AEC0Tag: &#FFFFFF[" + clan.getTag() + "]"));
+                    loreComponents.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Members: &#FFFFFF"
                             + onlineCount + "&#718096/&#FFFFFF" + clan.getMemberCount()));
-                    loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Friendly Fire: "
+                    loreComponents.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Friendly Fire: "
                             + (clan.isFriendlyFire() ? "&#00FF88ON" : "&#FF3366OFF")));
-                    loreComponents.add(MessageUtils.legacyToComponentNoItalic(
+                    loreComponents.add(MessageUtils.toComponentNoItalic(
                             "&#718096▪ &#A0AEC0Staff: " + (hasStaff ? "&#00FF88● Online" : "&#FF3366○ Offline")));
-                    loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    loreComponents.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                     if (isViewerClan) {
-                        loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#00E5FF▶ Your Current Clan"));
+                        loreComponents.add(MessageUtils.toComponentNoItalic("&#00E5FF▶ Your Current Clan"));
                     } else if (viewerInClan) {
-                        loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#718096Already in a clan"));
+                        loreComponents.add(MessageUtils.toComponentNoItalic("&#718096Already in a clan"));
                     } else if (clan.isOpenJoin()) {
-                        loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#00FF88▶ Click to join (Open Clan)"));
+                        loreComponents.add(MessageUtils.toComponentNoItalic("&#00FF88▶ Click to join (Open Clan)"));
                     } else if (alreadyRequested) {
-                        loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#FFAA00⌛ Request Pending"));
+                        loreComponents.add(MessageUtils.toComponentNoItalic("&#FFAA00⌛ Request Pending"));
                     } else if (hasStaff) {
                         loreComponents
-                                .add(MessageUtils.legacyToComponentNoItalic("&#00FF88▶ Click to send join request"));
+                                .add(MessageUtils.toComponentNoItalic("&#00FF88▶ Click to send join request"));
                     } else {
-                        loreComponents.add(MessageUtils.legacyToComponentNoItalic("&#FF5555✖ Staff Offline"));
+                        loreComponents.add(MessageUtils.toComponentNoItalic("&#FF5555✖ Staff Offline"));
                     }
                 }
 
@@ -758,7 +758,7 @@ public class MenuBuilder {
                             .replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills()))
                             .replace("%clan_members%", String.valueOf(clan.getMemberCount()))
                             .replace("%clan_members_online%", String.valueOf(onlineCount));
-                    skullMeta.displayName(MessageUtils.legacyToComponentNoItalic(processedTitle));
+                    skullMeta.displayName(MessageUtils.toComponentNoItalic(processedTitle));
 
                     List<String> rawLore = topItemConfig.getStringList("lore");
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
@@ -775,18 +775,18 @@ public class MenuBuilder {
                                 .replace("%clan_members%", String.valueOf(clan.getMemberCount()))
                                 .replace("%clan_members_online%", String.valueOf(onlineCount))
                                 .replace("%clan_created%", plugin.getPlaceholderManager().formatDate(clan.getCreatedAt()));
-                        lore.add(MessageUtils.legacyToComponentNoItalic(processedLine));
+                        lore.add(MessageUtils.toComponentNoItalic(processedLine));
                     }
                     skullMeta.lore(lore);
                 } else {
-                    skullMeta.displayName(MessageUtils.legacyToComponentNoItalic(rankBadge + " &#00FF88&l" + clan.getName() + " &#718096[" + clan.getTag() + "]"));
+                    skullMeta.displayName(MessageUtils.toComponentNoItalic(rankBadge + " &#00FF88&l" + clan.getName() + " &#718096[" + clan.getTag() + "]"));
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Líder: &#FFFFFF" + leaderName));
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0KDR: &#00FF88" + clan.getFormattedKDR() + " &#718096(&#FFFFFF" + clan.getKills() + " &#718096K / &#FFFFFF" + clan.getDeaths() + " &#718096D)"));
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Bajas Rivales: &#FF3366" + clan.getRivalKills()));
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096▪ &#A0AEC0Miembros: &#00E5FF" + onlineCount + "&#718096/&#FFFFFF" + clan.getMemberCount()));
-                    lore.add(MessageUtils.legacyToComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Líder: &#FFFFFF" + leaderName));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0KDR: &#00FF88" + clan.getFormattedKDR() + " &#718096(&#FFFFFF" + clan.getKills() + " &#718096K / &#FFFFFF" + clan.getDeaths() + " &#718096D)"));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Bajas Rivales: &#FF3366" + clan.getRivalKills()));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Miembros: &#00E5FF" + onlineCount + "&#718096/&#FFFFFF" + clan.getMemberCount()));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                     skullMeta.lore(lore);
                 }
 
@@ -822,14 +822,14 @@ public class MenuBuilder {
 
         String name = itemConfig.getString("name", "");
         String processedName = replacePlaceholders(name, player, clan, page, holder);
-        meta.displayName(MessageUtils.legacyToComponentNoItalic(processedName));
+        meta.displayName(MessageUtils.toComponentNoItalic(processedName));
 
         List<String> lore = itemConfig.getStringList("lore");
         if (lore != null && !lore.isEmpty()) {
             List<net.kyori.adventure.text.Component> loreComponents = new ArrayList<>();
             for (String line : lore) {
                 String processedLine = replacePlaceholders(line, player, clan, page, holder);
-                loreComponents.add(MessageUtils.legacyToComponentNoItalic(processedLine));
+                loreComponents.add(MessageUtils.toComponentNoItalic(processedLine));
             }
             meta.lore(loreComponents);
         }

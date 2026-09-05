@@ -1,3 +1,5 @@
+# All messages support MiniMessage (<red>, <bold>, <gradient:#c1:#c2>text</gradient>, <rainbow>),
+# interactive tags (<click:run_command:/cmd>, <hover:show_text:'tooltip'>), and legacy codes (&a, &#rrggbb).
 messages:
   no-permission: '&cYou do not have permission to execute this command.'
   plugin-reload: '&aPlugin successfully reloaded.'

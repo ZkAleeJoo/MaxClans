@@ -24,19 +24,19 @@ public class ChatCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(MessageUtils.getColoredMessage(
+            sender.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMsgConsole()));
             return true;
         }
 
         if (!player.hasPermission("onlyclans.command.chat")) {
-            player.sendMessage(MessageUtils.getColoredMessage(
+            player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getNoPermission()));
             return true;
         }
 
         if (args.length == 0) {
-            player.sendMessage(MessageUtils.getColoredMessage(
+            player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMessage("usage-chat", "&cUsage: /c <message>")));
             return true;
         }
@@ -45,7 +45,7 @@ public class ChatCommand implements CommandExecutor, TabCompleter {
         Clan clan = clanManager.getClanByPlayer(player.getUniqueId());
 
         if (clan == null) {
-            player.sendMessage(MessageUtils.getColoredMessage(
+            player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMessage("not-in-clan", "&cYou are not in a clan.")));
             return true;
         }
