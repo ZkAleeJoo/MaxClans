@@ -39,7 +39,7 @@ placeholders:
   # Date formatting pattern (e.g. dd/MM/yyyy or MM/dd/yyyy)
   date-format: 'dd/MM/yyyy'
   # Tag formatting template ({tag} is replaced with the clan tag)
-  tag-format: '&#8727F5[{tag}]'
+  tag-format: '[{tag}<dark_gray>]</dark_gray>'
   # Multi-language text settings
   languages:
     en:
