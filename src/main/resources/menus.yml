@@ -142,7 +142,7 @@ menus:
       btn_top:
         slot: 31
         material: PLAYER_HEAD
-        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTUxNDU5MmQzYTBjNmQyMmI2NDc2MWY4MmEyODFhMTBlYjFEZGNjYmY1MWExYzg3NzhhY2M2MmNmN2Y3MmRiIn19fQ==
+        base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTc2YzU4Yjg2OTBkMDE0MDAxZjMzMTJkNjhmZjU2MTI0YzAzMmQzMGE5YjdlZWRiY2VkOTY3YzBhMzk4OGUyOCJ9fX0=
         name: '&#FFD700&lᴛᴏᴘ ᴄʟᴀɴꜱ ✦'
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
@@ -941,7 +941,7 @@ menus:
     items:
       filter_kdr:
         slot: 2
-        material: DIAMOND_SWORD
+        material: GOLDEN_APPLE
         name: '&#00FF88&lᴛᴏᴘ ᴋᴅʀ'
         lore:
         - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
