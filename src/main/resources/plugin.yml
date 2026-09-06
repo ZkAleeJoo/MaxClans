@@ -53,6 +53,11 @@ permissions:
       onlyclans.command.sethome: true
       onlyclans.command.delhome: true
       onlyclans.command.homes: true
+      onlyclans.command.level: true
+      onlyclans.command.chest: true
+      onlyclans.command.bank: true
+      onlyclans.command.ally: true
+      onlyclans.command.quests: true
   onlyclans.command.main:
     description: Open the main clan menu.
     default: true
@@ -136,6 +141,21 @@ permissions:
     default: true
   onlyclans.command.homes:
     description: List all clan homes.
+    default: true
+  onlyclans.command.level:
+    description: View clan level, EXP progress, and unlocked perks.
+    default: true
+  onlyclans.command.chest:
+    description: Access the shared clan chest.
+    default: true
+  onlyclans.command.bank:
+    description: Access the clan bank.
+    default: true
+  onlyclans.command.ally:
+    description: Manage clan alliances.
+    default: true
+  onlyclans.command.quests:
+    description: View daily clan missions and progress.
     default: true
   onlyclans.bypass.warmup:
     description: Bypass clan teleport warmup delay.

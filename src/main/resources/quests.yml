@@ -1,0 +1,94 @@
+# ==================================================================== #
+#                     OnlyClans - Clan Quests Config                   #
+# ==================================================================== #
+# Configuration for Cooperative Daily Clan Quests.                     #
+# All members of a clan cooperate together to complete these quests.   #
+#                                                                      #
+# Supported Quest Types:                                               #
+#   - KILL_MOB     : Slay hostile entities or monsters                 #
+#   - MINE_BLOCK   : Mine ores or blocks                               #
+#   - CHOP_WOOD    : Chop tree logs or wood blocks                     #
+#   - PVP_KILLS    : Player kills in PvP combat                        #
+#   - DONATE_BANK  : Coin donations into the clan bank                 #
+# ==================================================================== #
+
+settings:
+  # Enable or disable the clan quests system
+  enabled: true
+  # Number of daily quests active simultaneously for each clan
+  daily-quests-amount: 3
+  # Daily reset time (24h format HH:mm in server timezone)
+  reset-time: "00:00"
+
+quests:
+  kill_monsters:
+    name: "&#FF3366&lShadow Hunter"
+    description: "&7Slay 100 hostile monsters cooperatively."
+    type: KILL_MOB
+    target: "MONSTER" # "MONSTER" matches any hostile mob
+    required: 100
+    reward-exp: 500
+    icon: "IRON_SWORD"
+
+  kill_endermen:
+    name: "&#9933FF&lVoid Hunters"
+    description: "&7Defeat 20 Endermen with your clan."
+    type: KILL_MOB
+    target: "ENDERMAN"
+    required: 20
+    reward-exp: 750
+    icon: "ENDER_PEARL"
+
+  mine_coal:
+    name: "&#718096&lCoal Miners"
+    description: "&7Mine 150 coal ores in the depths."
+    type: MINE_BLOCK
+    target: "COAL_ORE"
+    required: 150
+    reward-exp: 400
+    icon: "COAL"
+
+  mine_iron:
+    name: "&#E2E8F0&lIron Rush"
+    description: "&7Extract 100 iron ores."
+    type: MINE_BLOCK
+    target: "IRON_ORE"
+    required: 100
+    reward-exp: 600
+    icon: "IRON_INGOT"
+
+  mine_diamonds:
+    name: "&#00E5FF&lDiamond Prospectors"
+    description: "&7Mine 30 diamond ores for clan glory."
+    type: MINE_BLOCK
+    target: "DIAMOND_ORE"
+    required: 30
+    reward-exp: 1000
+    icon: "DIAMOND"
+
+  chop_wood:
+    name: "&#FFAA00&lMaster Lumberjacks"
+    description: "&7Chop 200 logs of any wood type."
+    type: CHOP_WOOD
+    target: "LOGS" # "LOGS" matches any wood log
+    required: 200
+    reward-exp: 450
+    icon: "IRON_AXE"
+
+  pvp_conquerors:
+    name: "&#FF0055&lWarlord's Glory"
+    description: "&7Defeat 10 enemy players in PvP combat."
+    type: PVP_KILLS
+    target: "PLAYER"
+    required: 10
+    reward-exp: 800
+    icon: "DIAMOND_SWORD"
+
+  bank_donation:
+    name: "&#FFD700&lClan Tribute"
+    description: "&7Deposit 10,000 coins into the clan bank."
+    type: DONATE_BANK
+    target: "COINS"
+    required: 10000
+    reward-exp: 650
+    icon: "GOLD_INGOT"

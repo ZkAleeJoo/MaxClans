@@ -47,8 +47,188 @@ homes:
     1: 1
     2: 2
     3: 3
-    4: 5
-    5: 10
+    4: 4
+    5: 5
+    6: 6
+    7: 7
+    8: 8
+    9: 9
+    10: 10
+
+
+# ==================================================================== #
+#                 Clan Leveling & Perks Configuration                  #
+# ==================================================================== #
+leveling:
+  # Actionbar notification when gaining clan EXP
+  actionbar-on-exp: true
+  # Sound played to contributor when gaining clan EXP (or 'none')
+  exp-sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+  # Sound played to all clan members when leveling up
+  levelup-sound: "UI_TOAST_CHALLENGE_COMPLETE"
+  # Sources of clan EXP
+  exp-sources:
+    monsters:
+      default: 10
+      boss: 100
+      custom:
+        ENDER_DRAGON: 500
+        WITHER: 350
+        WARDEN: 400
+        ELDER_GUARDIAN: 150
+        ENDERMAN: 15
+        BLAZE: 12
+        CREEPER: 10
+    wood-cutting:
+      default: 2
+    mining:
+      default: 1
+      custom:
+        COAL_ORE: 2
+        DEEPSLATE_COAL_ORE: 2
+        COPPER_ORE: 2
+        DEEPSLATE_COPPER_ORE: 2
+        IRON_ORE: 4
+        DEEPSLATE_IRON_ORE: 4
+        GOLD_ORE: 6
+        DEEPSLATE_GOLD_ORE: 6
+        REDSTONE_ORE: 5
+        DEEPSLATE_REDSTONE_ORE: 5
+        LAPIS_ORE: 5
+        DEEPSLATE_LAPIS_ORE: 5
+        DIAMOND_ORE: 20
+        DEEPSLATE_DIAMOND_ORE: 20
+        EMERALD_ORE: 25
+        DEEPSLATE_EMERALD_ORE: 25
+        NETHER_QUARTZ_ORE: 4
+        NETHER_GOLD_ORE: 4
+        ANCIENT_DEBRIS: 50
+    pvp:
+      kill-player: 25
+      kill-rival: 60
+
+  # Levels configuration (Levels 1 to 10+)
+  levels:
+    1:
+      exp-required: 0
+      max-members: 8
+      max-allies: 0
+      max-homes: 1
+      bank-access: false
+      chest-access: false
+      chest-rows: 3
+      base-effect: false
+      base-effect-type: "HASTE"
+      base-effect-amplifier: 0
+      base-effect-radius: 30
+    2:
+      exp-required: 1500
+      max-members: 12
+      max-allies: 0
+      max-homes: 2
+      bank-access: true
+      chest-access: false
+      chest-rows: 3
+      base-effect: false
+      base-effect-type: "HASTE"
+      base-effect-amplifier: 0
+      base-effect-radius: 30
+    3:
+      exp-required: 4000
+      max-members: 12
+      max-allies: 0
+      max-homes: 3
+      bank-access: true
+      chest-access: true
+      chest-rows: 3
+      base-effect: false
+      base-effect-type: "HASTE"
+      base-effect-amplifier: 0
+      base-effect-radius: 30
+    4:
+      exp-required: 8000
+      max-members: 16
+      max-allies: 1
+      max-homes: 4
+      bank-access: true
+      chest-access: true
+      chest-rows: 3
+      base-effect: false
+      base-effect-type: "HASTE"
+      base-effect-amplifier: 0
+      base-effect-radius: 30
+    5:
+      exp-required: 15000
+      max-members: 20
+      max-allies: 1
+      max-homes: 5
+      bank-access: true
+      chest-access: true
+      chest-rows: 4
+      base-effect: true
+      base-effect-type: "HASTE"
+      base-effect-amplifier: 0
+      base-effect-radius: 30
+    6:
+      exp-required: 25000
+      max-members: 24
+      max-allies: 2
+      max-homes: 6
+      bank-access: true
+      chest-access: true
+      chest-rows: 4
+      base-effect: true
+      base-effect-type: "HASTE"
+      base-effect-amplifier: 0
+      base-effect-radius: 35
+    7:
+      exp-required: 40000
+      max-members: 28
+      max-allies: 2
+      max-homes: 7
+      bank-access: true
+      chest-access: true
+      chest-rows: 5
+      base-effect: true
+      base-effect-type: "HASTE"
+      base-effect-amplifier: 0
+      base-effect-radius: 40
+    8:
+      exp-required: 60000
+      max-members: 32
+      max-allies: 3
+      max-homes: 8
+      bank-access: true
+      chest-access: true
+      chest-rows: 5
+      base-effect: true
+      base-effect-type: "REGENERATION"
+      base-effect-amplifier: 0
+      base-effect-radius: 45
+    9:
+      exp-required: 85000
+      max-members: 36
+      max-allies: 4
+      max-homes: 9
+      bank-access: true
+      chest-access: true
+      chest-rows: 6
+      base-effect: true
+      base-effect-type: "REGENERATION"
+      base-effect-amplifier: 0
+      base-effect-radius: 50
+    10:
+      exp-required: 120000
+      max-members: 50
+      max-allies: 5
+      max-homes: 10
+      bank-access: true
+      chest-access: true
+      chest-rows: 6
+      base-effect: true
+      base-effect-type: "REGENERATION"
+      base-effect-amplifier: 0
+      base-effect-radius: 60
 
 
 # ==================================================================== #

@@ -89,6 +89,8 @@ public class DatabaseManager {
                     + "deaths INT DEFAULT 0,"
                     + "rival_kills INT DEFAULT 0,"
                     + "level INT DEFAULT 1,"
+                    + "exp INT DEFAULT 0,"
+                    + "bank_balance DOUBLE DEFAULT 0.0,"
                     + "created_at BIGINT NOT NULL"
                     + ")" + engine);
 
@@ -114,8 +116,40 @@ public class DatabaseManager {
                     + "FOREIGN KEY (clan_name) REFERENCES clans(name) ON DELETE CASCADE"
                     + ")" + engine);
 
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS clan_chests ("
+                    + "clan_name VARCHAR(64) PRIMARY KEY,"
+                    + "inventory_data TEXT NOT NULL,"
+                    + "updated_at BIGINT NOT NULL,"
+                    + "FOREIGN KEY (clan_name) REFERENCES clans(name) ON DELETE CASCADE"
+                    + ")" + engine);
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS clan_allies ("
+                    + "clan_name VARCHAR(64) NOT NULL,"
+                    + "ally_name VARCHAR(64) NOT NULL,"
+                    + "PRIMARY KEY (clan_name, ally_name),"
+                    + "FOREIGN KEY (clan_name) REFERENCES clans(name) ON DELETE CASCADE"
+                    + ")" + engine);
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS clan_quests ("
+                    + "clan_name VARCHAR(64) NOT NULL,"
+                    + "quest_id VARCHAR(64) NOT NULL,"
+                    + "progress INT DEFAULT 0,"
+                    + "completed BOOLEAN DEFAULT 0,"
+                    + "assigned_date VARCHAR(16) NOT NULL,"
+                    + "PRIMARY KEY (clan_name, quest_id, assigned_date),"
+                    + "FOREIGN KEY (clan_name) REFERENCES clans(name) ON DELETE CASCADE"
+                    + ")" + engine);
+
             try {
                 stmt.executeUpdate("ALTER TABLE clans ADD COLUMN level INT DEFAULT 1");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN exp INT DEFAULT 0");
+            } catch (SQLException ignored) {
+            }
+            try {
+                stmt.executeUpdate("ALTER TABLE clans ADD COLUMN bank_balance DOUBLE DEFAULT 0.0");
             } catch (SQLException ignored) {
             }
 

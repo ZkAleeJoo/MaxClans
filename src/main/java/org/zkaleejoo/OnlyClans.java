@@ -14,6 +14,9 @@ import org.zkaleejoo.listeners.ClanDamageListener;
 import org.zkaleejoo.listeners.MenuListener;
 import org.zkaleejoo.listeners.PlayerJoinListener;
 import org.zkaleejoo.managers.ClanManager;
+import org.zkaleejoo.managers.ClanLevelManager;
+import org.zkaleejoo.managers.ClanChestManager;
+import org.zkaleejoo.managers.ClanQuestManager;
 import org.zkaleejoo.managers.ClanTeleportManager;
 import org.zkaleejoo.managers.PlaceholderManager;
 import org.zkaleejoo.utils.FoliaCompat;
@@ -32,10 +35,14 @@ public class OnlyClans extends JavaPlugin {
     private ClanStorage clanStorage;
     private ClanManager clanManager;
     private ClanTeleportManager clanTeleportManager;
+    private ClanLevelManager clanLevelManager;
+    private ClanChestManager clanChestManager;
+    private ClanQuestManager clanQuestManager;
     private MenuBuilder menuBuilder;
     private String latestVersion;
     private Metrics metrics;
     private WrappedTask updateCheckTask;
+    private WrappedTask baseEffectTask;
 
     @Override
     public void onEnable() {
@@ -48,6 +55,10 @@ public class OnlyClans extends JavaPlugin {
         databaseManager.initialize();
 
         clanStorage = new ClanStorage(this, databaseManager);
+        clanLevelManager = new ClanLevelManager(this);
+        clanChestManager = new ClanChestManager(this);
+        clanQuestManager = new ClanQuestManager(this);
+
         clanManager = new ClanManager(this, clanStorage);
         clanManager.loadClans();
 
@@ -68,8 +79,10 @@ public class OnlyClans extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ClanDamageListener(this), this);
         getServer().getPluginManager().registerEvents(new ClanChatListener(this), this);
         getServer().getPluginManager().registerEvents(new org.zkaleejoo.listeners.ClanTeleportListener(this), this);
+        getServer().getPluginManager().registerEvents(new org.zkaleejoo.listeners.ClanExpListener(this), this);
 
         FoliaCompat.runGlobalTimer(this, new org.zkaleejoo.gui.MenuUpdateTask(this), 1L, 1L);
+        baseEffectTask = FoliaCompat.runGlobalTimer(this, new org.zkaleejoo.tasks.ClanBaseEffectTask(this), 60L, 60L);
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new org.zkaleejoo.hooks.PlaceholderAPIHook(this).register();
@@ -157,6 +170,15 @@ public class OnlyClans extends JavaPlugin {
             metrics = null;
         }
 
+        if (baseEffectTask != null) {
+            baseEffectTask.cancel();
+            baseEffectTask = null;
+        }
+
+        if (clanChestManager != null) {
+            clanChestManager.saveAll();
+        }
+
         if (clanTeleportManager != null) {
             clanTeleportManager.cancelAll();
             clanTeleportManager = null;
@@ -185,6 +207,18 @@ public class OnlyClans extends JavaPlugin {
         return clanTeleportManager;
     }
 
+    public ClanLevelManager getClanLevelManager() {
+        return clanLevelManager;
+    }
+
+    public ClanChestManager getClanChestManager() {
+        return clanChestManager;
+    }
+
+    public ClanQuestManager getClanQuestManager() {
+        return clanQuestManager;
+    }
+
     public ClanStorage getClanStorage() {
         return clanStorage;
     }
@@ -201,6 +235,12 @@ public class OnlyClans extends JavaPlugin {
         mainConfigManager.reloadConfig();
         if (placeholderManager != null) {
             placeholderManager.loadConfig(mainConfigManager.getConfigFile());
+        }
+        if (clanLevelManager != null) {
+            clanLevelManager.loadConfig();
+        }
+        if (clanQuestManager != null) {
+            clanQuestManager.loadConfig();
         }
         syncMetricsState();
         startUpdateChecks();

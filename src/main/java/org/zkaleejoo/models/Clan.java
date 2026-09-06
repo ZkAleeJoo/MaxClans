@@ -16,6 +16,8 @@ public class Clan {
     private final Map<ClanFlag, Boolean> flags;
     private final Map<String, ClanHome> homes;
     private int level;
+    private int exp;
+    private double bankBalance;
     private int kills;
     private int deaths;
     private int rivalKills;
@@ -39,6 +41,8 @@ public class Clan {
         this.owner = owner;
         this.createdAt = createdAt;
         this.level = 1;
+        this.exp = 0;
+        this.bankBalance = 0.0;
         this.kills = kills;
         this.deaths = deaths;
         this.rivalKills = rivalKills;
@@ -331,6 +335,40 @@ public class Clan {
 
     public void setLevel(int level) {
         this.level = Math.max(1, level);
+    }
+
+    public int getExp() {
+        return Math.max(0, exp);
+    }
+
+    public void setExp(int exp) {
+        this.exp = Math.max(0, exp);
+    }
+
+    public void addExp(int amount) {
+        this.exp += Math.max(0, amount);
+    }
+
+    public double getBankBalance() {
+        return Math.max(0.0, bankBalance);
+    }
+
+    public void setBankBalance(double amount) {
+        this.bankBalance = Math.max(0.0, amount);
+    }
+
+    public void depositBank(double amount) {
+        if (amount > 0) {
+            this.bankBalance += amount;
+        }
+    }
+
+    public boolean withdrawBank(double amount) {
+        if (amount > 0 && this.bankBalance >= amount) {
+            this.bankBalance -= amount;
+            return true;
+        }
+        return false;
     }
 
     public Map<String, ClanHome> getHomes() {

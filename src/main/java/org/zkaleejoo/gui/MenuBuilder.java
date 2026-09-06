@@ -1041,6 +1041,26 @@ public class MenuBuilder {
             text = text.replace("%clan_rival_kills%", String.valueOf(clan.getRivalKills()))
                     .replace("{clan_rival_kills}", String.valueOf(clan.getRivalKills()));
 
+            int clanLevel = clan.getLevel();
+            int clanExp = clan.getExp();
+            double clanBank = clan.getBankBalance();
+            int maxMembers = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxMembers(clanLevel) : 8;
+            int maxAllies = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxAllies(clanLevel) : 0;
+            int alliesCount = clan.getAllies().size();
+            String expBar = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getExpProgressBar(clan, 10) : "";
+            double expPct = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getExpPercentage(clan) : 0.0;
+            int expNext = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getExpForNextLevel(clan) : 0;
+
+            text = text.replace("%clan_level%", String.valueOf(clanLevel)).replace("{clan_level}", String.valueOf(clanLevel));
+            text = text.replace("%clan_exp%", String.valueOf(clanExp)).replace("{clan_exp}", String.valueOf(clanExp));
+            text = text.replace("%clan_exp_next%", String.valueOf(expNext)).replace("{clan_exp_next}", String.valueOf(expNext));
+            text = text.replace("%clan_exp_percent%", String.format(java.util.Locale.US, "%.1f%%", expPct)).replace("{clan_exp_percent}", String.format(java.util.Locale.US, "%.1f%%", expPct));
+            text = text.replace("%clan_exp_bar%", expBar).replace("{clan_exp_bar}", expBar);
+            text = text.replace("%clan_bank%", String.format(java.util.Locale.US, "%.2f", clanBank)).replace("{clan_bank}", String.format(java.util.Locale.US, "%.2f", clanBank));
+            text = text.replace("%clan_max_members%", String.valueOf(maxMembers)).replace("{clan_max_members}", String.valueOf(maxMembers));
+            text = text.replace("%clan_allies%", String.valueOf(alliesCount)).replace("{clan_allies}", String.valueOf(alliesCount));
+            text = text.replace("%clan_max_allies%", String.valueOf(maxAllies)).replace("{clan_max_allies}", String.valueOf(maxAllies));
+
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = clan.getFlag(flag);
                 String flagStatus = pm != null ? pm.getFlagStatus(flag, val, lang, true) : (val ? "ON" : "OFF");
@@ -1074,6 +1094,16 @@ public class MenuBuilder {
             text = text.replace("%clan_deaths%", "0").replace("{clan_deaths}", "0");
             text = text.replace("%clan_kdr%", "0.00").replace("{clan_kdr}", "0.00");
             text = text.replace("%clan_rival_kills%", "0").replace("{clan_rival_kills}", "0");
+
+            text = text.replace("%clan_level%", "1").replace("{clan_level}", "1");
+            text = text.replace("%clan_exp%", "0").replace("{clan_exp}", "0");
+            text = text.replace("%clan_exp_next%", "0").replace("{clan_exp_next}", "0");
+            text = text.replace("%clan_exp_percent%", "0.0%").replace("{clan_exp_percent}", "0.0%");
+            text = text.replace("%clan_exp_bar%", "").replace("{clan_exp_bar}", "");
+            text = text.replace("%clan_bank%", "0.00").replace("{clan_bank}", "0.00");
+            text = text.replace("%clan_max_members%", "8").replace("{clan_max_members}", "8");
+            text = text.replace("%clan_allies%", "0").replace("{clan_allies}", "0");
+            text = text.replace("%clan_max_allies%", "0").replace("{clan_max_allies}", "0");
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = flag.getDefaultValue();

@@ -57,6 +57,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         // Admin
         subCommands.add(new ReloadSubCommand(plugin));
         subCommands.add(new SpySubCommand(plugin));
+        subCommands.add(new org.zkaleejoo.commands.subcommands.admin.ExpAdminSubCommand(plugin));
 
         // General
         subCommands.add(helpSubCommand);
@@ -66,6 +67,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         subCommands.add(new InfoSubCommand(plugin));
         subCommands.add(new HomeSubCommand(plugin));
         subCommands.add(new HomesSubCommand(plugin));
+        subCommands.add(new org.zkaleejoo.commands.subcommands.general.LevelSubCommand(plugin));
+        subCommands.add(new org.zkaleejoo.commands.subcommands.general.ChestSubCommand(plugin));
+        subCommands.add(new org.zkaleejoo.commands.subcommands.general.BankSubCommand(plugin));
+        subCommands.add(new org.zkaleejoo.commands.subcommands.general.QuestsSubCommand(plugin));
 
         // Management
         subCommands.add(new CreateSubCommand(plugin));
@@ -76,6 +81,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         subCommands.add(new TagSubCommand(plugin));
         subCommands.add(new SetHomeSubCommand(plugin));
         subCommands.add(new DelHomeSubCommand(plugin));
+        subCommands.add(new org.zkaleejoo.commands.subcommands.management.AllySubCommand(plugin));
 
         // Member
         subCommands.add(new InviteSubCommand(plugin));

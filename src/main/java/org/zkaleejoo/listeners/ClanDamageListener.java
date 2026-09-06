@@ -69,8 +69,20 @@ public class ClanDamageListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player victim = event.getPlayer();
         Player attacker = victim.getKiller();
-        if (attacker != null) {
+        if (attacker != null && !attacker.equals(victim)) {
             plugin.getClanManager().registerPvPStats(attacker, victim);
+
+            Clan attackerClan = plugin.getClanManager().getClanByPlayer(attacker.getUniqueId());
+            if (attackerClan != null && plugin.getClanLevelManager() != null) {
+                Clan victimClan = plugin.getClanManager().getClanByPlayer(victim.getUniqueId());
+                boolean isRival = (victimClan != null && !attackerClan.getName().equalsIgnoreCase(victimClan.getName()));
+                int exp = plugin.getClanLevelManager().getPvPExp(isRival);
+                plugin.getClanLevelManager().addExp(attackerClan, exp, isRival ? "PvP Rival" : "PvP", attacker);
+
+                if (plugin.getClanQuestManager() != null) {
+                    plugin.getClanQuestManager().incrementProgress(attackerClan, org.zkaleejoo.models.ClanQuest.QuestType.PVP_KILLS, "PLAYER", 1);
+                }
+            }
         }
     }
 }

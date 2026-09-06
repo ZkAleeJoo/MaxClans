@@ -54,6 +54,8 @@ public class MainConfigManager {
         placeholdersFile = new CustomConfig("placeholders.yml", null, plugin, false);
         placeholdersFile.registerConfig();
 
+        new CustomConfig("quests.yml", null, plugin, false).registerConfig();
+
         new CustomConfig("messages_en.yml", "lang", plugin, false).registerConfig();
         new CustomConfig("messages_es.yml", "lang", plugin, false).registerConfig();
 

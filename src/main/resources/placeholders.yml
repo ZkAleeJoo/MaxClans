@@ -157,7 +157,30 @@
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
-# 7. LEADERBOARDS & TOP CLANS (RANKINGS)                                            #
+# 7. CLAN LEVELING, PERKS, BANK & ALLIANCES                                         #
+# --------------------------------------------------------------------------------- #
+#   %onlyclans_level%                  - Current clan level (1 to 10+).             #
+#   %onlyclans_clan_level%             - Alias for %onlyclans_level%.               #
+#   %onlyclans_exp%                    - Current Clan EXP.                          #
+#   %onlyclans_clan_exp%               - Alias for %onlyclans_exp%.                 #
+#   %onlyclans_exp_next%               - Total Clan EXP required for next level.    #
+#   %onlyclans_exp_needed%             - Alias for %onlyclans_exp_next%.            #
+#   %onlyclans_exp_percent%            - Progression percentage towards next level. #
+#   %onlyclans_exp_bar%                - Visual progress bar with custom colors.    #
+#   %onlyclans_bank%                   - Clan Bank balance (Vault coins).           #
+#   %onlyclans_bank_balance%           - Alias for %onlyclans_bank%.                #
+#   %onlyclans_max_members%            - Member capacity unlocked by current level. #
+#   %onlyclans_allies%                 - Current allied clans count.                #
+#   %onlyclans_allies_count%           - Alias for %onlyclans_allies%.              #
+#   %onlyclans_max_allies%             - Maximum allies allowed for current level.  #
+#   %onlyclans_allies_list%            - Comma-separated list of allied clan names. #
+#   %onlyclans_homes_count%            - Current number of set clan homes.          #
+#   %onlyclans_homes_max%              - Maximum clan homes allowed for clan level. #
+#   %onlyclans_homes_list%             - Comma-separated list of clan home names.   #
+# --------------------------------------------------------------------------------- #
+
+# --------------------------------------------------------------------------------- #
+# 8. LEADERBOARDS & TOP CLANS (RANKINGS)                                            #
 # --------------------------------------------------------------------------------- #
 # Allows querying information about top server clans across different categories    #
 # (ideal for Scoreboards, Tablist, and Holograms).                                  #
@@ -199,7 +222,7 @@
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
-# 8. INTERNAL MENU PLACEHOLDERS (menus.yml)                                         #
+# 9. INTERNAL MENU PLACEHOLDERS (menus.yml)                                         #
 # --------------------------------------------------------------------------------- #
 # These placeholders are resolved internally within the OnlyClans menu engine       #
 # (menus.yml). They can be used with %variable% or {variable}:                      #
@@ -250,7 +273,7 @@
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
-# 9. PRACTICAL INTEGRATION EXAMPLES WITH OTHER PLUGINS                              #
+# 10. PRACTICAL INTEGRATION EXAMPLES WITH OTHER PLUGINS                             #
 # --------------------------------------------------------------------------------- #
 # A) CHAT INTEGRATION (LPC / EssentialsChat):                                       #
 #    To display the formatted clan tag before or after the player's name:           #
@@ -327,10 +350,20 @@ catalog:
       - '%onlyclans_player_kdr%'
       - '%onlyclans_player_playtime%'
     homes:
-      - '%onlyclans_clan_level%'
       - '%onlyclans_homes_count%'
       - '%onlyclans_homes_max%'
       - '%onlyclans_homes_list%'
+    leveling:
+      - '%onlyclans_level%'
+      - '%onlyclans_exp%'
+      - '%onlyclans_exp_next%'
+      - '%onlyclans_exp_percent%'
+      - '%onlyclans_exp_bar%'
+      - '%onlyclans_bank%'
+      - '%onlyclans_max_members%'
+      - '%onlyclans_allies%'
+      - '%onlyclans_max_allies%'
+      - '%onlyclans_allies_list%'
     leaderboard:
       - '%onlyclans_top_<kdr|kills|members>_<rank>_<property>%'
     modifiers:
