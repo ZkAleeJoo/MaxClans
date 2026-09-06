@@ -1,6 +1,8 @@
 package org.zkaleejoo.commands.subcommands.general;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.zkaleejoo.OnlyClans;
@@ -77,24 +79,25 @@ public class HomesSubCommand extends SubCommand {
                 "&#FF3366[Delete]");
 
         for (ClanHome home : clan.getHomes().values()) {
-            StringBuilder line = new StringBuilder();
-            line.append("&#718096▪ &#00FF88").append(home.getName())
-                    .append(" &#718096(&f").append(home.getWorldName())
-                    .append("&#718096: &f").append(home.getFormattedCoordinates())
-                    .append("&#718096) ");
+            Component prefix = MessageUtils.toComponent("&#718096▪ &#00FF88" + home.getName()
+                    + " &#718096(&f" + home.getWorldName()
+                    + "&#718096: &f" + home.getFormattedCoordinates()
+                    + "&#718096) ");
 
-            line.append("<click:run_command:'/clan home ").append(home.getName())
-                    .append("'><hover:show_text:'").append(hoverTeleport.replace("{home}", home.getName()))
-                    .append("'>").append(btnTeleport).append("</hover></click>");
+            Component tpBtn = MessageUtils.toComponent(btnTeleport)
+                    .clickEvent(ClickEvent.runCommand("/clan home " + home.getName()))
+                    .hoverEvent(HoverEvent.showText(MessageUtils.toComponent(hoverTeleport.replace("{home}", home.getName()))));
+
+            Component line = prefix.append(tpBtn);
 
             if (isStaff) {
-                line.append(" <click:run_command:'/clan delhome ").append(home.getName())
-                        .append("'><hover:show_text:'").append(hoverDelete.replace("{home}", home.getName()))
-                        .append("'>").append(btnDelete).append("</hover></click>");
+                Component delBtn = MessageUtils.toComponent(btnDelete)
+                        .clickEvent(ClickEvent.runCommand("/clan delhome " + home.getName()))
+                        .hoverEvent(HoverEvent.showText(MessageUtils.toComponent(hoverDelete.replace("{home}", home.getName()))));
+                line = line.append(Component.space()).append(delBtn);
             }
 
-            Component comp = MessageUtils.toComponent(line.toString());
-            player.sendMessage(comp);
+            player.sendMessage(line);
         }
 
         SoundUtils.playSound(player, "UI_BUTTON_CLICK", 0.8f, 1.2f);
