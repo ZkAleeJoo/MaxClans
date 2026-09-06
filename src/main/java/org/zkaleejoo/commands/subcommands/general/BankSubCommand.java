@@ -43,7 +43,7 @@ public class BankSubCommand extends SubCommand {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("bank-locked",
-                                    "&cEl acceso al Banco del Clan se desbloquea en el &eNivel 2&c. Nivel actual: &e{level}")
+                                    "&cAccess to the Clan Bank unlocks at Clan &eLevel 2&c. Current level: &e{level}")
                             .replace("{level}", String.valueOf(clan.getLevel()))));
             SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
             return;
@@ -63,7 +63,7 @@ public class BankSubCommand extends SubCommand {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("usage-bank",
-                                    "&cUso: /clan bank [deposit <monto> | withdraw <monto> | balance]")));
+                                    "&cUsage: /clan bank [deposit <amount> | withdraw <amount> | balance]")));
         }
     }
 
@@ -72,7 +72,7 @@ public class BankSubCommand extends SubCommand {
         String prefix = plugin.getMainConfigManager().getPrefix();
         player.sendMessage(MessageUtils.toComponent(
                 prefix + plugin.getMainConfigManager().getMessage("bank-balance",
-                        "&#FFD700&lBanco del Clan: &#00FF88${balance}&e monedas.")
+                        "&#FFD700&lClan Bank: &#00FF88${balance}&e coins.")
                         .replace("{balance}", formattedBal)));
         SoundUtils.playSound(player, "BLOCK_NOTE_BLOCK_PLING", 0.8f, 1.4f);
     }
@@ -81,7 +81,7 @@ public class BankSubCommand extends SubCommand {
         if (args.length < 3) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("usage-bank-deposit", "&cUso: /clan bank deposit <monto>")));
+                            .getMessage("usage-bank-deposit", "&cUsage: /clan bank deposit <amount>")));
             return;
         }
 
@@ -91,14 +91,14 @@ public class BankSubCommand extends SubCommand {
         } catch (NumberFormatException e) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("invalid-number", "&cIngresa un monto numérico válido.")));
+                            .getMessage("invalid-number", "&cPlease enter a valid numeric amount.")));
             return;
         }
 
         if (amount <= 0) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("invalid-amount", "&cEl monto a depositar debe ser mayor a 0.")));
+                            .getMessage("invalid-amount", "&cAmount must be greater than 0.")));
             return;
         }
 
@@ -113,7 +113,7 @@ public class BankSubCommand extends SubCommand {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("bank-insufficient-player",
-                                    "&cNo tienes suficiente dinero para realizar este depósito.")));
+                                    "&cYou do not have enough money to deposit.")));
             return;
         }
 
@@ -123,7 +123,8 @@ public class BankSubCommand extends SubCommand {
             notifyDeposit(player, clan, amount);
         } else {
             player.sendMessage(MessageUtils.toComponent(
-                    plugin.getMainConfigManager().getPrefix() + "&cError al procesar la transacción económica."));
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("bank-error-transaction", "&cError processing economy transaction.")));
         }
     }
 
@@ -131,7 +132,7 @@ public class BankSubCommand extends SubCommand {
         String formatted = String.format(Locale.US, "%,.2f", amount);
         String prefix = plugin.getMainConfigManager().getPrefix();
         String msg = prefix + plugin.getMainConfigManager().getMessage("bank-deposited",
-                "&aHas depositado &#00FF88${amount}&a en el banco del clan.")
+                "&aYou deposited &#00FF88${amount}&a into the clan bank.")
                 .replace("{amount}", formatted);
         player.sendMessage(MessageUtils.toComponent(msg));
         SoundUtils.playSound(player, "ENTITY_PLAYER_LEVELUP", 0.7f, 1.6f);
@@ -142,7 +143,7 @@ public class BankSubCommand extends SubCommand {
         }
 
         String broadcastMsg = prefix + plugin.getMainConfigManager().getMessage("bank-deposited-broadcast",
-                "&e{player} depositó &#00FF88${amount}&e en el banco del clan.")
+                "&e{player} deposited &#00FF88${amount}&e into the clan bank.")
                 .replace("{player}", player.getName())
                 .replace("{amount}", formatted);
 
@@ -160,14 +161,14 @@ public class BankSubCommand extends SubCommand {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("bank-no-permission",
-                                    "&cSolo los líderes y moderadores pueden retirar fondos del banco.")));
+                                    "&cOnly clan leaders and moderators can withdraw funds from the bank.")));
             return;
         }
 
         if (args.length < 3) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("usage-bank-withdraw", "&cUso: /clan bank withdraw <monto>")));
+                            .getMessage("usage-bank-withdraw", "&cUsage: /clan bank withdraw <amount>")));
             return;
         }
 
@@ -177,14 +178,14 @@ public class BankSubCommand extends SubCommand {
         } catch (NumberFormatException e) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("invalid-number", "&cIngresa un monto numérico válido.")));
+                            .getMessage("invalid-number", "&cPlease enter a valid numeric amount.")));
             return;
         }
 
         if (amount <= 0) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("invalid-amount", "&cEl monto a retirar debe ser mayor a 0.")));
+                            .getMessage("invalid-amount", "&cAmount must be greater than 0.")));
             return;
         }
 
@@ -192,7 +193,7 @@ public class BankSubCommand extends SubCommand {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("bank-insufficient-clan",
-                                    "&cEl banco del clan no dispone de fondos suficientes.")));
+                                    "&cThe clan bank does not have sufficient funds.")));
             return;
         }
 
@@ -203,7 +204,8 @@ public class BankSubCommand extends SubCommand {
                 notifyWithdraw(player, clan, amount);
             } else {
                 player.sendMessage(MessageUtils.toComponent(
-                        plugin.getMainConfigManager().getPrefix() + "&cError al depositar los fondos en tu cuenta."));
+                        plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                .getMessage("bank-error-deposit", "&cError depositing funds into your account.")));
             }
         } else {
             clan.withdrawBank(amount);
@@ -216,13 +218,13 @@ public class BankSubCommand extends SubCommand {
         String formatted = String.format(Locale.US, "%,.2f", amount);
         String prefix = plugin.getMainConfigManager().getPrefix();
         String msg = prefix + plugin.getMainConfigManager().getMessage("bank-withdrawn",
-                "&eHas retirado &#00FF88${amount}&e del banco del clan.")
+                "&eYou withdrew &#00FF88${amount}&e from the clan bank.")
                 .replace("{amount}", formatted);
         player.sendMessage(MessageUtils.toComponent(msg));
         SoundUtils.playSound(player, "BLOCK_NOTE_BLOCK_PLING", 0.9f, 1.2f);
 
         String broadcastMsg = prefix + plugin.getMainConfigManager().getMessage("bank-withdrawn-broadcast",
-                "&c{player} retiró &#FFAA00${amount}&c del banco del clan.")
+                "&c{player} withdrew &#FFAA00${amount}&c from the clan bank.")
                 .replace("{player}", player.getName())
                 .replace("{amount}", formatted);
 

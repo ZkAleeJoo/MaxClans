@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.commands.SubCommand;
+import org.zkaleejoo.config.MainConfigManager;
 import org.zkaleejoo.managers.ClanLevelManager;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanLevelConfig;
@@ -47,48 +48,124 @@ public class LevelSubCommand extends SubCommand {
         ClanLevelConfig currentConfig = lm.getLevelConfig(level);
         ClanLevelConfig nextConfig = (level < maxLvl) ? lm.getLevelConfig(level + 1) : null;
 
-        player.sendMessage(MessageUtils.toComponent("&8&m━━━━━━━━━━━━━&r &#2F6AFA&lPROGRESIÓN DE CLAN &8&m━━━━━━━━━━━━━"));
-        player.sendMessage(MessageUtils.toComponent(" &#00E5FF✦ &7Clan: &f" + clan.getName() + " &7[&e" + clan.getTag() + "&7]"));
-        player.sendMessage(MessageUtils.toComponent(" &#FFD700✦ &7Nivel actual: &#FFD700&lNivel " + level + (level >= maxLvl ? " &#00FF88(¡Nivel Máximo!)" : "")));
+        MainConfigManager cm = plugin.getMainConfigManager();
+
+        String header = cm.getMessage("level-progression-header",
+                "&8&m━━━━━━━━━━━━━&r &#2F6AFA&lCLAN PROGRESSION &8&m━━━━━━━━━━━━━");
+        player.sendMessage(MessageUtils.toComponent(header));
+
+        String clanLine = cm.getMessage("level-progression-clan",
+                " &#00E5FF✦ &7Clan: &f{clan} &7[&e{tag}&7]")
+                .replace("{clan}", clan.getName())
+                .replace("{tag}", clan.getTag());
+        player.sendMessage(MessageUtils.toComponent(clanLine));
+
+        String maxTag = (level >= maxLvl) ? cm.getMessage("level-progression-max-tag", " &#00FF88(Max Level!)") : "";
+        String currentLine = cm.getMessage("level-progression-current",
+                " &#FFD700✦ &7Current Level: &#FFD700&lLevel {level}{max_tag}")
+                .replace("{level}", String.valueOf(level))
+                .replace("{max_tag}", maxTag);
+        player.sendMessage(MessageUtils.toComponent(currentLine));
+
         if (level < maxLvl) {
-            player.sendMessage(MessageUtils.toComponent(" &#00FF88✦ &7EXP: &#00FF88" + currentExp + " &7/ &#00FF88" + neededExp + " &7(" + String.format(Locale.US, "%.1f", percent) + "%)"));
+            String expLine = cm.getMessage("level-progression-exp",
+                    " &#00FF88✦ &7EXP: &#00FF88{current} &7/ &#00FF88{needed} &7({percent}%)")
+                    .replace("{current}", String.valueOf(currentExp))
+                    .replace("{needed}", String.valueOf(neededExp))
+                    .replace("{percent}", String.format(Locale.US, "%.1f", percent));
+            player.sendMessage(MessageUtils.toComponent(expLine));
             player.sendMessage(MessageUtils.toComponent("   &8[" + progressBar + "&8]"));
         } else {
-            player.sendMessage(MessageUtils.toComponent(" &#00FF88✦ &7Progreso: &a¡Has alcanzado la cima del poder!"));
+            String maxReached = cm.getMessage("level-progression-max-reached",
+                    " &#00FF88✦ &7Progress: &aYou have reached the peak of power!");
+            player.sendMessage(MessageUtils.toComponent(maxReached));
         }
 
         player.sendMessage(MessageUtils.toComponent(""));
-        player.sendMessage(MessageUtils.toComponent("&#FFAA00&lVentajas activas de Nivel " + level + ":"));
-        player.sendMessage(MessageUtils.toComponent(" &7• Miembros máximos: &#00FF88" + currentConfig.getMaxMembers()));
-        player.sendMessage(MessageUtils.toComponent(" &7• Aliados permitidos: &#00FF88" + currentConfig.getMaxAllies()));
-        player.sendMessage(MessageUtils.toComponent(" &7• Homes de Clan: &#00FF88" + currentConfig.getMaxHomes()));
-        player.sendMessage(MessageUtils.toComponent(" &7• Banco del Clan: " + (currentConfig.hasBankAccess() ? "&#00FF88✔ Desbloqueado" : "&#FF3366✖ Bloqueado")));
-        player.sendMessage(MessageUtils.toComponent(" &7• Baúl compartido (/clan chest): " + (currentConfig.hasChestAccess() ? "&#00FF88✔ Desbloqueado (" + currentConfig.getChestRows() + " filas)" : "&#FF3366✖ Bloqueado")));
-        player.sendMessage(MessageUtils.toComponent(" &7• Habilidad pasiva en base: " + (currentConfig.hasBaseEffect() ? "&#00FF88✔ " + currentConfig.getBaseEffectType() + " (Radio " + currentConfig.getBaseEffectRadius() + "m)" : "&#FF3366✖ Bloqueado")));
+
+        String perksTitle = cm.getMessage("level-progression-active-perks",
+                "&#FFAA00&lActive Perks for Level {level}:")
+                .replace("{level}", String.valueOf(level));
+        player.sendMessage(MessageUtils.toComponent(perksTitle));
+
+        String membersLine = cm.getMessage("level-perk-members", " &7• Max members: &#00FF88{count}")
+                .replace("{count}", String.valueOf(currentConfig.getMaxMembers()));
+        player.sendMessage(MessageUtils.toComponent(membersLine));
+
+        String alliesLine = cm.getMessage("level-perk-allies", " &7• Allowed allies: &#00FF88{count}")
+                .replace("{count}", String.valueOf(currentConfig.getMaxAllies()));
+        player.sendMessage(MessageUtils.toComponent(alliesLine));
+
+        String homesLine = cm.getMessage("level-perk-homes", " &7• Clan homes: &#00FF88{count}")
+                .replace("{count}", String.valueOf(currentConfig.getMaxHomes()));
+        player.sendMessage(MessageUtils.toComponent(homesLine));
+
+        String unlockedStatus = cm.getMessage("level-status-unlocked", "&#00FF88✔ Unlocked");
+        String lockedStatus = cm.getMessage("level-status-locked", "&#FF3366✖ Locked");
+
+        String bankStatus = currentConfig.hasBankAccess() ? unlockedStatus : lockedStatus;
+        String bankLine = cm.getMessage("level-perk-bank", " &7• Clan Bank: {status}")
+                .replace("{status}", bankStatus);
+        player.sendMessage(MessageUtils.toComponent(bankLine));
+
+        String chestStatus = currentConfig.hasChestAccess()
+                ? cm.getMessage("level-status-unlocked-rows", "&#00FF88✔ Unlocked ({rows} rows)")
+                        .replace("{rows}", String.valueOf(currentConfig.getChestRows()))
+                : lockedStatus;
+        String chestLine = cm.getMessage("level-perk-chest", " &7• Shared Chest (/clan chest): {status}")
+                .replace("{status}", chestStatus);
+        player.sendMessage(MessageUtils.toComponent(chestLine));
+
+        String baseEffectStatus = currentConfig.hasBaseEffect()
+                ? cm.getMessage("level-status-base-effect", "&#00FF88✔ {effect} (Radius {radius}m)")
+                        .replace("{effect}", currentConfig.getBaseEffectType())
+                        .replace("{radius}", String.valueOf(currentConfig.getBaseEffectRadius()))
+                : lockedStatus;
+        String baseEffectLine = cm.getMessage("level-perk-base-effect", " &7• Passive base effect: {status}")
+                .replace("{status}", baseEffectStatus);
+        player.sendMessage(MessageUtils.toComponent(baseEffectLine));
 
         if (nextConfig != null) {
             player.sendMessage(MessageUtils.toComponent(""));
-            player.sendMessage(MessageUtils.toComponent("&#00E5FF&lPróximo Nivel " + (level + 1) + " (Requiere " + neededExp + " EXP):"));
+            String nextTitle = cm.getMessage("level-progression-next-title",
+                    "&#00E5FF&lNext Level {level} (Requires {needed} EXP):")
+                    .replace("{level}", String.valueOf(level + 1))
+                    .replace("{needed}", String.valueOf(neededExp));
+            player.sendMessage(MessageUtils.toComponent(nextTitle));
+
             if (nextConfig.getMaxMembers() > currentConfig.getMaxMembers()) {
-                player.sendMessage(MessageUtils.toComponent(" &a+ Ampliación a " + nextConfig.getMaxMembers() + " miembros"));
+                String upg = cm.getMessage("level-upgrade-members", " &a+ Increase to {count} members")
+                        .replace("{count}", String.valueOf(nextConfig.getMaxMembers()));
+                player.sendMessage(MessageUtils.toComponent(upg));
             }
             if (nextConfig.getMaxAllies() > currentConfig.getMaxAllies()) {
-                player.sendMessage(MessageUtils.toComponent(" &a+ Ampliación a " + nextConfig.getMaxAllies() + " aliados"));
+                String upg = cm.getMessage("level-upgrade-allies", " &a+ Increase to {count} allies")
+                        .replace("{count}", String.valueOf(nextConfig.getMaxAllies()));
+                player.sendMessage(MessageUtils.toComponent(upg));
             }
             if (nextConfig.getMaxHomes() > currentConfig.getMaxHomes()) {
-                player.sendMessage(MessageUtils.toComponent(" &a+ Ampliación a " + nextConfig.getMaxHomes() + " homes"));
+                String upg = cm.getMessage("level-upgrade-homes", " &a+ Increase to {count} homes")
+                        .replace("{count}", String.valueOf(nextConfig.getMaxHomes()));
+                player.sendMessage(MessageUtils.toComponent(upg));
             }
             if (!currentConfig.hasBankAccess() && nextConfig.hasBankAccess()) {
-                player.sendMessage(MessageUtils.toComponent(" &a+ Desbloqueo de Banco del Clan"));
+                player.sendMessage(MessageUtils.toComponent(
+                        cm.getMessage("level-unlock-bank", " &a+ Unlock Clan Bank")));
             }
             if (!currentConfig.hasChestAccess() && nextConfig.hasChestAccess()) {
-                player.sendMessage(MessageUtils.toComponent(" &a+ Desbloqueo de Baúl Compartido"));
+                player.sendMessage(MessageUtils.toComponent(
+                        cm.getMessage("level-unlock-chest", " &a+ Unlock Shared Clan Chest")));
             }
             if (!currentConfig.hasBaseEffect() && nextConfig.hasBaseEffect()) {
-                player.sendMessage(MessageUtils.toComponent(" &a+ Desbloqueo de Habilidad Pasiva en Base (" + nextConfig.getBaseEffectType() + ")"));
+                player.sendMessage(MessageUtils.toComponent(
+                        cm.getMessage("level-unlock-base-effect", " &a+ Unlock Passive Base Effect ({effect})")
+                                .replace("{effect}", nextConfig.getBaseEffectType())));
             }
         }
-        player.sendMessage(MessageUtils.toComponent("&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+
+        String footer = cm.getMessage("level-progression-footer",
+                "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        player.sendMessage(MessageUtils.toComponent(footer));
         SoundUtils.playSound(player, "BLOCK_ENCHANTMENT_TABLE_USE", 0.9f, 1.2f);
     }
 }

@@ -71,6 +71,10 @@ public class HomesSubCommand extends SubCommand {
                 "&aClick to teleport to &f{home}");
         String hoverDelete = plugin.getMainConfigManager().getMessage("homes-list-delete-hover",
                 "&cClick to delete &f{home}");
+        String btnTeleport = plugin.getMainConfigManager().getMessage("homes-list-teleport-button",
+                "&#00E5FF[Teleport]");
+        String btnDelete = plugin.getMainConfigManager().getMessage("homes-list-delete-button",
+                "&#FF3366[Delete]");
 
         for (ClanHome home : clan.getHomes().values()) {
             StringBuilder line = new StringBuilder();
@@ -81,12 +85,12 @@ public class HomesSubCommand extends SubCommand {
 
             line.append("<click:run_command:'/clan home ").append(home.getName())
                     .append("'><hover:show_text:'").append(hoverTeleport.replace("{home}", home.getName()))
-                    .append("'>&#00E5FF[Teleport]</hover></click>");
+                    .append("'>").append(btnTeleport).append("</hover></click>");
 
             if (isStaff) {
                 line.append(" <click:run_command:'/clan delhome ").append(home.getName())
                         .append("'><hover:show_text:'").append(hoverDelete.replace("{home}", home.getName()))
-                        .append("'>&#FF3366[Delete]</hover></click>");
+                        .append("'>").append(btnDelete).append("</hover></click>");
             }
 
             Component comp = MessageUtils.toComponent(line.toString());

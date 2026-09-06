@@ -789,13 +789,16 @@ public class MenuBuilder {
                             rankBadge + " &#00FF88&l" + clan.getName() + " &#718096[" + clan.getTag() + "]"));
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
                     lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
-                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Líder: &#FFFFFF" + leaderName));
+                    String leaderLabel = lang.equalsIgnoreCase("es") ? "Líder: " : "Leader: ";
+                    String rivalKillsLabel = lang.equalsIgnoreCase("es") ? "Bajas Rivales: " : "Rival Kills: ";
+                    String membersLabel = lang.equalsIgnoreCase("es") ? "Miembros: " : "Members: ";
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0" + leaderLabel + "&#FFFFFF" + leaderName));
                     lore.add(MessageUtils.toComponentNoItalic(
                             "&#718096▪ &#A0AEC0KDR: &#00FF88" + clan.getFormattedKDR() + " &#718096(&#FFFFFF"
                                     + clan.getKills() + " &#718096K / &#FFFFFF" + clan.getDeaths() + " &#718096D)"));
                     lore.add(MessageUtils
-                            .toComponentNoItalic("&#718096▪ &#A0AEC0Bajas Rivales: &#FF3366" + clan.getRivalKills()));
-                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0Miembros: &#00E5FF" + onlineCount
+                            .toComponentNoItalic("&#718096▪ &#A0AEC0" + rivalKillsLabel + "&#FF3366" + clan.getRivalKills()));
+                    lore.add(MessageUtils.toComponentNoItalic("&#718096▪ &#A0AEC0" + membersLabel + "&#00E5FF" + onlineCount
                             + "&#718096/&#FFFFFF" + clan.getMemberCount()));
                     lore.add(MessageUtils.toComponentNoItalic("&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
                     skullMeta.lore(lore);

@@ -261,7 +261,8 @@ public class ClanLevelManager {
 
         if (contributor != null && contributor.isOnline()) {
             if (actionbarOnExp) {
-                String sourceFormatted = source != null ? source : "Actividad";
+                String sourceFormatted = source != null ? source
+                        : plugin.getMainConfigManager().getMessage("exp-source-activity", "Activity");
                 String barMsg = plugin.getMainConfigManager().getMessage("exp-actionbar",
                         "&#00FF88+{exp} Clan EXP &#718096(&f{source}&78096)")
                         .replace("{exp}", String.valueOf(amount))
@@ -307,36 +308,36 @@ public class ClanLevelManager {
         ClanLevelConfig config = getLevelConfig(newLevel);
 
         List<String> perks = new ArrayList<>();
-        perks.add(plugin.getMainConfigManager().getMessage("perk-members", "&aLímite de miembros: &f{max}")
+        perks.add(plugin.getMainConfigManager().getMessage("perk-members", "&aMember limit: &f{max}")
                 .replace("{max}", String.valueOf(config.getMaxMembers())));
-        perks.add(plugin.getMainConfigManager().getMessage("perk-allies", "&aAliados permitidos: &f{max}")
+        perks.add(plugin.getMainConfigManager().getMessage("perk-allies", "&aAllies allowed: &f{max}")
                 .replace("{max}", String.valueOf(config.getMaxAllies())));
-        perks.add(plugin.getMainConfigManager().getMessage("perk-homes", "&aHomes del clan: &f{max}").replace("{max}",
+        perks.add(plugin.getMainConfigManager().getMessage("perk-homes", "&aClan homes: &f{max}").replace("{max}",
                 String.valueOf(config.getMaxHomes())));
         if (config.hasBankAccess()) {
-            perks.add(plugin.getMainConfigManager().getMessage("perk-bank", "&aAcceso al Banco del clan (/clan bank)"));
+            perks.add(plugin.getMainConfigManager().getMessage("perk-bank", "&aAccess to Clan Bank (/clan bank)"));
         }
         if (config.hasChestAccess()) {
             perks.add(plugin.getMainConfigManager()
-                    .getMessage("perk-chest", "&aBaúl compartido desbloqueado ({rows} filas)")
+                    .getMessage("perk-chest", "&aShared Clan Chest unlocked ({rows} rows)")
                     .replace("{rows}", String.valueOf(config.getChestRows())));
         }
         if (config.hasBaseEffect()) {
             perks.add(plugin.getMainConfigManager()
-                    .getMessage("perk-base-effect", "&aEfecto permanente en base: &f{effect} (Radio {radius}m)")
+                    .getMessage("perk-base-effect", "&aPermanent base effect: &f{effect} (Radius {radius}m)")
                     .replace("{effect}", config.getBaseEffectType())
                     .replace("{radius}", String.valueOf(config.getBaseEffectRadius())));
         }
 
         String prefix = plugin.getMainConfigManager().getPrefix();
         String header = plugin.getMainConfigManager().getMessage("level-up-header",
-                "&8&m━━━━━━━━━━━━━&r &#FFD700&l¡SUBIDA DE NIVEL DE CLAN! &8&m━━━━━━━━━━━━━");
+                "&8&m━━━━━━━━━━━━━&r &#FFD700&lCLAN LEVEL UP! &8&m━━━━━━━━━━━━━");
         String announcement = plugin.getMainConfigManager().getMessage("level-up-broadcast",
-                "&#00FF88¡El clan &f{clan}&00FF88 ha alcanzado el &e&lNivel {level}&00FF88!")
+                "&#00FF88Clan &f{clan}&00FF88 has reached &e&lLevel {level}&00FF88!")
                 .replace("{clan}", clan.getName())
                 .replace("{level}", String.valueOf(newLevel));
         String perksTitle = plugin.getMainConfigManager().getMessage("level-up-perks-title",
-                "&#FFAA00Ventajas y habilidades desbloqueadas:");
+                "&#FFAA00Unlocked Perks & Abilities:");
         String footer = plugin.getMainConfigManager().getMessage("level-up-footer",
                 "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 

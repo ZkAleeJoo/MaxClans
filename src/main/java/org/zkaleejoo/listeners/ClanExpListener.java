@@ -69,13 +69,15 @@ public class ClanExpListener implements Listener {
 
         if (isLog(type)) {
             int exp = plugin.getClanLevelManager().getWoodCuttingExp(type.name());
-            plugin.getClanLevelManager().addExp(clan, exp, "Tala", player);
+            String sourceName = plugin.getMainConfigManager().getMessage("exp-source-woodcutting", "Woodcutting");
+            plugin.getClanLevelManager().addExp(clan, exp, sourceName, player);
             if (plugin.getClanQuestManager() != null) {
                 plugin.getClanQuestManager().incrementProgress(clan, ClanQuest.QuestType.CHOP_WOOD, type.name(), 1);
             }
         } else if (isOre(type)) {
             int exp = plugin.getClanLevelManager().getMiningExp(type.name());
-            plugin.getClanLevelManager().addExp(clan, exp, "Minería", player);
+            String sourceName = plugin.getMainConfigManager().getMessage("exp-source-mining", "Mining");
+            plugin.getClanLevelManager().addExp(clan, exp, sourceName, player);
             if (plugin.getClanQuestManager() != null) {
                 plugin.getClanQuestManager().incrementProgress(clan, ClanQuest.QuestType.MINE_BLOCK, type.name(), 1);
             }
@@ -105,7 +107,9 @@ public class ClanExpListener implements Listener {
         if (isMonster) {
             String typeName = entity.getType().name();
             int exp = plugin.getClanLevelManager().getMonsterExp(typeName, isBoss);
-            plugin.getClanLevelManager().addExp(clan, exp, "Monstruo: " + typeName, killer);
+            String sourceName = plugin.getMainConfigManager().getMessage("exp-source-monster", "Monster: {mob}")
+                    .replace("{mob}", typeName);
+            plugin.getClanLevelManager().addExp(clan, exp, sourceName, killer);
 
             if (plugin.getClanQuestManager() != null) {
                 plugin.getClanQuestManager().incrementProgress(clan, ClanQuest.QuestType.KILL_MOB, typeName, 1);

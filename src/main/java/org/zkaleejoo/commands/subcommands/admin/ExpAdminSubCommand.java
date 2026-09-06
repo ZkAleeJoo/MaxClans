@@ -29,7 +29,8 @@ public class ExpAdminSubCommand extends SubCommand {
     public void execute(CommandSender sender, String[] args) {
         if (args.length < 4) {
             sender.sendMessage(MessageUtils.toComponent(
-                    plugin.getMainConfigManager().getPrefix() + "&cUso: /clan admin <addexp|setlevel|resetexp> <clan> <cantidad>"));
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("usage-admin", "&cUsage: /clan admin <addexp|setlevel|resetexp> <clan> <amount>")));
             return;
         }
 
@@ -50,35 +51,48 @@ public class ExpAdminSubCommand extends SubCommand {
                 try {
                     amount = Integer.parseInt(args[3]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(MessageUtils.toComponent(plugin.getMainConfigManager().getPrefix() + "&cCantidad inválida."));
+                    sender.sendMessage(MessageUtils.toComponent(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("admin-invalid-amount", "&cInvalid amount.")));
                     return;
                 }
                 plugin.getClanLevelManager().addExp(clan, amount, "Admin", null);
                 sender.sendMessage(MessageUtils.toComponent(
-                        plugin.getMainConfigManager().getPrefix() + "&aSe añadieron &e" + amount + " Clan EXP &aal clan &f" + clan.getName()));
+                        plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                .getMessage("admin-exp-added", "&aAdded &e{amount}&a Clan EXP to clan &f{clan}&a.")
+                                .replace("{amount}", String.valueOf(amount))
+                                .replace("{clan}", clan.getName())));
             }
             case "setlevel" -> {
                 int lvl;
                 try {
                     lvl = Integer.parseInt(args[3]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(MessageUtils.toComponent(plugin.getMainConfigManager().getPrefix() + "&cNivel inválido."));
+                    sender.sendMessage(MessageUtils.toComponent(
+                            plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                    .getMessage("admin-invalid-level", "&cInvalid level.")));
                     return;
                 }
                 clan.setLevel(lvl);
                 clan.setExp(0);
                 plugin.getClanStorage().updateClan(clan);
                 sender.sendMessage(MessageUtils.toComponent(
-                        plugin.getMainConfigManager().getPrefix() + "&aEl nivel del clan &f" + clan.getName() + " &aha sido fijado en &e" + lvl));
+                        plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                .getMessage("admin-level-set", "&aClan &f{clan}&a level has been set to &e{level}&a.")
+                                .replace("{clan}", clan.getName())
+                                .replace("{level}", String.valueOf(lvl))));
             }
             case "resetexp" -> {
                 clan.setExp(0);
                 plugin.getClanStorage().updateClan(clan);
                 sender.sendMessage(MessageUtils.toComponent(
-                        plugin.getMainConfigManager().getPrefix() + "&aSe ha reiniciado la EXP del clan &f" + clan.getName()));
+                        plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                                .getMessage("admin-exp-reset", "&aClan &f{clan}&a EXP has been reset.")
+                                .replace("{clan}", clan.getName())));
             }
             default -> sender.sendMessage(MessageUtils.toComponent(
-                    plugin.getMainConfigManager().getPrefix() + "&cAcción desconocida. Usa addexp, setlevel o resetexp."));
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("admin-unknown-action", "&cUnknown action. Use addexp, setlevel, or resetexp.")));
         }
     }
 

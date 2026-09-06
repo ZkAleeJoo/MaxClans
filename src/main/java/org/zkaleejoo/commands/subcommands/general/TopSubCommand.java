@@ -49,9 +49,12 @@ public class TopSubCommand extends SubCommand {
         List<Clan> top = plugin.getClanManager().getTopClans(sortType);
         String typeLabel = sortType.name();
         sender.sendMessage(MessageUtils.toComponent(
-                plugin.getMainConfigManager().getPrefix() + "&6&lTop Clans &7(" + typeLabel + ")"));
+                plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                        .getMessage("top-header", "&6&lTop Clans &7({sort})")
+                        .replace("{sort}", typeLabel)));
         if (top.isEmpty()) {
-            sender.sendMessage(MessageUtils.toComponent("&7No clans registered yet."));
+            sender.sendMessage(MessageUtils.toComponent(
+                    plugin.getMainConfigManager().getMessage("top-empty", "&7No clans registered yet.")));
             return;
         }
         int limit = Math.min(10, top.size());

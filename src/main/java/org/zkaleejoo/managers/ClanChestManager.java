@@ -60,7 +60,7 @@ public class ClanChestManager implements Listener {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix()
                             + plugin.getMainConfigManager().getMessage("chest-locked",
-                                    "&cEl baúl compartido se desbloquea en el &eNivel 3 &cde Clan. Nivel actual: &e{level}")
+                                    "&cThe shared clan chest unlocks at Clan &eLevel 3&c. Current level: &e{level}")
                                     .replace("{level}", String.valueOf(clan.getLevel()))));
             SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
             return;
@@ -73,7 +73,7 @@ public class ClanChestManager implements Listener {
         Inventory inventory = activeInventories.computeIfAbsent(key, k -> {
             ClanChestHolder holder = new ClanChestHolder(clan.getName());
             String title = plugin.getMainConfigManager()
-                    .getMessage("chest-title", "&#2F6AFA&lBaúl de Clan &8- &f{clan}")
+                    .getMessage("chest-title", "&#2F6AFA&lClan Chest &8- &f{clan}")
                     .replace("{clan}", clan.getName());
             Inventory inv = Bukkit.createInventory(holder, size, MessageUtils.toComponent(title));
             holder.setInventory(inv);

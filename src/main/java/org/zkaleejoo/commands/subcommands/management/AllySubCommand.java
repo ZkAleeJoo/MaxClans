@@ -42,7 +42,7 @@ public class AllySubCommand extends SubCommand {
         if (args.length < 3) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("usage-ally", "&cUso: /clan ally <add|accept|deny|remove|list> [clan]")));
+                            .getMessage("usage-ally", "&cUsage: /clan ally <add|accept|deny|remove|list> [clan]")));
             return;
         }
 
@@ -62,7 +62,7 @@ public class AllySubCommand extends SubCommand {
             case "remove", "eliminar", "romper" -> plugin.getClanManager().removeAlly(player, targetClan);
             default -> player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("usage-ally", "&cUso: /clan ally <add|accept|deny|remove|list> [clan]")));
+                            .getMessage("usage-ally", "&cUsage: /clan ally <add|accept|deny|remove|list> [clan]")));
         }
     }
 
@@ -70,16 +70,23 @@ public class AllySubCommand extends SubCommand {
         int maxAllies = plugin.getClanLevelManager() != null
                 ? plugin.getClanLevelManager().getMaxAllies(clan.getLevel())
                 : 0;
-        player.sendMessage(
-                MessageUtils.toComponent("&8&m━━━━━━━━━━━━━&r &#00E5FF&lALIANZAS DEL CLAN &8&m━━━━━━━━━━━━━"));
         player.sendMessage(MessageUtils.toComponent(
-                " &7Capacidad de aliados: &#00FF88" + clan.getAllies().size() + " &7/ &#00FF88" + maxAllies));
+                plugin.getMainConfigManager().getMessage("ally-list-header",
+                        "&8&m━━━━━━━━━━━━━&r &#00E5FF&lCLAN ALLIANCES &8&m━━━━━━━━━━━━━")));
+        player.sendMessage(MessageUtils.toComponent(
+                plugin.getMainConfigManager().getMessage("ally-list-capacity",
+                        " &7Ally capacity: &#00FF88{current} &7/ &#00FF88{max}")
+                        .replace("{current}", String.valueOf(clan.getAllies().size()))
+                        .replace("{max}", String.valueOf(maxAllies))));
 
         if (clan.getAllies().isEmpty()) {
-            player.sendMessage(MessageUtils.toComponent(" &7Tu clan no tiene clanes aliados en este momento."));
+            player.sendMessage(MessageUtils.toComponent(
+                    plugin.getMainConfigManager().getMessage("ally-list-empty",
+                            " &7Your clan does not have any allied clans at this time.")));
             if (maxAllies <= 0) {
-                player.sendMessage(MessageUtils
-                        .toComponent(" &#FFAA00&o(Desbloquea el Nivel 4 de clan para formar tu primera alianza)"));
+                player.sendMessage(MessageUtils.toComponent(
+                        plugin.getMainConfigManager().getMessage("ally-list-unlock-hint",
+                                " &#FFAA00&o(Unlock Clan Level 4 to form your first alliance)")));
             }
         } else {
             for (String allyName : clan.getAllies()) {
@@ -88,7 +95,9 @@ public class AllySubCommand extends SubCommand {
                 player.sendMessage(MessageUtils.toComponent(" &#00FF88✦ &f" + allyName + tag));
             }
         }
-        player.sendMessage(MessageUtils.toComponent("&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
+        player.sendMessage(MessageUtils.toComponent(
+                plugin.getMainConfigManager().getMessage("ally-list-footer",
+                        "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")));
     }
 
     @Override
