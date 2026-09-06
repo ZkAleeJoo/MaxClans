@@ -1,5 +1,6 @@
 package org.zkaleejoo.listeners;
 
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -13,15 +14,25 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanQuest;
 
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Set;
+import java.util.UUID;
+
 public class ClanExpListener implements Listener {
 
-    private static final String METADATA_PLACED = "onlyclans_placed";
     private final OnlyClans plugin;
+    private final Set<BlockPosition> placedBlocks = Collections.newSetFromMap(
+            CacheBuilder.newBuilder()
+                    .maximumSize(50_000)
+                    .expireAfterWrite(Duration.ofDays(3))
+                    .<BlockPosition, Boolean>build()
+                    .asMap()
+    );
 
     public ClanExpListener(OnlyClans plugin) {
         this.plugin = plugin;
@@ -33,7 +44,7 @@ public class ClanExpListener implements Listener {
         Material type = block.getType();
 
         if (isOre(type) || isLog(type)) {
-            block.setMetadata(METADATA_PLACED, new FixedMetadataValue(plugin, true));
+            placedBlocks.add(BlockPosition.of(block));
         }
     }
 
@@ -50,8 +61,7 @@ public class ClanExpListener implements Listener {
         }
 
         Block block = event.getBlock();
-        if (block.hasMetadata(METADATA_PLACED)) {
-            block.removeMetadata(METADATA_PLACED, plugin);
+        if (placedBlocks.remove(BlockPosition.of(block))) {
             return;
         }
 
@@ -113,5 +123,11 @@ public class ClanExpListener implements Listener {
         if (material == Material.ANCIENT_DEBRIS) return true;
         String name = material.name();
         return name.endsWith("_ORE");
+    }
+
+    private record BlockPosition(UUID worldUid, int x, int y, int z) {
+        public static BlockPosition of(Block block) {
+            return new BlockPosition(block.getWorld().getUID(), block.getX(), block.getY(), block.getZ());
+        }
     }
 }

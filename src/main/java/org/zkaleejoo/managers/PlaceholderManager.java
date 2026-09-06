@@ -150,8 +150,11 @@ public class PlaceholderManager {
 
     public String getFlagStatus(ClanFlag flag, boolean value, String lang, boolean miniMessage) {
         return formatOutput(value
-                ? getString(lang, "flags.status-enabled", getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled"))
-                : getString(lang, "flags.status-disabled", getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled")), miniMessage);
+                ? getString(lang, "flags.status-enabled",
+                        getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled"))
+                : getString(lang, "flags.status-disabled",
+                        getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled")),
+                miniMessage);
     }
 
     public String getFlagBadge(ClanFlag flag, boolean value, String lang) {
@@ -160,8 +163,11 @@ public class PlaceholderManager {
 
     public String getFlagBadge(ClanFlag flag, boolean value, String lang, boolean miniMessage) {
         return formatOutput(value
-                ? getString(lang, "flags.badge-enabled", getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED"))
-                : getString(lang, "flags.badge-disabled", getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED")), miniMessage);
+                ? getString(lang, "flags.badge-enabled",
+                        getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED"))
+                : getString(lang, "flags.badge-disabled",
+                        getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED")),
+                miniMessage);
     }
 
     public String getGuiText(String key, String lang, String def) {
@@ -266,8 +272,10 @@ public class PlaceholderManager {
 
                     if (prop.equals("name")) {
                         return topClan != null ? topClan.getName() : getNoneText(lang);
-                    } else if (prop.equals("displayname") || prop.equals("display_name") || prop.equals("name_formatted")) {
-                        return topClan != null ? formatOutput(topClan.getDisplayName(), useMiniMessage) : getNoneText(lang);
+                    } else if (prop.equals("displayname") || prop.equals("display_name")
+                            || prop.equals("name_formatted")) {
+                        return topClan != null ? formatOutput(topClan.getDisplayName(), useMiniMessage)
+                                : getNoneText(lang);
                     } else if (prop.equals("tag")) {
                         return topClan != null ? formatOutput(topClan.getTag(), useMiniMessage) : getNoClanTag(lang);
                     } else if (prop.equals("tag_raw")) {
@@ -275,7 +283,8 @@ public class PlaceholderManager {
                     } else if (prop.equals("tag_formatted")) {
                         return topClan != null ? formatTag(topClan.getTag(), useMiniMessage) : "";
                     } else if (prop.equals("leader")) {
-                        if (topClan == null) return getNoneText(lang);
+                        if (topClan == null)
+                            return getNoneText(lang);
                         OfflinePlayer leader = Bukkit.getOfflinePlayer(topClan.getOwner());
                         return leader.getName() != null ? leader.getName() : getUnknownText(lang);
                     } else if (prop.equals("val") || prop.equals("value")) {
@@ -381,13 +390,16 @@ public class PlaceholderManager {
             return clan != null ? clan.getName() : "";
         }
 
-        if (cleanParam.equals("displayname") || cleanParam.equals("display_name") || cleanParam.equals("name_formatted")) {
-            if (clan == null) return "";
+        if (cleanParam.equals("displayname") || cleanParam.equals("display_name")
+                || cleanParam.equals("name_formatted")) {
+            if (clan == null)
+                return "";
             return formatOutput(clan.getDisplayName(), useMiniMessage);
         }
 
         if (cleanParam.equals("tag")) {
-            if (clan == null) return "";
+            if (clan == null)
+                return "";
             return formatOutput(clan.getTag(), useMiniMessage);
         }
 
@@ -540,43 +552,57 @@ public class PlaceholderManager {
             return clan != null ? String.valueOf(clan.getExp()) : "0";
         }
 
-        if (cleanParam.equals("exp_next") || cleanParam.equals("clan_exp_next") || cleanParam.equals("exp_needed") || cleanParam.equals("clan_exp_needed")) {
-            if (clan == null) return "0";
+        if (cleanParam.equals("exp_next") || cleanParam.equals("clan_exp_next") || cleanParam.equals("exp_needed")
+                || cleanParam.equals("clan_exp_needed")) {
+            if (clan == null)
+                return "0";
             return String.valueOf(plugin.getClanLevelManager().getExpForNextLevel(clan));
         }
 
-        if (cleanParam.equals("exp_percent") || cleanParam.equals("clan_exp_percent") || cleanParam.equals("exp_percentage")) {
-            if (clan == null) return "0.0%";
+        if (cleanParam.equals("exp_percent") || cleanParam.equals("clan_exp_percent")
+                || cleanParam.equals("exp_percentage")) {
+            if (clan == null)
+                return "0.0%";
             return String.format(java.util.Locale.US, "%.1f%%", plugin.getClanLevelManager().getExpPercentage(clan));
         }
 
         if (cleanParam.equals("exp_bar") || cleanParam.equals("clan_exp_bar")) {
-            if (clan == null) return "";
+            if (clan == null)
+                return "";
             return formatOutput(plugin.getClanLevelManager().getExpProgressBar(clan, 20), useMiniMessage);
         }
 
-        if (cleanParam.equals("bank") || cleanParam.equals("clan_bank") || cleanParam.equals("bank_balance") || cleanParam.equals("clan_bank_balance")) {
-            if (clan == null) return "0.00";
+        if (cleanParam.equals("bank") || cleanParam.equals("clan_bank") || cleanParam.equals("bank_balance")
+                || cleanParam.equals("clan_bank_balance")) {
+            if (clan == null)
+                return "0.00";
             return String.format(java.util.Locale.US, "%.2f", clan.getBankBalance());
         }
 
-        if (cleanParam.equals("max_members") || cleanParam.equals("clan_max_members") || cleanParam.equals("members_max")) {
-            if (clan == null) return "8";
+        if (cleanParam.equals("max_members") || cleanParam.equals("clan_max_members")
+                || cleanParam.equals("members_max")) {
+            if (clan == null)
+                return "8";
             return String.valueOf(plugin.getClanLevelManager().getMaxMembers(clan.getLevel()));
         }
 
-        if (cleanParam.equals("allies") || cleanParam.equals("clan_allies") || cleanParam.equals("allies_count") || cleanParam.equals("clan_allies_count")) {
-            if (clan == null) return "0";
+        if (cleanParam.equals("allies") || cleanParam.equals("clan_allies") || cleanParam.equals("allies_count")
+                || cleanParam.equals("clan_allies_count")) {
+            if (clan == null)
+                return "0";
             return String.valueOf(clan.getAllies().size());
         }
 
-        if (cleanParam.equals("max_allies") || cleanParam.equals("clan_max_allies") || cleanParam.equals("allies_max")) {
-            if (clan == null) return "0";
+        if (cleanParam.equals("max_allies") || cleanParam.equals("clan_max_allies")
+                || cleanParam.equals("allies_max")) {
+            if (clan == null)
+                return "0";
             return String.valueOf(plugin.getClanLevelManager().getMaxAllies(clan.getLevel()));
         }
 
         if (cleanParam.equals("allies_list") || cleanParam.equals("clan_allies_list")) {
-            if (clan == null || clan.getAllies().isEmpty()) return getNoneText(lang);
+            if (clan == null || clan.getAllies().isEmpty())
+                return getNoneText(lang);
             return String.join(", ", clan.getAllies());
         }
 
@@ -584,13 +610,16 @@ public class PlaceholderManager {
             return clan != null ? String.valueOf(clan.getHomeCount()) : "0";
         }
 
-        if (cleanParam.equals("homes_max") || cleanParam.equals("home_max") || cleanParam.equals("max_homes") || cleanParam.equals("clan_max_homes")) {
-            if (clan == null) return "1";
+        if (cleanParam.equals("homes_max") || cleanParam.equals("home_max") || cleanParam.equals("max_homes")
+                || cleanParam.equals("clan_max_homes")) {
+            if (clan == null)
+                return "1";
             return String.valueOf(plugin.getClanLevelManager().getMaxHomes(clan.getLevel()));
         }
 
         if (cleanParam.equals("homes_list") || cleanParam.equals("home_list")) {
-            if (clan == null || clan.getHomeCount() == 0) return getNoneText(lang);
+            if (clan == null || clan.getHomeCount() == 0)
+                return getNoneText(lang);
             return String.join(", ", clan.getHomeNames());
         }
 

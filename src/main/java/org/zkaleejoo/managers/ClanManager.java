@@ -143,11 +143,14 @@ public class ClanManager {
             return;
         }
 
-        int maxMembers = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel()) : 8;
+        int maxMembers = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel())
+                : 8;
         if (clan.getMemberCount() >= maxMembers) {
             inviter.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("clan-full", "&cYour clan has reached its maximum member limit ({current}/{max}) for its current level. Level up your clan to unlock more slots!")
+                            .getMessage("clan-full",
+                                    "&cYour clan has reached its maximum member limit ({current}/{max}) for its current level. Level up your clan to unlock more slots!")
                             .replace("{current}", String.valueOf(clan.getMemberCount()))
                             .replace("{max}", String.valueOf(maxMembers))));
             return;
@@ -182,7 +185,8 @@ public class ClanManager {
 
         String acceptBtnText = plugin.getMainConfigManager().getMessage("invite-button-accept", " [ACCEPT] ");
         String denyBtnText = plugin.getMainConfigManager().getMessage("invite-button-deny", " [DENY] ");
-        String acceptHoverText = plugin.getMainConfigManager().getMessage("invite-hover-accept", "&aClick to join &f{clan}")
+        String acceptHoverText = plugin.getMainConfigManager()
+                .getMessage("invite-hover-accept", "&aClick to join &f{clan}")
                 .replace("{clan}", clan.getName());
         String denyHoverText = plugin.getMainConfigManager().getMessage("invite-hover-deny", "&cClick to decline");
 
@@ -216,11 +220,14 @@ public class ClanManager {
             return;
         }
 
-        int maxMembers = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel()) : 8;
+        int maxMembers = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel())
+                : 8;
         if (clan.getMemberCount() >= maxMembers) {
             player.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("clan-full-target", "&cThat clan has reached its maximum member limit ({current}/{max}) for its current level.")
+                            .getMessage("clan-full-target",
+                                    "&cThat clan has reached its maximum member limit ({current}/{max}) for its current level.")
                             .replace("{current}", String.valueOf(clan.getMemberCount()))
                             .replace("{max}", String.valueOf(maxMembers))));
             return;
@@ -296,7 +303,8 @@ public class ClanManager {
         if (clan == null) {
             applicant.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix()
-                            + plugin.getMainConfigManager().getMessage("clan-not-exists", "&cThat clan no longer exists.")));
+                            + plugin.getMainConfigManager().getMessage("clan-not-exists",
+                                    "&cThat clan no longer exists.")));
             return;
         }
 
@@ -307,11 +315,14 @@ public class ClanManager {
             return;
         }
 
-        int maxMembers = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel()) : 8;
+        int maxMembers = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel())
+                : 8;
         if (clan.getMemberCount() >= maxMembers) {
             applicant.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("clan-full-target", "&cThat clan has reached its maximum member limit ({current}/{max}) for its current level.")
+                            .getMessage("clan-full-target",
+                                    "&cThat clan has reached its maximum member limit ({current}/{max}) for its current level.")
                             .replace("{current}", String.valueOf(clan.getMemberCount()))
                             .replace("{max}", String.valueOf(maxMembers))));
             return;
@@ -333,7 +344,8 @@ public class ClanManager {
         if (onlineStaff.isEmpty()) {
             applicant.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("request-no-staff-online", "&cCannot send request: No leader or moderator of '&f{clan}&c' is online.")
+                            .getMessage("request-no-staff-online",
+                                    "&cCannot send request: No leader or moderator of '&f{clan}&c' is online.")
                             .replace("{clan}", clan.getName())));
             return;
         }
@@ -342,14 +354,17 @@ public class ClanManager {
 
         applicant.sendMessage(MessageUtils.getColoredMessage(
                 plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                        .getMessage("request-sent", "&aJoin request sent to '&f{clan}&a'! Waiting for a leader or moderator to accept.")
+                        .getMessage("request-sent",
+                                "&aJoin request sent to '&f{clan}&a'! Waiting for a leader or moderator to accept.")
                         .replace("{clan}", clan.getName())));
 
         String acceptBtnText = plugin.getMainConfigManager().getMessage("request-button-accept", " [ACCEPT] ");
         String denyBtnText = plugin.getMainConfigManager().getMessage("request-button-deny", " [DENY] ");
-        String acceptHoverText = plugin.getMainConfigManager().getMessage("request-hover-accept", "&aClick to accept &f{player}")
+        String acceptHoverText = plugin.getMainConfigManager()
+                .getMessage("request-hover-accept", "&aClick to accept &f{player}")
                 .replace("{player}", applicant.getName());
-        String denyHoverText = plugin.getMainConfigManager().getMessage("request-hover-deny", "&cClick to deny &f{player}")
+        String denyHoverText = plugin.getMainConfigManager()
+                .getMessage("request-hover-deny", "&cClick to deny &f{player}")
                 .replace("{player}", applicant.getName());
 
         Component acceptButton = MessageUtils.toComponent(acceptBtnText)
@@ -418,11 +433,14 @@ public class ClanManager {
 
         clan.removeJoinRequest(targetUuid);
 
-        int maxMembers = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel()) : 8;
+        int maxMembers = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel())
+                : 8;
         if (clan.getMemberCount() >= maxMembers) {
             staff.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("clan-full", "&cYour clan has reached its maximum member limit ({current}/{max}) for its current level. Level up your clan to unlock more slots!")
+                            .getMessage("clan-full",
+                                    "&cYour clan has reached its maximum member limit ({current}/{max}) for its current level. Level up your clan to unlock more slots!")
                             .replace("{current}", String.valueOf(clan.getMemberCount()))
                             .replace("{max}", String.valueOf(maxMembers))));
             return;
@@ -665,11 +683,13 @@ public class ClanManager {
                                 .replace("{player}", target.getName())));
         target.sendMessage(MessageUtils.getColoredMessage(
                 plugin.getMainConfigManager().getPrefix()
-                        + plugin.getMainConfigManager().getMessage("demoted-self", "&cYou have been demoted to Member.")));
+                        + plugin.getMainConfigManager().getMessage("demoted-self",
+                                "&cYou have been demoted to Member.")));
     }
 
     public void joinOpenClan(Player player, Clan clan) {
-        if (clan == null) return;
+        if (clan == null)
+            return;
         if (isInClan(player.getUniqueId())) {
             player.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -677,11 +697,14 @@ public class ClanManager {
             return;
         }
 
-        int maxMembers = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel()) : 8;
+        int maxMembers = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxMembers(clan.getLevel())
+                : 8;
         if (clan.getMemberCount() >= maxMembers) {
             player.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("clan-full-target", "&cThat clan has reached its maximum member limit ({current}/{max}) for its current level.")
+                            .getMessage("clan-full-target",
+                                    "&cThat clan has reached its maximum member limit ({current}/{max}) for its current level.")
                             .replace("{current}", String.valueOf(clan.getMemberCount()))
                             .replace("{max}", String.valueOf(maxMembers))));
             return;
@@ -834,7 +857,8 @@ public class ClanManager {
         }
 
         String trimmed = newDisplayName.trim();
-        if (trimmed.equalsIgnoreCase("reset") || trimmed.equalsIgnoreCase("clear") || trimmed.equalsIgnoreCase("none")) {
+        if (trimmed.equalsIgnoreCase("reset") || trimmed.equalsIgnoreCase("clear")
+                || trimmed.equalsIgnoreCase("none")) {
             clan.setDisplayName(null);
             storage.updateClan(clan);
 
@@ -844,7 +868,8 @@ public class ClanManager {
 
             String broadcastMsg = plugin.getMainConfigManager().getPrefix()
                     + plugin.getMainConfigManager()
-                            .getMessage("decor-reset-broadcast", "&eClan display name was reset to &f{clan}&e by &f{player}&e.")
+                            .getMessage("decor-reset-broadcast",
+                                    "&eClan display name was reset to &f{clan}&e by &f{player}&e.")
                             .replace("{clan}", clan.getName())
                             .replace("{player}", player.getName());
             broadcastToClan(clan, broadcastMsg);
@@ -855,7 +880,8 @@ public class ClanManager {
         if (stripped == null || !stripped.trim().equalsIgnoreCase(clan.getName())) {
             player.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("decor-mismatch", "&cThe decorated name must match your clan's original name: &f{clan}")
+                            .getMessage("decor-mismatch",
+                                    "&cThe decorated name must match your clan's original name: &f{clan}")
                             .replace("{clan}", clan.getName())));
             return false;
         }
@@ -870,7 +896,8 @@ public class ClanManager {
 
         String broadcastMsg = plugin.getMainConfigManager().getPrefix()
                 + plugin.getMainConfigManager()
-                        .getMessage("decor-updated-broadcast", "&eClan display name was changed to {name}&e by &f{player}&e.")
+                        .getMessage("decor-updated-broadcast",
+                                "&eClan display name was changed to {name}&e by &f{player}&e.")
                         .replace("{name}", trimmed)
                         .replace("{player}", player.getName());
         broadcastToClan(clan, broadcastMsg);
@@ -993,23 +1020,29 @@ public class ClanManager {
         switch (sortType) {
             case KDR -> list.sort((a, b) -> {
                 int cmp = Double.compare(b.getKDR(), a.getKDR());
-                if (cmp != 0) return cmp;
+                if (cmp != 0)
+                    return cmp;
                 int killCmp = Integer.compare(b.getKills(), a.getKills());
-                if (killCmp != 0) return killCmp;
+                if (killCmp != 0)
+                    return killCmp;
                 return Long.compare(a.getCreatedAt(), b.getCreatedAt());
             });
             case KILLS -> list.sort((a, b) -> {
                 int cmp = Integer.compare(b.getKills(), a.getKills());
-                if (cmp != 0) return cmp;
+                if (cmp != 0)
+                    return cmp;
                 int kdrCmp = Double.compare(b.getKDR(), a.getKDR());
-                if (kdrCmp != 0) return kdrCmp;
+                if (kdrCmp != 0)
+                    return kdrCmp;
                 return Long.compare(a.getCreatedAt(), b.getCreatedAt());
             });
             case MEMBERS -> list.sort((a, b) -> {
                 int cmp = Integer.compare(b.getMemberCount(), a.getMemberCount());
-                if (cmp != 0) return cmp;
+                if (cmp != 0)
+                    return cmp;
                 int killCmp = Integer.compare(b.getKills(), a.getKills());
-                if (killCmp != 0) return killCmp;
+                if (killCmp != 0)
+                    return killCmp;
                 return Double.compare(b.getKDR(), a.getKDR());
             });
         }
@@ -1017,7 +1050,8 @@ public class ClanManager {
     }
 
     public Clan getTopClan(TopSortType sortType, int rank) {
-        if (rank <= 0) return null;
+        if (rank <= 0)
+            return null;
         List<Clan> top = getTopClans(sortType, true);
         if (rank <= top.size()) {
             return top.get(rank - 1);
@@ -1026,7 +1060,8 @@ public class ClanManager {
     }
 
     public boolean hasPendingAlliance(String targetClan, String fromClan) {
-        if (targetClan == null || fromClan == null) return false;
+        if (targetClan == null || fromClan == null)
+            return false;
         Set<String> set = pendingAlliances.get(targetClan.toLowerCase());
         return set != null && set.contains(fromClan.toLowerCase());
     }
@@ -1035,7 +1070,8 @@ public class ClanManager {
         Clan clan = getClanByPlayer(requester.getUniqueId());
         if (clan == null) {
             requester.sendMessage(MessageUtils.getColoredMessage(
-                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getMessage("not-in-clan", "&cYou are not in a clan.")));
+                    plugin.getMainConfigManager().getPrefix()
+                            + plugin.getMainConfigManager().getMessage("not-in-clan", "&cYou are not in a clan.")));
             return;
         }
 
@@ -1043,7 +1079,8 @@ public class ClanManager {
         if (cp == null || !cp.hasRoleAtLeast(ClanRole.MODERATOR)) {
             requester.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("no-ally-permission", "&cOnly clan leaders and moderators can manage alliances.")));
+                            .getMessage("no-ally-permission",
+                                    "&cOnly clan leaders and moderators can manage alliances.")));
             return;
         }
 
@@ -1062,11 +1099,14 @@ public class ClanManager {
             return;
         }
 
-        int maxAlliesClan = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxAllies(clan.getLevel()) : 0;
+        int maxAlliesClan = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxAllies(clan.getLevel())
+                : 0;
         if (maxAlliesClan <= 0) {
             requester.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-level-locked", "&cAlliances are unlocked at &eClan Level 4&c. Current level: &e{level}")
+                            .getMessage("ally-level-locked",
+                                    "&cAlliances are unlocked at &eClan Level 4&c. Current level: &e{level}")
                             .replace("{level}", String.valueOf(clan.getLevel()))));
             return;
         }
@@ -1074,17 +1114,21 @@ public class ClanManager {
         if (clan.getAllies().size() >= maxAlliesClan) {
             requester.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-limit-reached", "&cYour clan has reached the maximum ally limit ({current}/{max}) for its current level.")
+                            .getMessage("ally-limit-reached",
+                                    "&cYour clan has reached the maximum ally limit ({current}/{max}) for its current level.")
                             .replace("{current}", String.valueOf(clan.getAllies().size()))
                             .replace("{max}", String.valueOf(maxAlliesClan))));
             return;
         }
 
-        int maxAlliesTarget = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxAllies(targetClan.getLevel()) : 0;
+        int maxAlliesTarget = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxAllies(targetClan.getLevel())
+                : 0;
         if (maxAlliesTarget <= 0) {
             requester.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-target-level-low", "&cThe target clan '&f{clan}&c' has not unlocked alliances yet (Requires Level 4).")
+                            .getMessage("ally-target-level-low",
+                                    "&cThe target clan '&f{clan}&c' has not unlocked alliances yet (Requires Level 4).")
                             .replace("{clan}", targetClan.getName())));
             return;
         }
@@ -1092,7 +1136,8 @@ public class ClanManager {
         if (targetClan.getAllies().size() >= maxAlliesTarget) {
             requester.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-target-limit-reached", "&cThe target clan '&f{clan}&c' has reached its maximum ally limit.")
+                            .getMessage("ally-target-limit-reached",
+                                    "&cThe target clan '&f{clan}&c' has reached its maximum ally limit.")
                             .replace("{clan}", targetClan.getName())));
             return;
         }
@@ -1106,12 +1151,14 @@ public class ClanManager {
         if (hasPendingAlliance(targetClan.getName(), clan.getName())) {
             requester.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-request-already-sent", "&cYou have already sent an alliance request to '&f{clan}&c'.")
+                            .getMessage("ally-request-already-sent",
+                                    "&cYou have already sent an alliance request to '&f{clan}&c'.")
                             .replace("{clan}", targetClan.getName())));
             return;
         }
 
-        pendingAlliances.computeIfAbsent(targetClan.getName().toLowerCase(), k -> new HashSet<>()).add(clan.getName().toLowerCase());
+        pendingAlliances.computeIfAbsent(targetClan.getName().toLowerCase(), k -> new HashSet<>())
+                .add(clan.getName().toLowerCase());
 
         requester.sendMessage(MessageUtils.getColoredMessage(
                 plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -1125,9 +1172,11 @@ public class ClanManager {
 
         String acceptBtnText = plugin.getMainConfigManager().getMessage("invite-button-accept", " [ACCEPT] ");
         String denyBtnText = plugin.getMainConfigManager().getMessage("invite-button-deny", " [DENY] ");
-        String acceptHover = plugin.getMainConfigManager().getMessage("ally-hover-accept", "&aClick to accept alliance with &f{clan}")
+        String acceptHover = plugin.getMainConfigManager()
+                .getMessage("ally-hover-accept", "&aClick to accept alliance with &f{clan}")
                 .replace("{clan}", clan.getName());
-        String denyHover = plugin.getMainConfigManager().getMessage("ally-hover-deny", "&cClick to deny alliance with &f{clan}")
+        String denyHover = plugin.getMainConfigManager()
+                .getMessage("ally-hover-deny", "&cClick to deny alliance with &f{clan}")
                 .replace("{clan}", clan.getName());
 
         Component acceptButton = MessageUtils.toComponent(acceptBtnText)
@@ -1148,13 +1197,15 @@ public class ClanManager {
 
     public void acceptAlly(Player staff, Clan targetClan) {
         Clan clan = getClanByPlayer(staff.getUniqueId());
-        if (clan == null) return;
+        if (clan == null)
+            return;
 
         ClanPlayer cp = clan.getMember(staff.getUniqueId());
         if (cp == null || !cp.hasRoleAtLeast(ClanRole.MODERATOR)) {
             staff.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("no-ally-permission", "&cOnly clan leaders and moderators can manage alliances.")));
+                            .getMessage("no-ally-permission",
+                                    "&cOnly clan leaders and moderators can manage alliances.")));
             return;
         }
 
@@ -1162,18 +1213,24 @@ public class ClanManager {
         if (set == null || !set.remove(targetClan.getName().toLowerCase())) {
             staff.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-no-pending-request", "&cThere is no pending alliance request from '&f{clan}&c'.")
+                            .getMessage("ally-no-pending-request",
+                                    "&cThere is no pending alliance request from '&f{clan}&c'.")
                             .replace("{clan}", targetClan.getName())));
             return;
         }
 
-        int maxAlliesClan = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxAllies(clan.getLevel()) : 0;
-        int maxAlliesTarget = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxAllies(targetClan.getLevel()) : 0;
+        int maxAlliesClan = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxAllies(clan.getLevel())
+                : 0;
+        int maxAlliesTarget = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxAllies(targetClan.getLevel())
+                : 0;
 
         if (clan.getAllies().size() >= maxAlliesClan || targetClan.getAllies().size() >= maxAlliesTarget) {
             staff.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-limit-reached", "&cOne of the clans has reached its maximum ally limit.")));
+                            .getMessage("ally-limit-reached",
+                                    "&cOne of the clans has reached its maximum ally limit.")));
             return;
         }
 
@@ -1184,7 +1241,8 @@ public class ClanManager {
         storage.saveAlly(targetClan.getName(), clan.getName());
 
         String broadcastMsg = plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                .getMessage("ally-formed", "&aAn alliance has been established between '&f{clan1}&a' and '&f{clan2}&a'!")
+                .getMessage("ally-formed",
+                        "&aAn alliance has been established between '&f{clan1}&a' and '&f{clan2}&a'!")
                 .replace("{clan1}", clan.getName())
                 .replace("{clan2}", targetClan.getName());
 
@@ -1194,13 +1252,15 @@ public class ClanManager {
 
     public void denyAlly(Player staff, Clan targetClan) {
         Clan clan = getClanByPlayer(staff.getUniqueId());
-        if (clan == null) return;
+        if (clan == null)
+            return;
 
         ClanPlayer cp = clan.getMember(staff.getUniqueId());
         if (cp == null || !cp.hasRoleAtLeast(ClanRole.MODERATOR)) {
             staff.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("no-ally-permission", "&cOnly clan leaders and moderators can manage alliances.")));
+                            .getMessage("no-ally-permission",
+                                    "&cOnly clan leaders and moderators can manage alliances.")));
             return;
         }
 
@@ -1208,7 +1268,8 @@ public class ClanManager {
         if (set == null || !set.remove(targetClan.getName().toLowerCase())) {
             staff.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-no-pending-request", "&cThere is no pending alliance request from '&f{clan}&c'.")
+                            .getMessage("ally-no-pending-request",
+                                    "&cThere is no pending alliance request from '&f{clan}&c'.")
                             .replace("{clan}", targetClan.getName())));
             return;
         }
@@ -1222,20 +1283,23 @@ public class ClanManager {
         for (Player p : targetStaff) {
             p.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("ally-request-denied-other", "&cThe clan '&f{clan}&c' has declined your alliance proposal.")
+                            .getMessage("ally-request-denied-other",
+                                    "&cThe clan '&f{clan}&c' has declined your alliance proposal.")
                             .replace("{clan}", clan.getName())));
         }
     }
 
     public void removeAlly(Player player, Clan targetClan) {
         Clan clan = getClanByPlayer(player.getUniqueId());
-        if (clan == null) return;
+        if (clan == null)
+            return;
 
         ClanPlayer cp = clan.getMember(player.getUniqueId());
         if (cp == null || !cp.hasRoleAtLeast(ClanRole.MODERATOR)) {
             player.sendMessage(MessageUtils.getColoredMessage(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("no-ally-permission", "&cOnly clan leaders and moderators can manage alliances.")));
+                            .getMessage("no-ally-permission",
+                                    "&cOnly clan leaders and moderators can manage alliances.")));
             return;
         }
 

@@ -5,8 +5,6 @@ import org.bukkit.entity.Player;
 import org.zkaleejoo.OnlyClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
-import org.zkaleejoo.models.ClanPlayer;
-import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.utils.MessageUtils;
 
 import java.util.ArrayList;
@@ -69,14 +67,19 @@ public class AllySubCommand extends SubCommand {
     }
 
     private void showAllyList(Player player, Clan clan) {
-        int maxAllies = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxAllies(clan.getLevel()) : 0;
-        player.sendMessage(MessageUtils.toComponent("&8&m━━━━━━━━━━━━━&r &#00E5FF&lALIANZAS DEL CLAN &8&m━━━━━━━━━━━━━"));
-        player.sendMessage(MessageUtils.toComponent(" &7Capacidad de aliados: &#00FF88" + clan.getAllies().size() + " &7/ &#00FF88" + maxAllies));
+        int maxAllies = plugin.getClanLevelManager() != null
+                ? plugin.getClanLevelManager().getMaxAllies(clan.getLevel())
+                : 0;
+        player.sendMessage(
+                MessageUtils.toComponent("&8&m━━━━━━━━━━━━━&r &#00E5FF&lALIANZAS DEL CLAN &8&m━━━━━━━━━━━━━"));
+        player.sendMessage(MessageUtils.toComponent(
+                " &7Capacidad de aliados: &#00FF88" + clan.getAllies().size() + " &7/ &#00FF88" + maxAllies));
 
         if (clan.getAllies().isEmpty()) {
             player.sendMessage(MessageUtils.toComponent(" &7Tu clan no tiene clanes aliados en este momento."));
             if (maxAllies <= 0) {
-                player.sendMessage(MessageUtils.toComponent(" &#FFAA00&o(Desbloquea el Nivel 4 de clan para formar tu primera alianza)"));
+                player.sendMessage(MessageUtils
+                        .toComponent(" &#FFAA00&o(Desbloquea el Nivel 4 de clan para formar tu primera alianza)"));
             }
         } else {
             for (String allyName : clan.getAllies()) {

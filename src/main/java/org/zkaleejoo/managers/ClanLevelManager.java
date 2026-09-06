@@ -1,6 +1,5 @@
 package org.zkaleejoo.managers;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -38,7 +37,8 @@ public class ClanLevelManager {
         monsterExp.clear();
         miningExp.clear();
 
-        ConfigurationSection section = plugin.getMainConfigManager().getConfigFile().getConfigurationSection("leveling");
+        ConfigurationSection section = plugin.getMainConfigManager().getConfigFile()
+                .getConfigurationSection("leveling");
         if (section == null) {
             initDefaultLevels();
             return;
@@ -84,7 +84,8 @@ public class ClanLevelManager {
     }
 
     private void ConfigurationStyleExpSources(ConfigurationSection expSources) {
-        if (expSources == null) return;
+        if (expSources == null)
+            return;
 
         ConfigurationSection monsters = expSources.getConfigurationSection("monsters");
         if (monsters != null) {
@@ -159,7 +160,8 @@ public class ClanLevelManager {
     }
 
     public int getExpForNextLevel(Clan clan) {
-        if (clan == null) return 0;
+        if (clan == null)
+            return 0;
         int nextLevel = clan.getLevel() + 1;
         if (nextLevel > getMaxLevel()) {
             return 0; // Max level reached
@@ -169,23 +171,27 @@ public class ClanLevelManager {
     }
 
     public double getExpPercentage(Clan clan) {
-        if (clan == null) return 0.0;
+        if (clan == null)
+            return 0.0;
         if (clan.getLevel() >= getMaxLevel()) {
             return 100.0;
         }
         int required = getExpForNextLevel(clan);
-        if (required <= 0) return 100.0;
+        if (required <= 0)
+            return 100.0;
         return Math.min(100.0, ((double) clan.getExp() / required) * 100.0);
     }
 
     public String getExpProgressBar(Clan clan, int totalBars) {
-        if (clan == null) return "";
+        if (clan == null)
+            return "";
         int current = clan.getExp();
         int required = getExpForNextLevel(clan);
         if (clan.getLevel() >= getMaxLevel()) {
             return "&#00FF88" + "█".repeat(Math.max(1, totalBars));
         }
-        if (required <= 0) required = 1;
+        if (required <= 0)
+            required = 1;
         int filled = (int) Math.round(((double) current / required) * totalBars);
         filled = Math.max(0, Math.min(totalBars, filled));
         int unfilled = totalBars - filled;
@@ -244,7 +250,8 @@ public class ClanLevelManager {
     }
 
     public void addExp(Clan clan, int amount, String source, Player contributor) {
-        if (clan == null || amount <= 0) return;
+        if (clan == null || amount <= 0)
+            return;
 
         if (clan.getLevel() >= getMaxLevel()) {
             return; // Clan is already at max level
@@ -271,7 +278,8 @@ public class ClanLevelManager {
     }
 
     public void checkLevelUp(Clan clan) {
-        if (clan == null) return;
+        if (clan == null)
+            return;
 
         int maxLvl = getMaxLevel();
         boolean leveledUp = false;
@@ -299,17 +307,23 @@ public class ClanLevelManager {
         ClanLevelConfig config = getLevelConfig(newLevel);
 
         List<String> perks = new ArrayList<>();
-        perks.add(plugin.getMainConfigManager().getMessage("perk-members", "&aLímite de miembros: &f{max}").replace("{max}", String.valueOf(config.getMaxMembers())));
-        perks.add(plugin.getMainConfigManager().getMessage("perk-allies", "&aAliados permitidos: &f{max}").replace("{max}", String.valueOf(config.getMaxAllies())));
-        perks.add(plugin.getMainConfigManager().getMessage("perk-homes", "&aHomes del clan: &f{max}").replace("{max}", String.valueOf(config.getMaxHomes())));
+        perks.add(plugin.getMainConfigManager().getMessage("perk-members", "&aLímite de miembros: &f{max}")
+                .replace("{max}", String.valueOf(config.getMaxMembers())));
+        perks.add(plugin.getMainConfigManager().getMessage("perk-allies", "&aAliados permitidos: &f{max}")
+                .replace("{max}", String.valueOf(config.getMaxAllies())));
+        perks.add(plugin.getMainConfigManager().getMessage("perk-homes", "&aHomes del clan: &f{max}").replace("{max}",
+                String.valueOf(config.getMaxHomes())));
         if (config.hasBankAccess()) {
             perks.add(plugin.getMainConfigManager().getMessage("perk-bank", "&aAcceso al Banco del clan (/clan bank)"));
         }
         if (config.hasChestAccess()) {
-            perks.add(plugin.getMainConfigManager().getMessage("perk-chest", "&aBaúl compartido desbloqueado ({rows} filas)").replace("{rows}", String.valueOf(config.getChestRows())));
+            perks.add(plugin.getMainConfigManager()
+                    .getMessage("perk-chest", "&aBaúl compartido desbloqueado ({rows} filas)")
+                    .replace("{rows}", String.valueOf(config.getChestRows())));
         }
         if (config.hasBaseEffect()) {
-            perks.add(plugin.getMainConfigManager().getMessage("perk-base-effect", "&aEfecto permanente en base: &f{effect} (Radio {radius}m)")
+            perks.add(plugin.getMainConfigManager()
+                    .getMessage("perk-base-effect", "&aEfecto permanente en base: &f{effect} (Radio {radius}m)")
                     .replace("{effect}", config.getBaseEffectType())
                     .replace("{radius}", String.valueOf(config.getBaseEffectRadius())));
         }

@@ -14,7 +14,6 @@ import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,7 +42,8 @@ public class BankSubCommand extends SubCommand {
         if (plugin.getClanLevelManager() != null && !plugin.getClanLevelManager().hasBankAccess(clan.getLevel())) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("bank-locked", "&cEl acceso al Banco del Clan se desbloquea en el &eNivel 2&c. Nivel actual: &e{level}")
+                            .getMessage("bank-locked",
+                                    "&cEl acceso al Banco del Clan se desbloquea en el &eNivel 2&c. Nivel actual: &e{level}")
                             .replace("{level}", String.valueOf(clan.getLevel()))));
             SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
             return;
@@ -62,7 +62,8 @@ public class BankSubCommand extends SubCommand {
         } else {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("usage-bank", "&cUso: /clan bank [deposit <monto> | withdraw <monto> | balance]")));
+                            .getMessage("usage-bank",
+                                    "&cUso: /clan bank [deposit <monto> | withdraw <monto> | balance]")));
         }
     }
 
@@ -111,7 +112,8 @@ public class BankSubCommand extends SubCommand {
         if (getPlayerBalance(player) < amount) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("bank-insufficient-player", "&cNo tienes suficiente dinero para realizar este depósito.")));
+                            .getMessage("bank-insufficient-player",
+                                    "&cNo tienes suficiente dinero para realizar este depósito.")));
             return;
         }
 
@@ -135,7 +137,8 @@ public class BankSubCommand extends SubCommand {
         SoundUtils.playSound(player, "ENTITY_PLAYER_LEVELUP", 0.7f, 1.6f);
 
         if (plugin.getClanQuestManager() != null) {
-            plugin.getClanQuestManager().incrementProgress(clan, ClanQuest.QuestType.DONATE_BANK, "COINS", (int) amount);
+            plugin.getClanQuestManager().incrementProgress(clan, ClanQuest.QuestType.DONATE_BANK, "COINS",
+                    (int) amount);
         }
 
         String broadcastMsg = prefix + plugin.getMainConfigManager().getMessage("bank-deposited-broadcast",
@@ -156,7 +159,8 @@ public class BankSubCommand extends SubCommand {
         if (cp == null || !cp.hasRoleAtLeast(ClanRole.MODERATOR)) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("bank-no-permission", "&cSolo los líderes y moderadores pueden retirar fondos del banco.")));
+                            .getMessage("bank-no-permission",
+                                    "&cSolo los líderes y moderadores pueden retirar fondos del banco.")));
             return;
         }
 
@@ -187,7 +191,8 @@ public class BankSubCommand extends SubCommand {
         if (clan.getBankBalance() < amount) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
-                            .getMessage("bank-insufficient-clan", "&cEl banco del clan no dispone de fondos suficientes.")));
+                            .getMessage("bank-insufficient-clan",
+                                    "&cEl banco del clan no dispone de fondos suficientes.")));
             return;
         }
 
