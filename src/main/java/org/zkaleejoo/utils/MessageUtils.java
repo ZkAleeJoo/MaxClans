@@ -28,6 +28,8 @@ public class MessageUtils {
             .useUnusualXRepeatedCharacterHexFormat()
             .build();
 
+    private static final String RESET_DECORATIONS = "<!b><!i><!u><!st><!obf>";
+
     public static String legacyToMiniMessage(String message) {
         if (message == null || message.isEmpty()) {
             return "";
@@ -38,7 +40,7 @@ public class MessageUtils {
         while (spigotMatcher.find()) {
             String match = spigotMatcher.group();
             String hex = match.replaceAll("(?i)[&§x]", "");
-            spigotMatcher.appendReplacement(sb, Matcher.quoteReplacement("<reset><#" + hex + ">"));
+            spigotMatcher.appendReplacement(sb, Matcher.quoteReplacement(RESET_DECORATIONS + "<#" + hex + ">"));
         }
         spigotMatcher.appendTail(sb);
         message = sb.toString();
@@ -47,7 +49,7 @@ public class MessageUtils {
         sb = new StringBuilder();
         while (hexMatcher.find()) {
             String hex = hexMatcher.group(1);
-            hexMatcher.appendReplacement(sb, Matcher.quoteReplacement("<reset><#" + hex + ">"));
+            hexMatcher.appendReplacement(sb, Matcher.quoteReplacement(RESET_DECORATIONS + "<#" + hex + ">"));
         }
         hexMatcher.appendTail(sb);
         message = sb.toString();
@@ -59,22 +61,22 @@ public class MessageUtils {
             if ((c == '&' || c == '§') && i + 1 < chars.length) {
                 char code = Character.toLowerCase(chars[i + 1]);
                 String replacement = switch (code) {
-                    case '0' -> "<reset><black>";
-                    case '1' -> "<reset><dark_blue>";
-                    case '2' -> "<reset><dark_green>";
-                    case '3' -> "<reset><dark_aqua>";
-                    case '4' -> "<reset><dark_red>";
-                    case '5' -> "<reset><dark_purple>";
-                    case '6' -> "<reset><gold>";
-                    case '7' -> "<reset><gray>";
-                    case '8' -> "<reset><dark_gray>";
-                    case '9' -> "<reset><blue>";
-                    case 'a' -> "<reset><green>";
-                    case 'b' -> "<reset><aqua>";
-                    case 'c' -> "<reset><red>";
-                    case 'd' -> "<reset><light_purple>";
-                    case 'e' -> "<reset><yellow>";
-                    case 'f' -> "<reset><white>";
+                    case '0' -> RESET_DECORATIONS + "<black>";
+                    case '1' -> RESET_DECORATIONS + "<dark_blue>";
+                    case '2' -> RESET_DECORATIONS + "<dark_green>";
+                    case '3' -> RESET_DECORATIONS + "<dark_aqua>";
+                    case '4' -> RESET_DECORATIONS + "<dark_red>";
+                    case '5' -> RESET_DECORATIONS + "<dark_purple>";
+                    case '6' -> RESET_DECORATIONS + "<gold>";
+                    case '7' -> RESET_DECORATIONS + "<gray>";
+                    case '8' -> RESET_DECORATIONS + "<dark_gray>";
+                    case '9' -> RESET_DECORATIONS + "<blue>";
+                    case 'a' -> RESET_DECORATIONS + "<green>";
+                    case 'b' -> RESET_DECORATIONS + "<aqua>";
+                    case 'c' -> RESET_DECORATIONS + "<red>";
+                    case 'd' -> RESET_DECORATIONS + "<light_purple>";
+                    case 'e' -> RESET_DECORATIONS + "<yellow>";
+                    case 'f' -> RESET_DECORATIONS + "<white>";
                     case 'k' -> "<obfuscated>";
                     case 'l' -> "<bold>";
                     case 'm' -> "<strikethrough>";
@@ -104,7 +106,11 @@ public class MessageUtils {
             String converted = legacyToMiniMessage(message);
             return MINI_MESSAGE.deserialize(converted);
         } catch (Exception e) {
-            return Component.text(message);
+            try {
+                return LEGACY_SERIALIZER.deserialize(message);
+            } catch (Exception ex) {
+                return Component.text(message);
+            }
         }
     }
 
