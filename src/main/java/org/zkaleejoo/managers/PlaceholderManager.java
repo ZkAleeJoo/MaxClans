@@ -113,12 +113,12 @@ public class PlaceholderManager {
 
     public String getRoleFormatted(ClanRole role, String lang, boolean miniMessage) {
         if (role == null) {
-            return formatOutput(getString(lang, "roles-formatted.none", "&#718096None"), miniMessage);
+            return formatOutput(getString(lang, "roles-formatted.none", "&#94A3B8None"), miniMessage);
         }
         return formatOutput(switch (role) {
-            case LEADER -> getString(lang, "roles-formatted.leader", "&#FFD700★ Leader");
-            case MODERATOR -> getString(lang, "roles-formatted.moderator", "&#00E5FF◆ Moderator");
-            case MEMBER -> getString(lang, "roles-formatted.member", "&#A0AEC0● Member");
+            case LEADER -> getString(lang, "roles-formatted.leader", "&#FDE047★ Leader");
+            case MODERATOR -> getString(lang, "roles-formatted.moderator", "&#7DD3FC◆ Moderator");
+            case MEMBER -> getString(lang, "roles-formatted.member", "&#CBD5E1● Member");
         }, miniMessage);
     }
 
@@ -131,8 +131,8 @@ public class PlaceholderManager {
     }
 
     public String getFriendlyFireBadge(boolean ff, String lang, boolean miniMessage) {
-        return formatOutput(ff ? getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED")
-                : getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED"), miniMessage);
+        return formatOutput(ff ? getString(lang, "friendly-fire.badge-enabled", "&#6EE7B7&lENABLED")
+                : getString(lang, "friendly-fire.badge-disabled", "&#FDA4AF&lDISABLED"), miniMessage);
     }
 
     public String getFriendlyFireStatus(boolean ff, String lang) {
@@ -140,8 +140,8 @@ public class PlaceholderManager {
     }
 
     public String getFriendlyFireStatus(boolean ff, String lang, boolean miniMessage) {
-        return formatOutput(ff ? getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled")
-                : getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled"), miniMessage);
+        return formatOutput(ff ? getString(lang, "friendly-fire.status-enabled", "&#6EE7B7✔ Enabled")
+                : getString(lang, "friendly-fire.status-disabled", "&#FDA4AF✖ Disabled"), miniMessage);
     }
 
     public String getFlagStatus(ClanFlag flag, boolean value, String lang) {
@@ -151,9 +151,9 @@ public class PlaceholderManager {
     public String getFlagStatus(ClanFlag flag, boolean value, String lang, boolean miniMessage) {
         return formatOutput(value
                 ? getString(lang, "flags.status-enabled",
-                        getString(lang, "friendly-fire.status-enabled", "&#00FF88✔ Enabled"))
+                        getString(lang, "friendly-fire.status-enabled", "&#6EE7B7✔ Enabled"))
                 : getString(lang, "flags.status-disabled",
-                        getString(lang, "friendly-fire.status-disabled", "&#FF3366✖ Disabled")),
+                        getString(lang, "friendly-fire.status-disabled", "&#FDA4AF✖ Disabled")),
                 miniMessage);
     }
 
@@ -164,9 +164,9 @@ public class PlaceholderManager {
     public String getFlagBadge(ClanFlag flag, boolean value, String lang, boolean miniMessage) {
         return formatOutput(value
                 ? getString(lang, "flags.badge-enabled",
-                        getString(lang, "friendly-fire.badge-enabled", "&#00FF88&lENABLED"))
+                        getString(lang, "friendly-fire.badge-enabled", "&#6EE7B7&lENABLED"))
                 : getString(lang, "flags.badge-disabled",
-                        getString(lang, "friendly-fire.badge-disabled", "&#FF3366&lDISABLED")),
+                        getString(lang, "friendly-fire.badge-disabled", "&#FDA4AF&lDISABLED")),
                 miniMessage);
     }
 
@@ -215,25 +215,25 @@ public class PlaceholderManager {
 
     public String getSortTypeName(org.zkaleejoo.models.MemberSortType type, String lang) {
         if (type == null) {
-            return getGuiText("sort-role", lang, "&#FFD700Role");
+            return getGuiText("sort-role", lang, "&#FDE047Role");
         }
         return switch (type) {
-            case ROLE -> getGuiText("sort-role", lang, "&#FFD700Role");
-            case KDR -> getGuiText("sort-kdr", lang, "&#00FF88KDR");
-            case PLAYTIME -> getGuiText("sort-playtime", lang, "&#00E5FFPlaytime");
-            case JOIN_RECENT -> getGuiText("sort-join-recent", lang, "&#FFAA00Recent");
-            case JOIN_OLDEST -> getGuiText("sort-join-oldest", lang, "&#E2E8F0Oldest");
+            case ROLE -> getGuiText("sort-role", lang, "&#FDE047Role");
+            case KDR -> getGuiText("sort-kdr", lang, "&#6EE7B7KDR");
+            case PLAYTIME -> getGuiText("sort-playtime", lang, "&#7DD3FCPlaytime");
+            case JOIN_RECENT -> getGuiText("sort-join-recent", lang, "&#FDE047Recent");
+            case JOIN_OLDEST -> getGuiText("sort-join-oldest", lang, "&#CBD5E1Oldest");
         };
     }
 
     public String getTopSortTypeName(TopSortType type, String lang) {
         if (type == null) {
-            return getGuiText("sort-top-kdr", lang, "&#00FF88KDR (Ratio)");
+            return getGuiText("sort-top-kdr", lang, "&#6EE7B7KDR (Ratio)");
         }
         return switch (type) {
-            case KDR -> getGuiText("sort-top-kdr", lang, "&#00FF88KDR (Ratio)");
-            case KILLS -> getGuiText("sort-top-kills", lang, "&#FF3366Kills (Most Bloodthirsty)");
-            case MEMBERS -> getGuiText("sort-top-members", lang, "&#00E5FFMembers (Largest)");
+            case KDR -> getGuiText("sort-top-kdr", lang, "&#6EE7B7KDR (Ratio)");
+            case KILLS -> getGuiText("sort-top-kills", lang, "&#FDA4AFKills (Most Bloodthirsty)");
+            case MEMBERS -> getGuiText("sort-top-members", lang, "&#7DD3FCMembers (Largest)");
         };
     }
 

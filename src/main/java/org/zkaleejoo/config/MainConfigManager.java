@@ -72,7 +72,7 @@ public class MainConfigManager {
         langFile.registerConfig();
         FileConfiguration lang = langFile.getConfig();
 
-        prefix = config.getString("general.prefix", "&#2F6AFA&lOnlyClans &8» ");
+        prefix = config.getString("general.prefix", "&#7DD3FC&lOnlyClans &#94A3B8» ");
         updateCheckEnabled = config.getBoolean("general.update-check", true);
         bStatsEnabled = config.getBoolean("general.bstats", true);
 

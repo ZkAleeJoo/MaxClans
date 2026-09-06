@@ -46,17 +46,17 @@ public class QuestsSubCommand extends SubCommand {
         List<ClanQuest> dailyQuests = qm.getDailyQuests();
 
         String header = plugin.getMainConfigManager().getMessage("quests-header",
-                "&8&m━━━━━━━━━━━━━&r &#FFD700&lDAILY CLAN QUESTS &8&m━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━&r &#FDE047&lDAILY CLAN QUESTS &#94A3B8&m━━━━━━━━━━━━━");
         String subtitle = plugin.getMainConfigManager().getMessage("quests-subtitle",
-                " &7All clan members cooperate to complete these challenges!");
+                " &#94A3B8All clan members cooperate to complete these challenges!");
         String emptyMsg = plugin.getMainConfigManager().getMessage("quests-empty",
                 " &7No daily quests are configured for today.");
         String completedStatus = plugin.getMainConfigManager().getMessage("quests-status-completed",
-                "&#00FF88[COMPLETED ✔]");
+                "&#6EE7B7[COMPLETED ✔]");
         String inProgressStatus = plugin.getMainConfigManager().getMessage("quests-status-in-progress",
-                "&#FFAA00[IN PROGRESS ⌛]");
+                "&#FDE047[IN PROGRESS ⌛]");
         String footer = plugin.getMainConfigManager().getMessage("quests-footer",
-                "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
         player.sendMessage(MessageUtils.toComponent(header));
         player.sendMessage(MessageUtils.toComponent(subtitle));
@@ -76,7 +76,7 @@ public class QuestsSubCommand extends SubCommand {
 
                 player.sendMessage(MessageUtils.toComponent(" " + quest.getName() + " " + status));
                 player.sendMessage(MessageUtils.toComponent("  &7" + quest.getDescription()));
-                player.sendMessage(MessageUtils.toComponent("  &8[" + bar + "&8] &#E2E8F0" + Math.min(current, req) + "&7/&#E2E8F0" + req + " &8| &e+" + quest.getRewardExp() + " Clan EXP"));
+                player.sendMessage(MessageUtils.toComponent("  &#94A3B8[" + bar + "&#94A3B8] &#F8FAFC" + Math.min(current, req) + "&#94A3B8/&#F8FAFC" + req + " &#94A3B8| &#FDE047+" + quest.getRewardExp() + " Clan EXP"));
                 player.sendMessage(MessageUtils.toComponent(""));
             }
         }
@@ -90,6 +90,6 @@ public class QuestsSubCommand extends SubCommand {
         int filled = (int) Math.round(((double) Math.min(current, max) / max) * bars);
         filled = Math.max(0, Math.min(bars, filled));
         int empty = bars - filled;
-        return "&#00FF88" + "█".repeat(filled) + "&#718096" + "█".repeat(empty);
+        return "&#6EE7B7" + "█".repeat(filled) + "&#94A3B8" + "█".repeat(empty);
     }
 }

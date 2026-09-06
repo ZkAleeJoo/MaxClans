@@ -72,7 +72,7 @@ public class BankSubCommand extends SubCommand {
         String prefix = plugin.getMainConfigManager().getPrefix();
         player.sendMessage(MessageUtils.toComponent(
                 prefix + plugin.getMainConfigManager().getMessage("bank-balance",
-                        "&#FFD700&lClan Bank: &#00FF88${balance}&e coins.")
+                        "&#FDE047&lClan Bank: &#6EE7B7${balance}&e coins.")
                         .replace("{balance}", formattedBal)));
         SoundUtils.playSound(player, "BLOCK_NOTE_BLOCK_PLING", 0.8f, 1.4f);
     }
@@ -132,7 +132,7 @@ public class BankSubCommand extends SubCommand {
         String formatted = String.format(Locale.US, "%,.2f", amount);
         String prefix = plugin.getMainConfigManager().getPrefix();
         String msg = prefix + plugin.getMainConfigManager().getMessage("bank-deposited",
-                "&aYou deposited &#00FF88${amount}&a into the clan bank.")
+                "&aYou deposited &#6EE7B7${amount}&a into the clan bank.")
                 .replace("{amount}", formatted);
         player.sendMessage(MessageUtils.toComponent(msg));
         SoundUtils.playSound(player, "ENTITY_PLAYER_LEVELUP", 0.7f, 1.6f);
@@ -143,7 +143,7 @@ public class BankSubCommand extends SubCommand {
         }
 
         String broadcastMsg = prefix + plugin.getMainConfigManager().getMessage("bank-deposited-broadcast",
-                "&e{player} deposited &#00FF88${amount}&e into the clan bank.")
+                "&e{player} deposited &#6EE7B7${amount}&e into the clan bank.")
                 .replace("{player}", player.getName())
                 .replace("{amount}", formatted);
 
@@ -218,13 +218,13 @@ public class BankSubCommand extends SubCommand {
         String formatted = String.format(Locale.US, "%,.2f", amount);
         String prefix = plugin.getMainConfigManager().getPrefix();
         String msg = prefix + plugin.getMainConfigManager().getMessage("bank-withdrawn",
-                "&eYou withdrew &#00FF88${amount}&e from the clan bank.")
+                "&eYou withdrew &#6EE7B7${amount}&e from the clan bank.")
                 .replace("{amount}", formatted);
         player.sendMessage(MessageUtils.toComponent(msg));
         SoundUtils.playSound(player, "BLOCK_NOTE_BLOCK_PLING", 0.9f, 1.2f);
 
         String broadcastMsg = prefix + plugin.getMainConfigManager().getMessage("bank-withdrawn-broadcast",
-                "&c{player} withdrew &#FFAA00${amount}&c from the clan bank.")
+                "&#FDA4AF{player} withdrew &#FDE047${amount}&#FDA4AF from the clan bank.")
                 .replace("{player}", player.getName())
                 .replace("{amount}", formatted);
 

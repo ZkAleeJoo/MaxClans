@@ -164,7 +164,7 @@ public class ClanLevelManager {
             return 0;
         int nextLevel = clan.getLevel() + 1;
         if (nextLevel > getMaxLevel()) {
-            return 0; // Max level reached
+            return 0;
         }
         ClanLevelConfig nextConfig = levelConfigs.get(nextLevel);
         return nextConfig != null ? nextConfig.getExpRequired() : 0;
@@ -188,7 +188,7 @@ public class ClanLevelManager {
         int current = clan.getExp();
         int required = getExpForNextLevel(clan);
         if (clan.getLevel() >= getMaxLevel()) {
-            return "&#00FF88" + "█".repeat(Math.max(1, totalBars));
+            return "&#6EE7B7" + "█".repeat(Math.max(1, totalBars));
         }
         if (required <= 0)
             required = 1;
@@ -196,7 +196,7 @@ public class ClanLevelManager {
         filled = Math.max(0, Math.min(totalBars, filled));
         int unfilled = totalBars - filled;
 
-        return "&#00FF88" + "█".repeat(filled) + "&#718096" + "█".repeat(unfilled);
+        return "&#6EE7B7" + "█".repeat(filled) + "&#94A3B8" + "█".repeat(unfilled);
     }
 
     public int getMaxMembers(int level) {
@@ -254,7 +254,7 @@ public class ClanLevelManager {
             return;
 
         if (clan.getLevel() >= getMaxLevel()) {
-            return; // Clan is already at max level
+            return;
         }
 
         clan.addExp(amount);
@@ -264,7 +264,7 @@ public class ClanLevelManager {
                 String sourceFormatted = source != null ? source
                         : plugin.getMainConfigManager().getMessage("exp-source-activity", "Activity");
                 String barMsg = plugin.getMainConfigManager().getMessage("exp-actionbar",
-                        "&#00FF88+{exp} Clan EXP &#718096(&f{source}&78096)")
+                        "&#6EE7B7+{exp} Clan EXP &#94A3B8(&f{source}&#94A3B8)")
                         .replace("{exp}", String.valueOf(amount))
                         .replace("{source}", sourceFormatted);
                 contributor.sendActionBar(MessageUtils.toComponent(barMsg));
@@ -331,15 +331,15 @@ public class ClanLevelManager {
 
         String prefix = plugin.getMainConfigManager().getPrefix();
         String header = plugin.getMainConfigManager().getMessage("level-up-header",
-                "&8&m━━━━━━━━━━━━━&r &#FFD700&lCLAN LEVEL UP! &8&m━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━&r &#FDE047&lCLAN LEVEL UP! &#94A3B8&m━━━━━━━━━━━━━");
         String announcement = plugin.getMainConfigManager().getMessage("level-up-broadcast",
-                "&#00FF88Clan &f{clan}&00FF88 has reached &e&lLevel {level}&00FF88!")
+                "&#6EE7B7Clan &f{clan}&#6EE7B7 has reached &#FDE047&lLevel {level}&#6EE7B7!")
                 .replace("{clan}", clan.getName())
                 .replace("{level}", String.valueOf(newLevel));
         String perksTitle = plugin.getMainConfigManager().getMessage("level-up-perks-title",
-                "&#FFAA00Unlocked Perks & Abilities:");
+                "&#7DD3FCUnlocked Perks & Abilities:");
         String footer = plugin.getMainConfigManager().getMessage("level-up-footer",
-                "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
         for (UUID uuid : clan.getMembers().keySet()) {
             Player p = Bukkit.getPlayer(uuid);
@@ -348,7 +348,7 @@ public class ClanLevelManager {
                 p.sendMessage(MessageUtils.toComponent(prefix + announcement));
                 p.sendMessage(MessageUtils.toComponent(perksTitle));
                 for (String perk : perks) {
-                    p.sendMessage(MessageUtils.toComponent(" &#00E5FF✦ " + perk));
+                    p.sendMessage(MessageUtils.toComponent(" &#7DD3FC✦ " + perk));
                 }
                 p.sendMessage(MessageUtils.toComponent(footer));
 

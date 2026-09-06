@@ -40,7 +40,8 @@ public class ClanQuestManager {
         progressCache.clear();
 
         ConfigurationSection config = questsFile.getConfig();
-        if (config == null) return;
+        if (config == null)
+            return;
 
         enabled = config.getBoolean("settings.enabled", true);
         dailyQuestsAmount = config.getInt("settings.daily-quests-amount", 3);
@@ -83,7 +84,6 @@ public class ClanQuestManager {
             return all;
         }
 
-        // Deterministic daily rotation based on current day of year
         int dayOfYear = LocalDate.now().getDayOfYear();
         int year = LocalDate.now().getYear();
         Random rng = new Random((long) year * 1000L + dayOfYear);
@@ -94,23 +94,26 @@ public class ClanQuestManager {
     }
 
     public ClanQuestProgress getProgress(Clan clan, ClanQuest quest) {
-        if (clan == null || quest == null) return null;
+        if (clan == null || quest == null)
+            return null;
         String date = getCurrentDateString();
         String clanKey = clan.getName().toLowerCase();
 
-        Map<String, ClanQuestProgress> clanMap = progressCache.computeIfAbsent(clanKey, k ->
-                plugin.getClanStorage().loadQuestProgressForClan(clan.getName(), date));
+        Map<String, ClanQuestProgress> clanMap = progressCache.computeIfAbsent(clanKey,
+                k -> plugin.getClanStorage().loadQuestProgressForClan(clan.getName(), date));
 
-        return clanMap.computeIfAbsent(quest.getId(), id ->
-                new ClanQuestProgress(clan.getName(), quest.getId(), 0, false, date));
+        return clanMap.computeIfAbsent(quest.getId(),
+                id -> new ClanQuestProgress(clan.getName(), quest.getId(), 0, false, date));
     }
 
     public void incrementProgress(Clan clan, ClanQuest.QuestType type, String target, int amount) {
-        if (!enabled || clan == null || amount <= 0) return;
+        if (!enabled || clan == null || amount <= 0)
+            return;
 
         List<ClanQuest> dailyQuests = getDailyQuests();
         for (ClanQuest quest : dailyQuests) {
-            if (quest.getType() != type) continue;
+            if (quest.getType() != type)
+                continue;
 
             if (matchesTarget(quest, target)) {
                 ClanQuestProgress prog = getProgress(clan, quest);
@@ -132,11 +135,14 @@ public class ClanQuestManager {
 
     private boolean matchesTarget(ClanQuest quest, String target) {
         String qTarget = quest.getTarget().toUpperCase();
-        if (qTarget.equals("ANY") || qTarget.equals("ALL")) return true;
-        if (target == null) return false;
+        if (qTarget.equals("ANY") || qTarget.equals("ALL"))
+            return true;
+        if (target == null)
+            return false;
 
         String t = target.toUpperCase();
-        if (qTarget.equals(t)) return true;
+        if (qTarget.equals(t))
+            return true;
 
         if (quest.getType() == ClanQuest.QuestType.KILL_MOB) {
             if (qTarget.equals("MONSTER")) {
@@ -158,13 +164,13 @@ public class ClanQuestManager {
     private void completeQuest(Clan clan, ClanQuest quest) {
         String prefix = plugin.getMainConfigManager().getPrefix();
         String header = plugin.getMainConfigManager().getMessage("quest-completed-header",
-                "&8&m━━━━━━━━━━━━━&r &#00FF88&lCLAN QUEST COMPLETED! &8&m━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━&r &#6EE7B7&lCLAN QUEST COMPLETED! &#94A3B8&m━━━━━━━━━━━━━");
         String msg = plugin.getMainConfigManager().getMessage("quest-completed-broadcast",
-                "&#00FF88Your clan has completed the daily quest &f{quest}&00FF88! Reward: &#FFD700+{exp} Clan EXP")
+                "&#6EE7B7Your clan has completed the daily quest &f{quest}&#6EE7B7! Reward: &#FDE047+{exp} Clan EXP")
                 .replace("{quest}", quest.getName())
                 .replace("{exp}", String.valueOf(quest.getRewardExp()));
         String footer = plugin.getMainConfigManager().getMessage("quest-completed-footer",
-                "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
         for (UUID uuid : clan.getMembers().keySet()) {
             Player p = Bukkit.getPlayer(uuid);

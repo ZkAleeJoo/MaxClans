@@ -53,7 +53,7 @@ public class HomesSubCommand extends SubCommand {
         int currentHomes = clan.getHomeCount();
 
         String header = plugin.getMainConfigManager().getMessage("homes-list-header",
-                "&8&m----------------&r &#00E5FF&lClan Homes &7({current}/{max}) &8&m----------------")
+                "&#94A3B8&m----------------&r &#7DD3FC&lClan Homes &7({current}/{max}) &#94A3B8&m----------------")
                 .replace("{current}", String.valueOf(currentHomes))
                 .replace("{max}", String.valueOf(maxHomes));
 
@@ -74,15 +74,15 @@ public class HomesSubCommand extends SubCommand {
         String hoverDelete = plugin.getMainConfigManager().getMessage("homes-list-delete-hover",
                 "&cClick to delete &f{home}");
         String btnTeleport = plugin.getMainConfigManager().getMessage("homes-list-teleport-button",
-                "&#00E5FF[Teleport]");
+                "&#7DD3FC[Teleport]");
         String btnDelete = plugin.getMainConfigManager().getMessage("homes-list-delete-button",
-                "&#FF3366[Delete]");
+                "&#FDA4AF[Delete]");
 
         for (ClanHome home : clan.getHomes().values()) {
-            Component prefix = MessageUtils.toComponent("&#718096▪ &#00FF88" + home.getName()
-                    + " &#718096(&f" + home.getWorldName()
-                    + "&#718096: &f" + home.getFormattedCoordinates()
-                    + "&#718096) ");
+            Component prefix = MessageUtils.toComponent("&#94A3B8▪ &#7DD3FC" + home.getName()
+                    + " &#94A3B8(&f" + home.getWorldName()
+                    + "&#94A3B8: &f" + home.getFormattedCoordinates()
+                    + "&#94A3B8) ");
 
             Component tpBtn = MessageUtils.toComponent(btnTeleport)
                     .clickEvent(ClickEvent.runCommand("/clan home " + home.getName()))

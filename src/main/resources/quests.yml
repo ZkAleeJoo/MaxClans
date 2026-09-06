@@ -22,7 +22,7 @@ settings:
 
 quests:
   kill_monsters:
-    name: "&#FF3366&lShadow Hunter"
+    name: "&#FDA4AF&lShadow Hunter"
     description: "&7Slay 100 hostile monsters cooperatively."
     type: KILL_MOB
     target: "MONSTER" # "MONSTER" matches any hostile mob
@@ -31,7 +31,7 @@ quests:
     icon: "IRON_SWORD"
 
   kill_endermen:
-    name: "&#9933FF&lVoid Hunters"
+    name: "&#C4B5FD&lVoid Hunters"
     description: "&7Defeat 20 Endermen with your clan."
     type: KILL_MOB
     target: "ENDERMAN"
@@ -40,7 +40,7 @@ quests:
     icon: "ENDER_PEARL"
 
   mine_coal:
-    name: "&#718096&lCoal Miners"
+    name: "&#94A3B8&lCoal Miners"
     description: "&7Mine 150 coal ores in the depths."
     type: MINE_BLOCK
     target: "COAL_ORE"
@@ -49,7 +49,7 @@ quests:
     icon: "COAL"
 
   mine_iron:
-    name: "&#E2E8F0&lIron Rush"
+    name: "&#CBD5E1&lIron Rush"
     description: "&7Extract 100 iron ores."
     type: MINE_BLOCK
     target: "IRON_ORE"
@@ -58,7 +58,7 @@ quests:
     icon: "IRON_INGOT"
 
   mine_diamonds:
-    name: "&#00E5FF&lDiamond Prospectors"
+    name: "&#7DD3FC&lDiamond Prospectors"
     description: "&7Mine 30 diamond ores for clan glory."
     type: MINE_BLOCK
     target: "DIAMOND_ORE"
@@ -67,7 +67,7 @@ quests:
     icon: "DIAMOND"
 
   chop_wood:
-    name: "&#FFAA00&lMaster Lumberjacks"
+    name: "&#FDE047&lMaster Lumberjacks"
     description: "&7Chop 200 logs of any wood type."
     type: CHOP_WOOD
     target: "LOGS" # "LOGS" matches any wood log
@@ -76,7 +76,7 @@ quests:
     icon: "IRON_AXE"
 
   pvp_conquerors:
-    name: "&#FF0055&lWarlord's Glory"
+    name: "&#FDA4AF&lWarlord's Glory"
     description: "&7Defeat 10 enemy players in PvP combat."
     type: PVP_KILLS
     target: "PLAYER"
@@ -85,7 +85,7 @@ quests:
     icon: "DIAMOND_SWORD"
 
   bank_donation:
-    name: "&#FFD700&lClan Tribute"
+    name: "&#FDE047&lClan Tribute"
     description: "&7Deposit 10,000 coins into the clan bank."
     type: DONATE_BANK
     target: "COINS"

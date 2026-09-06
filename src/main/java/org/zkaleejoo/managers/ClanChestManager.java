@@ -73,7 +73,7 @@ public class ClanChestManager implements Listener {
         Inventory inventory = activeInventories.computeIfAbsent(key, k -> {
             ClanChestHolder holder = new ClanChestHolder(clan.getName());
             String title = plugin.getMainConfigManager()
-                    .getMessage("chest-title", "&#2F6AFA&lClan Chest &8- &f{clan}")
+                    .getMessage("chest-title", "&#7DD3FC&lClan Chest &#94A3B8- &f{clan}")
                     .replace("{clan}", clan.getName());
             Inventory inv = Bukkit.createInventory(holder, size, MessageUtils.toComponent(title));
             holder.setInventory(inv);

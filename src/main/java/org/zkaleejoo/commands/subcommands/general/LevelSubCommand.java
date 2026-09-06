@@ -51,57 +51,57 @@ public class LevelSubCommand extends SubCommand {
         MainConfigManager cm = plugin.getMainConfigManager();
 
         String header = cm.getMessage("level-progression-header",
-                "&8&m━━━━━━━━━━━━━&r &#2F6AFA&lCLAN PROGRESSION &8&m━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━&r &#7DD3FC&lCLAN PROGRESSION &#94A3B8&m━━━━━━━━━━━━━");
         player.sendMessage(MessageUtils.toComponent(header));
 
         String clanLine = cm.getMessage("level-progression-clan",
-                " &#00E5FF✦ &7Clan: &f{clan} &7[&e{tag}&7]")
+                " &#7DD3FC✦ &7Clan: &f{clan} &#94A3B8[&#FDE047{tag}&#94A3B8]")
                 .replace("{clan}", clan.getName())
                 .replace("{tag}", clan.getTag());
         player.sendMessage(MessageUtils.toComponent(clanLine));
 
-        String maxTag = (level >= maxLvl) ? cm.getMessage("level-progression-max-tag", " &#00FF88(Max Level!)") : "";
+        String maxTag = (level >= maxLvl) ? cm.getMessage("level-progression-max-tag", " &#6EE7B7(Max Level!)") : "";
         String currentLine = cm.getMessage("level-progression-current",
-                " &#FFD700✦ &7Current Level: &#FFD700&lLevel {level}{max_tag}")
+                " &#FDE047✦ &7Current Level: &#FDE047&lLevel {level}{max_tag}")
                 .replace("{level}", String.valueOf(level))
                 .replace("{max_tag}", maxTag);
         player.sendMessage(MessageUtils.toComponent(currentLine));
 
         if (level < maxLvl) {
             String expLine = cm.getMessage("level-progression-exp",
-                    " &#00FF88✦ &7EXP: &#00FF88{current} &7/ &#00FF88{needed} &7({percent}%)")
+                    " &#6EE7B7✦ &7EXP: &#6EE7B7{current} &7/ &#6EE7B7{needed} &7({percent}%)")
                     .replace("{current}", String.valueOf(currentExp))
                     .replace("{needed}", String.valueOf(neededExp))
                     .replace("{percent}", String.format(Locale.US, "%.1f", percent));
             player.sendMessage(MessageUtils.toComponent(expLine));
-            player.sendMessage(MessageUtils.toComponent("   &8[" + progressBar + "&8]"));
+            player.sendMessage(MessageUtils.toComponent("   &#94A3B8[" + progressBar + "&#94A3B8]"));
         } else {
             String maxReached = cm.getMessage("level-progression-max-reached",
-                    " &#00FF88✦ &7Progress: &aYou have reached the peak of power!");
+                    " &#6EE7B7✦ &7Progress: &#6EE7B7You have reached the peak of power!");
             player.sendMessage(MessageUtils.toComponent(maxReached));
         }
 
         player.sendMessage(MessageUtils.toComponent(""));
 
         String perksTitle = cm.getMessage("level-progression-active-perks",
-                "&#FFAA00&lActive Perks for Level {level}:")
+                "&#7DD3FC&lActive Perks for Level {level}:")
                 .replace("{level}", String.valueOf(level));
         player.sendMessage(MessageUtils.toComponent(perksTitle));
 
-        String membersLine = cm.getMessage("level-perk-members", " &7• Max members: &#00FF88{count}")
+        String membersLine = cm.getMessage("level-perk-members", " &7• Max members: &#6EE7B7{count}")
                 .replace("{count}", String.valueOf(currentConfig.getMaxMembers()));
         player.sendMessage(MessageUtils.toComponent(membersLine));
 
-        String alliesLine = cm.getMessage("level-perk-allies", " &7• Allowed allies: &#00FF88{count}")
+        String alliesLine = cm.getMessage("level-perk-allies", " &7• Allowed allies: &#6EE7B7{count}")
                 .replace("{count}", String.valueOf(currentConfig.getMaxAllies()));
         player.sendMessage(MessageUtils.toComponent(alliesLine));
 
-        String homesLine = cm.getMessage("level-perk-homes", " &7• Clan homes: &#00FF88{count}")
+        String homesLine = cm.getMessage("level-perk-homes", " &7• Clan homes: &#6EE7B7{count}")
                 .replace("{count}", String.valueOf(currentConfig.getMaxHomes()));
         player.sendMessage(MessageUtils.toComponent(homesLine));
 
-        String unlockedStatus = cm.getMessage("level-status-unlocked", "&#00FF88✔ Unlocked");
-        String lockedStatus = cm.getMessage("level-status-locked", "&#FF3366✖ Locked");
+        String unlockedStatus = cm.getMessage("level-status-unlocked", "&#6EE7B7✔ Unlocked");
+        String lockedStatus = cm.getMessage("level-status-locked", "&#FDA4AF✖ Locked");
 
         String bankStatus = currentConfig.hasBankAccess() ? unlockedStatus : lockedStatus;
         String bankLine = cm.getMessage("level-perk-bank", " &7• Clan Bank: {status}")
@@ -109,7 +109,7 @@ public class LevelSubCommand extends SubCommand {
         player.sendMessage(MessageUtils.toComponent(bankLine));
 
         String chestStatus = currentConfig.hasChestAccess()
-                ? cm.getMessage("level-status-unlocked-rows", "&#00FF88✔ Unlocked ({rows} rows)")
+                ? cm.getMessage("level-status-unlocked-rows", "&#6EE7B7✔ Unlocked ({rows} rows)")
                         .replace("{rows}", String.valueOf(currentConfig.getChestRows()))
                 : lockedStatus;
         String chestLine = cm.getMessage("level-perk-chest", " &7• Shared Chest (/clan chest): {status}")
@@ -117,7 +117,7 @@ public class LevelSubCommand extends SubCommand {
         player.sendMessage(MessageUtils.toComponent(chestLine));
 
         String baseEffectStatus = currentConfig.hasBaseEffect()
-                ? cm.getMessage("level-status-base-effect", "&#00FF88✔ {effect} (Radius {radius}m)")
+                ? cm.getMessage("level-status-base-effect", "&#6EE7B7✔ {effect} (Radius {radius}m)")
                         .replace("{effect}", currentConfig.getBaseEffectType())
                         .replace("{radius}", String.valueOf(currentConfig.getBaseEffectRadius()))
                 : lockedStatus;
@@ -128,43 +128,43 @@ public class LevelSubCommand extends SubCommand {
         if (nextConfig != null) {
             player.sendMessage(MessageUtils.toComponent(""));
             String nextTitle = cm.getMessage("level-progression-next-title",
-                    "&#00E5FF&lNext Level {level} (Requires {needed} EXP):")
+                    "&#7DD3FC&lNext Level {level} (Requires {needed} EXP):")
                     .replace("{level}", String.valueOf(level + 1))
                     .replace("{needed}", String.valueOf(neededExp));
             player.sendMessage(MessageUtils.toComponent(nextTitle));
 
             if (nextConfig.getMaxMembers() > currentConfig.getMaxMembers()) {
-                String upg = cm.getMessage("level-upgrade-members", " &a+ Increase to {count} members")
+                String upg = cm.getMessage("level-upgrade-members", " &#6EE7B7+ Increase to {count} members")
                         .replace("{count}", String.valueOf(nextConfig.getMaxMembers()));
                 player.sendMessage(MessageUtils.toComponent(upg));
             }
             if (nextConfig.getMaxAllies() > currentConfig.getMaxAllies()) {
-                String upg = cm.getMessage("level-upgrade-allies", " &a+ Increase to {count} allies")
+                String upg = cm.getMessage("level-upgrade-allies", " &#6EE7B7+ Increase to {count} allies")
                         .replace("{count}", String.valueOf(nextConfig.getMaxAllies()));
                 player.sendMessage(MessageUtils.toComponent(upg));
             }
             if (nextConfig.getMaxHomes() > currentConfig.getMaxHomes()) {
-                String upg = cm.getMessage("level-upgrade-homes", " &a+ Increase to {count} homes")
+                String upg = cm.getMessage("level-upgrade-homes", " &#6EE7B7+ Increase to {count} homes")
                         .replace("{count}", String.valueOf(nextConfig.getMaxHomes()));
                 player.sendMessage(MessageUtils.toComponent(upg));
             }
             if (!currentConfig.hasBankAccess() && nextConfig.hasBankAccess()) {
                 player.sendMessage(MessageUtils.toComponent(
-                        cm.getMessage("level-unlock-bank", " &a+ Unlock Clan Bank")));
+                        cm.getMessage("level-unlock-bank", " &#6EE7B7+ Unlock Clan Bank")));
             }
             if (!currentConfig.hasChestAccess() && nextConfig.hasChestAccess()) {
                 player.sendMessage(MessageUtils.toComponent(
-                        cm.getMessage("level-unlock-chest", " &a+ Unlock Shared Clan Chest")));
+                        cm.getMessage("level-unlock-chest", " &#6EE7B7+ Unlock Shared Clan Chest")));
             }
             if (!currentConfig.hasBaseEffect() && nextConfig.hasBaseEffect()) {
                 player.sendMessage(MessageUtils.toComponent(
-                        cm.getMessage("level-unlock-base-effect", " &a+ Unlock Passive Base Effect ({effect})")
+                        cm.getMessage("level-unlock-base-effect", " &#6EE7B7+ Unlock Passive Base Effect ({effect})")
                                 .replace("{effect}", nextConfig.getBaseEffectType())));
             }
         }
 
         String footer = cm.getMessage("level-progression-footer",
-                "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+                "&#94A3B8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         player.sendMessage(MessageUtils.toComponent(footer));
         SoundUtils.playSound(player, "BLOCK_ENCHANTMENT_TABLE_USE", 0.9f, 1.2f);
     }

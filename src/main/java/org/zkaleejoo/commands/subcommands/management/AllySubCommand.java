@@ -72,10 +72,10 @@ public class AllySubCommand extends SubCommand {
                 : 0;
         player.sendMessage(MessageUtils.toComponent(
                 plugin.getMainConfigManager().getMessage("ally-list-header",
-                        "&8&m━━━━━━━━━━━━━&r &#00E5FF&lCLAN ALLIANCES &8&m━━━━━━━━━━━━━")));
+                        "&#94A3B8&m━━━━━━━━━━━━━&r &#7DD3FC&lCLAN ALLIANCES &#94A3B8&m━━━━━━━━━━━━━")));
         player.sendMessage(MessageUtils.toComponent(
                 plugin.getMainConfigManager().getMessage("ally-list-capacity",
-                        " &7Ally capacity: &#00FF88{current} &7/ &#00FF88{max}")
+                        " &7Ally capacity: &#6EE7B7{current} &7/ &#6EE7B7{max}")
                         .replace("{current}", String.valueOf(clan.getAllies().size()))
                         .replace("{max}", String.valueOf(maxAllies))));
 
@@ -86,18 +86,18 @@ public class AllySubCommand extends SubCommand {
             if (maxAllies <= 0) {
                 player.sendMessage(MessageUtils.toComponent(
                         plugin.getMainConfigManager().getMessage("ally-list-unlock-hint",
-                                " &#FFAA00&o(Unlock Clan Level 4 to form your first alliance)")));
+                                " &#FDE047&o(Unlock Clan Level 4 to form your first alliance)")));
             }
         } else {
             for (String allyName : clan.getAllies()) {
                 Clan ally = plugin.getClanManager().getClanByName(allyName);
-                String tag = (ally != null) ? " &7[" + ally.getTag() + "&7]" : "";
-                player.sendMessage(MessageUtils.toComponent(" &#00FF88✦ &f" + allyName + tag));
+                String tag = (ally != null) ? " &#94A3B8[&#FDE047" + ally.getTag() + "&#94A3B8]" : "";
+                player.sendMessage(MessageUtils.toComponent(" &#7DD3FC✦ &f" + allyName + tag));
             }
         }
         player.sendMessage(MessageUtils.toComponent(
                 plugin.getMainConfigManager().getMessage("ally-list-footer",
-                        "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")));
+                        "&#94A3B8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")));
     }
 
     @Override
