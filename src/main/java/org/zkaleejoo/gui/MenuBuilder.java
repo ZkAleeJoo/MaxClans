@@ -302,6 +302,31 @@ public class MenuBuilder {
         }
     }
 
+    private String applyMemberPlaceholders(String text, String memberName, String rawRole, String roleBadge,
+            String statusText, String kdr, int kills, int deaths, String playtimeFormatted, String joinedFormatted) {
+        if (text == null)
+            return "";
+        return text
+                .replace("%member_name%", memberName)
+                .replace("{member_name}", memberName)
+                .replace("%member_role%", rawRole)
+                .replace("{member_role}", rawRole)
+                .replace("%member_role_formatted%", roleBadge)
+                .replace("{member_role_formatted}", roleBadge)
+                .replace("%member_status%", statusText)
+                .replace("{member_status}", statusText)
+                .replace("%member_kdr%", kdr)
+                .replace("{member_kdr}", kdr)
+                .replace("%member_kills%", String.valueOf(kills))
+                .replace("{member_kills}", String.valueOf(kills))
+                .replace("%member_deaths%", String.valueOf(deaths))
+                .replace("{member_deaths}", String.valueOf(deaths))
+                .replace("%member_playtime%", playtimeFormatted)
+                .replace("{member_playtime}", playtimeFormatted)
+                .replace("%member_joined%", joinedFormatted)
+                .replace("{member_joined}", joinedFormatted);
+    }
+
     private void renderDynamicMembers(Inventory inventory, ConfigurationSection menuSection, Player viewer, Clan clan,
             ClanMenuHolder holder) {
         if (clan == null)
@@ -441,33 +466,19 @@ public class MenuBuilder {
                 if (memberItemConfig != null) {
                     String rawTitle = memberItemConfig.getString("name",
                             "%member_role_formatted% &#FFFFFF%member_name%");
-                    String processedTitle = replacePlaceholders(rawTitle, viewer, clan, page, holder)
-                            .replace("%member_name%", memberName)
-                            .replace("{member_name}", memberName);
+                    String processedTitle = applyMemberPlaceholders(
+                            replacePlaceholders(rawTitle, viewer, clan, page, holder),
+                            memberName, rawRole, roleBadge, statusText, kdr, kills, deaths, playtimeFormatted,
+                            joinedFormatted);
                     skullMeta.displayName(MessageUtils.toComponentNoItalic(processedTitle));
 
                     List<String> rawLore = memberItemConfig.getStringList("lore");
                     List<net.kyori.adventure.text.Component> lore = new ArrayList<>();
                     for (String line : rawLore) {
-                        String processedLine = replacePlaceholders(line, viewer, clan, page, holder)
-                                .replace("%member_name%", memberName)
-                                .replace("{member_name}", memberName)
-                                .replace("%member_role%", rawRole)
-                                .replace("{member_role}", rawRole)
-                                .replace("%member_role_formatted%", roleBadge)
-                                .replace("{member_role_formatted}", roleBadge)
-                                .replace("%member_status%", statusText)
-                                .replace("{member_status}", statusText)
-                                .replace("%member_kdr%", kdr)
-                                .replace("{member_kdr}", kdr)
-                                .replace("%member_kills%", String.valueOf(kills))
-                                .replace("{member_kills}", String.valueOf(kills))
-                                .replace("%member_deaths%", String.valueOf(deaths))
-                                .replace("{member_deaths}", String.valueOf(deaths))
-                                .replace("%member_playtime%", playtimeFormatted)
-                                .replace("{member_playtime}", playtimeFormatted)
-                                .replace("%member_joined%", joinedFormatted)
-                                .replace("{member_joined}", joinedFormatted);
+                        String processedLine = applyMemberPlaceholders(
+                                replacePlaceholders(line, viewer, clan, page, holder),
+                                memberName, rawRole, roleBadge, statusText, kdr, kills, deaths, playtimeFormatted,
+                                joinedFormatted);
                         lore.add(MessageUtils.toComponentNoItalic(processedLine));
                     }
 
@@ -597,43 +608,50 @@ public class MenuBuilder {
                 String rawTitle = itemTemplate != null
                         ? itemTemplate.getString("name", "&#7DD3FC&l%clan_name% &#94A3B8[%clan_tag%]")
                         : "&#7DD3FC&l%clan_name% &#94A3B8[%clan_tag%]";
-                String processedTitle = replacePlaceholders(rawTitle, viewer, clan, page);
-                skullMeta.displayName(MessageUtils.toComponentNoItalic(processedTitle));
 
                 List<String> rawLore = itemTemplate != null ? itemTemplate.getStringList("lore") : null;
                 List<net.kyori.adventure.text.Component> loreComponents = new ArrayList<>();
 
+                String staffStatus = hasStaff
+                        ? (lang.equalsIgnoreCase("es") ? "&#6EE7B7● Staff Conectado" : "&#6EE7B7● Staff Online")
+                        : (lang.equalsIgnoreCase("es") ? "&#FDA4AF○ Sin Staff Conectado"
+                                : "&#FDA4AF○ No Staff Online");
+
+                String actionHint;
+                if (isViewerClan) {
+                    actionHint = lang.equalsIgnoreCase("es") ? "&#7DD3FC▶ Tu Clan Actual"
+                            : "&#7DD3FC▶ Your Current Clan";
+                } else if (viewerInClan) {
+                    actionHint = lang.equalsIgnoreCase("es") ? "&#94A3B8Ya perteneces a un clan"
+                            : "&#94A3B8Already in a clan";
+                } else if (clan.isOpenJoin()) {
+                    actionHint = lang.equalsIgnoreCase("es") ? "&#6EE7B7▶ Clic para entrar (Clan Abierto)"
+                            : "&#6EE7B7▶ Click to join (Open Clan)";
+                } else if (alreadyRequested) {
+                    actionHint = lang.equalsIgnoreCase("es") ? "&#FDE047⌛ Solicitud Pendiente"
+                            : "&#FDE047⌛ Request Pending";
+                } else if (hasStaff) {
+                    actionHint = lang.equalsIgnoreCase("es") ? "&#6EE7B7▶ Clic para enviar solicitud"
+                            : "&#6EE7B7▶ Click to send join request";
+                } else {
+                    actionHint = lang.equalsIgnoreCase("es") ? "&#FDA4AF✖ No disponible (Staff desconectado)"
+                            : "&#FDA4AF✖ Unavailable (Staff Offline)";
+                }
+
+                String processedTitle = replacePlaceholders(rawTitle, viewer, clan, page)
+                        .replace("%clan_staff_status%", staffStatus)
+                        .replace("{clan_staff_status}", staffStatus)
+                        .replace("%action_hint%", actionHint)
+                        .replace("{action_hint}", actionHint);
+                skullMeta.displayName(MessageUtils.toComponentNoItalic(processedTitle));
+
                 if (rawLore != null && !rawLore.isEmpty()) {
                     for (String line : rawLore) {
-                        String staffStatus = hasStaff
-                                ? (lang.equalsIgnoreCase("es") ? "&#6EE7B7● Staff Conectado" : "&#6EE7B7● Staff Online")
-                                : (lang.equalsIgnoreCase("es") ? "&#FDA4AF○ Sin Staff Conectado"
-                                        : "&#FDA4AF○ No Staff Online");
-
-                        String actionHint;
-                        if (isViewerClan) {
-                            actionHint = lang.equalsIgnoreCase("es") ? "&#7DD3FC▶ Tu Clan Actual"
-                                    : "&#7DD3FC▶ Your Current Clan";
-                        } else if (viewerInClan) {
-                            actionHint = lang.equalsIgnoreCase("es") ? "&#94A3B8Ya perteneces a un clan"
-                                    : "&#94A3B8Already in a clan";
-                        } else if (clan.isOpenJoin()) {
-                            actionHint = lang.equalsIgnoreCase("es") ? "&#6EE7B7▶ Clic para entrar (Clan Abierto)"
-                                    : "&#6EE7B7▶ Click to join (Open Clan)";
-                        } else if (alreadyRequested) {
-                            actionHint = lang.equalsIgnoreCase("es") ? "&#FDE047⌛ Solicitud Pendiente"
-                                    : "&#FDE047⌛ Request Pending";
-                        } else if (hasStaff) {
-                            actionHint = lang.equalsIgnoreCase("es") ? "&#6EE7B7▶ Clic para enviar solicitud"
-                                    : "&#6EE7B7▶ Click to send join request";
-                        } else {
-                            actionHint = lang.equalsIgnoreCase("es") ? "&#FDA4AF✖ No disponible (Staff desconectado)"
-                                    : "&#FDA4AF✖ Unavailable (Staff Offline)";
-                        }
-
                         String processedLine = replacePlaceholders(line, viewer, clan, page)
                                 .replace("%clan_staff_status%", staffStatus)
-                                .replace("%action_hint%", actionHint);
+                                .replace("{clan_staff_status}", staffStatus)
+                                .replace("%action_hint%", actionHint)
+                                .replace("{action_hint}", actionHint);
 
                         loreComponents.add(MessageUtils.toComponentNoItalic(processedLine));
                     }
@@ -981,8 +999,11 @@ public class MenuBuilder {
         int displayPage = Math.min(Math.max(0, page), maxPages - 1) + 1;
 
         text = text.replace("%page%", String.valueOf(displayPage))
+                .replace("{page}", String.valueOf(displayPage))
                 .replace("%max_pages%", String.valueOf(maxPages))
-                .replace("%total_clans%", String.valueOf(totalClans));
+                .replace("{max_pages}", String.valueOf(maxPages))
+                .replace("%total_clans%", String.valueOf(totalClans))
+                .replace("{total_clans}", String.valueOf(totalClans));
 
         String lang = plugin.getMainConfigManager().getSelectedLanguage();
         org.zkaleejoo.managers.PlaceholderManager pm = plugin.getPlaceholderManager();
@@ -1027,6 +1048,7 @@ public class MenuBuilder {
             String clanDisplayName = clan.getDisplayName();
             String clanDisplayNameFormatted = pm != null ? pm.formatOutput(clanDisplayName, true) : clanDisplayName;
             String tagFormatted = pm != null ? pm.formatTag(clanTag, true) : "[" + clanTag + "]";
+            String tagRaw = MessageUtils.stripColor(clanTag);
 
             text = text.replace("%clan_name%", clanName).replace("{clan_name}", clanName);
             text = text.replace("%clan_displayname%", clanDisplayName).replace("{clan_displayname}", clanDisplayName);
@@ -1035,11 +1057,15 @@ public class MenuBuilder {
                     clanDisplayNameFormatted);
             text = text.replace("%clan_tag_formatted%", tagFormatted).replace("{clan_tag_formatted}", tagFormatted);
             text = text.replace("%clan_tag%", clanTag + "<reset>").replace("{clan_tag}", clanTag + "<reset>");
+            text = text.replace("%clan_tag_raw%", tagRaw).replace("{clan_tag_raw}", tagRaw);
             text = text.replace("%clan_members%", memberCount).replace("{clan_members}", memberCount);
+            text = text.replace("%clan_members_count%", memberCount).replace("{clan_members_count}", memberCount);
             text = text.replace("%clan_members_online%", membersOnline).replace("{clan_members_online}", membersOnline);
             text = text.replace("%clan_leader%", leaderName).replace("{clan_leader}", leaderName);
             text = text.replace("%clan_role%", roleFormatted).replace("{clan_role}", roleFormatted);
+            text = text.replace("%clan_role_formatted%", roleFormatted).replace("{clan_role_formatted}", roleFormatted);
             text = text.replace("%clan_ff%", ffText).replace("{clan_ff}", ffText);
+            text = text.replace("%clan_ff_status%", ffText).replace("{clan_ff_status}", ffText);
             text = text.replace("%clan_ff_badge%", ffBadge).replace("{clan_ff_badge}", ffBadge);
             text = text.replace("%clan_created%", createdDate).replace("{clan_created}", createdDate);
             text = text.replace("%clan_kills%", String.valueOf(clan.getKills())).replace("{clan_kills}",
@@ -1058,7 +1084,10 @@ public class MenuBuilder {
                     : 8;
             int maxAllies = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxAllies(clanLevel)
                     : 0;
+            int maxHomes = plugin.getClanLevelManager() != null ? plugin.getClanLevelManager().getMaxHomes(clanLevel)
+                    : 1;
             int alliesCount = clan.getAllies().size();
+            int homesCount = clan.getHomeCount();
             String expBar = plugin.getClanLevelManager() != null
                     ? plugin.getClanLevelManager().getExpProgressBar(clan, 10)
                     : "";
@@ -1083,6 +1112,10 @@ public class MenuBuilder {
                     String.valueOf(alliesCount));
             text = text.replace("%clan_max_allies%", String.valueOf(maxAllies)).replace("{clan_max_allies}",
                     String.valueOf(maxAllies));
+            text = text.replace("%clan_homes%", String.valueOf(homesCount)).replace("{clan_homes}",
+                    String.valueOf(homesCount));
+            text = text.replace("%clan_max_homes%", String.valueOf(maxHomes)).replace("{clan_max_homes}",
+                    String.valueOf(maxHomes));
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = clan.getFlag(flag);
@@ -1090,6 +1123,8 @@ public class MenuBuilder {
                 String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang, true) : (val ? "ENABLED" : "DISABLED");
                 text = text.replace("%clan_flag_" + flag.getKey() + "%", flagStatus)
                         .replace("{clan_flag_" + flag.getKey() + "}", flagStatus)
+                        .replace("%clan_flag_" + flag.getKey() + "_status%", flagStatus)
+                        .replace("{clan_flag_" + flag.getKey() + "_status}", flagStatus)
                         .replace("%clan_flag_" + flag.getKey() + "_badge%", flagBadge)
                         .replace("{clan_flag_" + flag.getKey() + "_badge}", flagBadge);
             }
@@ -1104,13 +1139,17 @@ public class MenuBuilder {
 
             text = text.replace("%clan_name%", noneText).replace("{clan_name}", noneText);
             text = text.replace("%clan_tag%", noClanTag).replace("{clan_tag}", noClanTag);
+            text = text.replace("%clan_tag_raw%", noClanTag).replace("{clan_tag_raw}", noClanTag);
             text = text.replace("%clan_tag_formatted%", noClanTagFormatted).replace("{clan_tag_formatted}",
                     noClanTagFormatted);
             text = text.replace("%clan_members%", "0").replace("{clan_members}", "0");
+            text = text.replace("%clan_members_count%", "0").replace("{clan_members_count}", "0");
             text = text.replace("%clan_members_online%", "0").replace("{clan_members_online}", "0");
             text = text.replace("%clan_leader%", noneText).replace("{clan_leader}", noneText);
             text = text.replace("%clan_role%", noRole).replace("{clan_role}", noRole);
+            text = text.replace("%clan_role_formatted%", noRole).replace("{clan_role_formatted}", noRole);
             text = text.replace("%clan_ff%", noFfText).replace("{clan_ff}", noFfText);
+            text = text.replace("%clan_ff_status%", noFfText).replace("{clan_ff_status}", noFfText);
             text = text.replace("%clan_ff_badge%", noFfBadge).replace("{clan_ff_badge}", noFfBadge);
             text = text.replace("%clan_created%", noCreated).replace("{clan_created}", noCreated);
             text = text.replace("%clan_kills%", "0").replace("{clan_kills}", "0");
@@ -1127,6 +1166,8 @@ public class MenuBuilder {
             text = text.replace("%clan_max_members%", "8").replace("{clan_max_members}", "8");
             text = text.replace("%clan_allies%", "0").replace("{clan_allies}", "0");
             text = text.replace("%clan_max_allies%", "0").replace("{clan_max_allies}", "0");
+            text = text.replace("%clan_homes%", "0").replace("{clan_homes}", "0");
+            text = text.replace("%clan_max_homes%", "1").replace("{clan_max_homes}", "1");
 
             for (ClanFlag flag : ClanFlag.values()) {
                 boolean val = flag.getDefaultValue();
@@ -1134,6 +1175,8 @@ public class MenuBuilder {
                 String flagBadge = pm != null ? pm.getFlagBadge(flag, val, lang, true) : "DISABLED";
                 text = text.replace("%clan_flag_" + flag.getKey() + "%", flagStatus)
                         .replace("{clan_flag_" + flag.getKey() + "}", flagStatus)
+                        .replace("%clan_flag_" + flag.getKey() + "_status%", flagStatus)
+                        .replace("{clan_flag_" + flag.getKey() + "_status}", flagStatus)
                         .replace("%clan_flag_" + flag.getKey() + "_badge%", flagBadge)
                         .replace("{clan_flag_" + flag.getKey() + "_badge}", flagBadge);
             }
