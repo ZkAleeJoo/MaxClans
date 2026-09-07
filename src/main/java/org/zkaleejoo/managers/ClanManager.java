@@ -989,12 +989,15 @@ public class ClanManager {
                 attackerClan.addKill();
                 storage.updateClan(attackerClan);
             } else if (!attackerClan.getName().equalsIgnoreCase(victimClan.getName())) {
-                attackerClan.addKill();
-                attackerClan.addRivalKill();
-                storage.updateClan(attackerClan);
+                boolean isAlly = attackerClan.isAlly(victimClan.getName()) || victimClan.isAlly(attackerClan.getName());
+                if (!isAlly) {
+                    attackerClan.addKill();
+                    attackerClan.addRivalKill();
+                    storage.updateClan(attackerClan);
 
-                victimClan.addDeath();
-                storage.updateClan(victimClan);
+                    victimClan.addDeath();
+                    storage.updateClan(victimClan);
+                }
             }
         } else {
             victimClan.addDeath();
