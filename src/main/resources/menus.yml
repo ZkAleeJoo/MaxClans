@@ -511,12 +511,13 @@ menus:
     member_item:
       name: '%member_role_formatted% &f%member_name%'
       lore:
-      - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-      - '&#A0AEC0Status: %member_status%'
-      - '&#A0AEC0Role: %member_role_formatted%'
-      - '&#A0AEC0KDR: &#00FF88%member_kdr% &#718096(&f%member_kills% &#718096K / &f%member_deaths% &#718096D)'
-      - '&#A0AEC0Playtime: &#00E5FF%member_playtime%'
-      - '&#A0AEC0Joined: &#E2E8F0%member_joined%'
+      - '&#94A3B8━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+      - '&#94A3B8Status: %member_status%'
+      - '&#94A3B8Role: %member_role_formatted%'
+      - '&#94A3B8KDR: &#6EE7B7%member_kdr% &#94A3B8(&f%member_kills% &#94A3B8K / &f%member_deaths% &#94A3B8D)'
+      - '&#94A3B8Playtime: &#7DD3FC%member_playtime%'
+      - '&#94A3B8Joined: &#CBD5E1%member_joined%'
+      - '&#94A3B8━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
     filler: BLACK_STAINED_GLASS_PANE
     items:
       #Header / Member Info
@@ -524,38 +525,38 @@ menus:
         slot: 4
         material: PLAYER_HEAD
         base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjQyNDBkNzkyZjE4MWZjNGYyMTk3YTVjOTE2NmMwOWE4ZDkzMGUwMzZjZWRlOWRiZjU5NGRkYjNjNGZiNjgwYSJ9fX0=
-        name: '&#FFD700&lᴍᴇᴍʙᴇʀ ʟɪꜱᴛ'
+        name: '&#FDE047&lᴍᴇᴍʙᴇʀ ʟɪꜱᴛ'
         lore:
-        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-        - '&#718096▪ &#A0AEC0Total Members: &#FFD700%clan_members%'
-        - '&#718096▪ &#A0AEC0Online: &#FFD700%clan_members_online%'
-        - '&#718096▪ &#A0AEC0Current Sort: %sort_mode%'
+        - '&#94A3B8━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#94A3B8▪ &#94A3B8Total Members: &#FDE047%clan_members%'
+        - '&#94A3B8▪ &#94A3B8Online: &#6EE7B7%clan_members_online%'
+        - '&#94A3B8▪ &#94A3B8Current Sort: %sort_mode%'
         - ''
-        - '&#718096▪ &#E2E8F0/clan invite <player> &#718096- Invite'
-        - '&#718096▪ &#E2E8F0/clan kick <player>   &#718096- Kick'
-        - '&#718096▪ &#E2E8F0/clan promote <player>&#718096- Promote'
-        - '&#718096▪ &#E2E8F0/clan demote <player> &#718096- Demote'
-        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#94A3B8▪ &#CBD5E1/clan invite <player> &#94A3B8- Invite'
+        - '&#94A3B8▪ &#CBD5E1/clan kick <player>   &#94A3B8- Kick'
+        - '&#94A3B8▪ &#CBD5E1/clan promote <player>&#94A3B8- Promote'
+        - '&#94A3B8▪ &#CBD5E1/clan demote <player> &#94A3B8- Demote'
+        - '&#94A3B8━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
         glow: true
       #Button: Sort / Filter
       btn_sort:
         slot: 44
         material: PLAYER_HEAD
         base64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmIyZTAwY2Q3MjZhZGY0Y2JkOTk0YjczZDIxOTdjOGE2Mjg2YzUxN2VjZWQzMmU4ZGEzZmY3N2Q2ZjYzN2VmYSJ9fX0=
-        name: '&#00E5FF&lꜱᴏʀᴛ & ꜰɪʟᴛᴇʀ'
+        name: '&#7DD3FC&lꜱᴏʀᴛ & ꜰɪʟᴛᴇʀ'
         lore:
-        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-        - '&#718096▪ &#A0AEC0Current: %sort_mode%'
+        - '&#94A3B8━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#94A3B8▪ &#94A3B8Current: %sort_mode%'
         - ''
-        - '&#718096▪ &#A0AEC0Available Modes:'
-        - '  &#718096• &#FFD700Role &#718096(Hierarchy)'
-        - '  &#718096• &#00FF88KDR &#718096(High to Low)'
-        - '  &#718096• &#00E5FFPlaytime &#718096(Most Active)'
-        - '  &#718096• &#FFAA00Join Date &#718096(Recent)'
-        - '  &#718096• &#E2E8F0Join Date &#718096(Oldest)'
-        - '&#718096━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-        - '&#00E5FF▶ Left-Click: Next Mode'
-        - '&#718096▶ Right-Click: Previous Mode'
+        - '&#94A3B8▪ &#94A3B8Available Modes:'
+        - '  &#94A3B8• &#FDE047Role &#94A3B8(Hierarchy)'
+        - '  &#94A3B8• &#6EE7B7KDR &#94A3B8(High to Low)'
+        - '  &#94A3B8• &#7DD3FCPlaytime &#94A3B8(Most Active)'
+        - '  &#94A3B8• &#FDE047Join Date &#94A3B8(Recent)'
+        - '  &#94A3B8• &#CBD5E1Join Date &#94A3B8(Oldest)'
+        - '&#94A3B8━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+        - '&#7DD3FC▶ Left-Click: Next Mode'
+        - '&#94A3B8▶ Right-Click: Previous Mode'
         glow: true
         sound: UI_BUTTON_CLICK
         sound_pitch: 1.3
