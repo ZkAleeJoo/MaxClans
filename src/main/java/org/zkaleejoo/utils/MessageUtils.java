@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -21,7 +23,26 @@ public class MessageUtils {
     private static final Pattern SPIGOT_HEX_PATTERN = Pattern.compile("(?i)[&§]x([&§][0-9a-fA-F]){6}");
     private static final Pattern HEX_PATTERN = Pattern.compile("(?i)[&§]#([0-9a-fA-F]{6})");
 
+    private static final Pattern INTERACTIVE_TAGS_PATTERN = Pattern.compile(
+            "(?i)<\\s*/?\\s*(click|hover|insertion|keybind|key|selector|sel|score|nbt)(\\s*:[^>]*)?>");
+
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+
+    public static final TagResolver SAFE_TAG_RESOLVER = TagResolver.builder()
+            .resolver(StandardTags.color())
+            .resolver(StandardTags.decorations())
+            .resolver(StandardTags.gradient())
+            .resolver(StandardTags.rainbow())
+            .resolver(StandardTags.transition())
+            .resolver(StandardTags.reset())
+            .resolver(StandardTags.sequentialHead())
+            .build();
+
+    private static final MiniMessage SAFE_MINI_MESSAGE = MiniMessage.builder()
+            .tags(SAFE_TAG_RESOLVER)
+            .postProcessor(comp -> comp.clickEvent(null).hoverEvent(null))
+            .build();
+
     private static final LegacyComponentSerializer LEGACY_SERIALIZER = LegacyComponentSerializer.builder()
             .character(COLOR_CHAR)
             .hexColors()
@@ -114,6 +135,59 @@ public class MessageUtils {
         }
     }
 
+    public static String escapeTags(String message) {
+        if (message == null || message.isEmpty()) {
+            return "";
+        }
+        return MINI_MESSAGE.escapeTags(message);
+    }
+
+    public static boolean hasInteractiveTags(String message) {
+        if (message == null || message.isEmpty()) {
+            return false;
+        }
+        return INTERACTIVE_TAGS_PATTERN.matcher(message).find();
+    }
+
+    public static Component toSafeComponent(String message) {
+        if (message == null || message.isEmpty()) {
+            return Component.empty();
+        }
+        try {
+            String converted = legacyToMiniMessage(message);
+            return SAFE_MINI_MESSAGE.deserialize(converted);
+        } catch (Exception e) {
+            try {
+                return LEGACY_SERIALIZER.deserialize(message);
+            } catch (Exception ex) {
+                return Component.text(message);
+            }
+        }
+    }
+
+    public static Component toSafeComponentNoItalic(String message) {
+        if (message == null || message.isEmpty()) {
+            return Component.empty().decoration(TextDecoration.ITALIC, false);
+        }
+        Component comp = toSafeComponent(message);
+        return Component.empty().decoration(TextDecoration.ITALIC, false).append(comp);
+    }
+
+    public static String stripInteractiveTags(String message) {
+        if (message == null || message.isEmpty()) {
+            return "";
+        }
+        return INTERACTIVE_TAGS_PATTERN.matcher(message).replaceAll("");
+    }
+
+    public static String sanitizeToMiniMessage(String message) {
+        if (message == null || message.isEmpty()) {
+            return "";
+        }
+        String stripped = stripInteractiveTags(message);
+        return SAFE_MINI_MESSAGE.serialize(toSafeComponent(stripped));
+    }
+
     public static Component toComponentNoItalic(String message) {
         if (message == null || message.isEmpty()) {
             return Component.empty().decoration(TextDecoration.ITALIC, false);
@@ -188,7 +262,7 @@ public class MessageUtils {
         if (message == null) {
             return null;
         }
-        return PlainTextComponentSerializer.plainText().serialize(toComponent(message));
+        return PlainTextComponentSerializer.plainText().serialize(toSafeComponent(message));
     }
 
     public static int getPixelWidth(String message) {

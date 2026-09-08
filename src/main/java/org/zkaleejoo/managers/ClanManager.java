@@ -815,6 +815,14 @@ public class ClanManager {
             return false;
         }
 
+        if (MessageUtils.hasInteractiveTags(newTag)) {
+            player.sendMessage(MessageUtils.toComponent(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("tag-disallowed-tags",
+                                    "&cClan tags cannot contain interactive click or hover tags.")));
+            return false;
+        }
+
         String stripped = MessageUtils.stripColor(newTag);
         if (stripped == null || stripped.trim().length() < 2 || stripped.trim().length() > 6) {
             player.sendMessage(MessageUtils.toComponent(
@@ -876,6 +884,14 @@ public class ClanManager {
             return true;
         }
 
+        if (MessageUtils.hasInteractiveTags(trimmed)) {
+            player.sendMessage(MessageUtils.toComponent(
+                    plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                            .getMessage("decor-disallowed-tags",
+                                    "&cDecorated clan name cannot contain interactive click or hover tags.")));
+            return false;
+        }
+
         String stripped = MessageUtils.stripColor(trimmed);
         if (stripped == null || !stripped.trim().equalsIgnoreCase(clan.getName())) {
             player.sendMessage(MessageUtils.toComponent(
@@ -906,10 +922,12 @@ public class ClanManager {
     }
 
     public void sendClanMessage(Clan clan, Player sender, String message) {
+        String safeMessage = MessageUtils.escapeTags(message);
+        String safeSender = MessageUtils.escapeTags(sender.getName());
         String formatted = plugin.getMainConfigManager().getPrefix()
                 + plugin.getMainConfigManager()
                         .getMessage("clan-chat-format", "&b[Clan Chat] &f{player}&7: &f{message}")
-                        .replace("{player}", sender.getName()).replace("{message}", message);
+                        .replace("{player}", safeSender).replace("{message}", safeMessage);
         Component comp = MessageUtils.toComponent(formatted);
 
         for (UUID uuid : clan.getMembers().keySet()) {
@@ -923,13 +941,14 @@ public class ClanManager {
             if (online.hasPermission("onlyclans.spy") || online.hasPermission("onlyclans.admin")) {
                 if (!clan.hasMember(online.getUniqueId())) {
                     if (clan.isSpyChat() || isSpyMode(online.getUniqueId())) {
+                        String safeClan = MessageUtils.escapeTags(clan.getName());
                         String spyFormatted = plugin.getMainConfigManager().getPrefix()
                                 + plugin.getMainConfigManager()
                                         .getMessage("clan-chat-spy-format",
                                                 "&8[&cClanSpy&8] &7[{clan}] &f{player}&7: &f{message}")
-                                        .replace("{clan}", clan.getName())
-                                        .replace("{player}", sender.getName())
-                                        .replace("{message}", message);
+                                        .replace("{clan}", safeClan)
+                                        .replace("{player}", safeSender)
+                                        .replace("{message}", safeMessage);
                         online.sendMessage(MessageUtils.toComponent(spyFormatted));
                     }
                 }
