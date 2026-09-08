@@ -350,21 +350,25 @@ public class Clan {
     }
 
     public double getBankBalance() {
-        return Math.max(0.0, bankBalance);
+        return (Double.isFinite(bankBalance) && bankBalance > 0.0) ? bankBalance : 0.0;
     }
 
     public void setBankBalance(double amount) {
-        this.bankBalance = Math.max(0.0, amount);
+        if (!Double.isFinite(amount) || amount < 0.0) {
+            this.bankBalance = 0.0;
+        } else {
+            this.bankBalance = amount;
+        }
     }
 
     public void depositBank(double amount) {
-        if (amount > 0) {
+        if (Double.isFinite(amount) && amount > 0) {
             this.bankBalance += amount;
         }
     }
 
     public boolean withdrawBank(double amount) {
-        if (amount > 0 && this.bankBalance >= amount) {
+        if (Double.isFinite(amount) && amount > 0 && this.bankBalance >= amount) {
             this.bankBalance -= amount;
             return true;
         }

@@ -95,7 +95,7 @@ public class BankSubCommand extends SubCommand {
             return;
         }
 
-        if (amount <= 0) {
+        if (!Double.isFinite(amount) || amount <= 0 || amount > 1_000_000_000.0) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("invalid-amount", "&cAmount must be greater than 0.")));
@@ -182,7 +182,7 @@ public class BankSubCommand extends SubCommand {
             return;
         }
 
-        if (amount <= 0) {
+        if (!Double.isFinite(amount) || amount <= 0 || amount > 1_000_000_000.0) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                             .getMessage("invalid-amount", "&cAmount must be greater than 0.")));
@@ -246,12 +246,15 @@ public class BankSubCommand extends SubCommand {
             RegisteredServiceProvider<?> rsp = Bukkit.getServicesManager().getRegistration(econClass);
             if (rsp != null) {
                 Object econ = rsp.getProvider();
-                Method getBal = econClass.getMethod("getBalance", org.bukkit.OfflinePlayer.class);
-                return (double) getBal.invoke(econ, player);
+                if (econ != null) {
+                    Method getBal = econClass.getMethod("getBalance", org.bukkit.OfflinePlayer.class);
+                    double bal = (double) getBal.invoke(econ, player);
+                    return (Double.isFinite(bal) && bal > 0.0) ? bal : 0.0;
+                }
             }
         } catch (Exception ignored) {
         }
-        return Double.MAX_VALUE;
+        return 0.0;
     }
 
     private boolean withdrawFromPlayer(Player player, double amount) {
@@ -260,14 +263,18 @@ public class BankSubCommand extends SubCommand {
             RegisteredServiceProvider<?> rsp = Bukkit.getServicesManager().getRegistration(econClass);
             if (rsp != null) {
                 Object econ = rsp.getProvider();
-                Method withdraw = econClass.getMethod("withdrawPlayer", org.bukkit.OfflinePlayer.class, double.class);
-                Object response = withdraw.invoke(econ, player, amount);
-                Method transSuccess = response.getClass().getMethod("transactionSuccess");
-                return (boolean) transSuccess.invoke(response);
+                if (econ != null) {
+                    Method withdraw = econClass.getMethod("withdrawPlayer", org.bukkit.OfflinePlayer.class, double.class);
+                    Object response = withdraw.invoke(econ, player, amount);
+                    if (response != null) {
+                        Method transSuccess = response.getClass().getMethod("transactionSuccess");
+                        return (boolean) transSuccess.invoke(response);
+                    }
+                }
             }
         } catch (Exception ignored) {
         }
-        return true;
+        return false;
     }
 
     private boolean depositToPlayer(Player player, double amount) {
@@ -276,14 +283,18 @@ public class BankSubCommand extends SubCommand {
             RegisteredServiceProvider<?> rsp = Bukkit.getServicesManager().getRegistration(econClass);
             if (rsp != null) {
                 Object econ = rsp.getProvider();
-                Method deposit = econClass.getMethod("depositPlayer", org.bukkit.OfflinePlayer.class, double.class);
-                Object response = deposit.invoke(econ, player, amount);
-                Method transSuccess = response.getClass().getMethod("transactionSuccess");
-                return (boolean) transSuccess.invoke(response);
+                if (econ != null) {
+                    Method deposit = econClass.getMethod("depositPlayer", org.bukkit.OfflinePlayer.class, double.class);
+                    Object response = deposit.invoke(econ, player, amount);
+                    if (response != null) {
+                        Method transSuccess = response.getClass().getMethod("transactionSuccess");
+                        return (boolean) transSuccess.invoke(response);
+                    }
+                }
             }
         } catch (Exception ignored) {
         }
-        return true;
+        return false;
     }
 
     @Override
