@@ -75,10 +75,11 @@ public class ClanDamageListener implements Listener {
             Clan attackerClan = plugin.getClanManager().getClanByPlayer(attacker.getUniqueId());
             if (attackerClan != null) {
                 Clan victimClan = plugin.getClanManager().getClanByPlayer(victim.getUniqueId());
-                boolean isSameClan = (victimClan != null && attackerClan.getName().equalsIgnoreCase(victimClan.getName()));
-                boolean isAlly = (victimClan != null && (attackerClan.isAlly(victimClan.getName()) || victimClan.isAlly(attackerClan.getName())));
+                boolean isSameClan = (victimClan != null
+                        && attackerClan.getName().equalsIgnoreCase(victimClan.getName()));
+                boolean isAlly = (victimClan != null
+                        && (attackerClan.isAlly(victimClan.getName()) || victimClan.isAlly(attackerClan.getName())));
 
-                // Do not award clan exp or quest progress for killing clan members or allies
                 if (isSameClan || isAlly) {
                     return;
                 }
@@ -90,7 +91,8 @@ public class ClanDamageListener implements Listener {
                 }
 
                 if (plugin.getClanQuestManager() != null) {
-                    plugin.getClanQuestManager().incrementProgress(attackerClan, org.zkaleejoo.models.ClanQuest.QuestType.PVP_KILLS, "PLAYER", 1);
+                    plugin.getClanQuestManager().incrementProgress(attackerClan,
+                            org.zkaleejoo.models.ClanQuest.QuestType.PVP_KILLS, "PLAYER", 1);
                 }
             }
         }
