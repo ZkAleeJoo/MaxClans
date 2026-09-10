@@ -3,7 +3,7 @@ package org.zkaleejoo.managers;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanLevelConfig;
 import org.zkaleejoo.utils.MessageUtils;
@@ -13,7 +13,7 @@ import java.util.*;
 
 public class ClanLevelManager {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final NavigableMap<Integer, ClanLevelConfig> levelConfigs = new TreeMap<>();
     private final Map<String, Integer> monsterExp = new HashMap<>();
     private final Map<String, Integer> miningExp = new HashMap<>();
@@ -27,7 +27,7 @@ public class ClanLevelManager {
     private String expSound = "ENTITY_EXPERIENCE_ORB_PICKUP";
     private String levelUpSound = "UI_TOAST_CHALLENGE_COMPLETE";
 
-    public ClanLevelManager(OnlyClans plugin) {
+    public ClanLevelManager(MaxClans plugin) {
         this.plugin = plugin;
         loadConfig();
     }

@@ -1,166 +1,165 @@
-main: org.zkaleejoo.OnlyClans
+main: org.zkaleejoo.MaxClans
 version: ${project.version}
-name: OnlyClans
+name: MaxClans
 author: ZkAleeJoo
 api-version: '1.21'
 folia-supported: true
 
 commands:
-  onlyclans:
-    description: Main command for OnlyClans
-    aliases: [clan, clans, olc]
+  maxclans:
+    description: Main command for MaxClans
+    aliases: [clan, clans, mxc]
   clanchat:
     description: Send a message to your clan chat
     aliases: [c, cc]
 
 permissions:
-  onlyclans.admin:
+  maxclans.admin:
     description: Full access to admin commands and notifications.
     default: op
     children:
-      onlyclans.command.reload: true
-      onlyclans.spy: true
-      onlyclans.bypass.warmup: true
-      onlyclans.bypass.cooldown: true
-      onlyclans.use: true
-  onlyclans.use:
+      maxclans.command.reload: true
+      maxclans.spy: true
+      maxclans.bypass.warmup: true
+      maxclans.bypass.cooldown: true
+      maxclans.use: true
+  maxclans.use:
     description: Access to all player clan commands and menus.
     default: true
     children:
-      onlyclans.command.main: true
-      onlyclans.command.help: true
-      onlyclans.command.list: true
-      onlyclans.command.info: true
-      onlyclans.command.flags: true
-      onlyclans.command.settings: true
-      onlyclans.command.create: true
-      onlyclans.command.disband: true
-      onlyclans.command.invite: true
-      onlyclans.command.accept: true
-      onlyclans.command.deny: true
-      onlyclans.command.leave: true
-      onlyclans.command.kick: true
-      onlyclans.command.promote: true
-      onlyclans.command.demote: true
-      onlyclans.command.request: true
-      onlyclans.command.acceptrequest: true
-      onlyclans.command.denyrequest: true
-      onlyclans.command.chat: true
-      onlyclans.command.top: true
-      onlyclans.command.tag: true
-      onlyclans.command.decor: true
-      onlyclans.command.home: true
-      onlyclans.command.sethome: true
-      onlyclans.command.delhome: true
-      onlyclans.command.homes: true
-      onlyclans.command.level: true
-      onlyclans.command.chest: true
-      onlyclans.command.bank: true
-      onlyclans.command.ally: true
-      onlyclans.command.quests: true
-  onlyclans.command.main:
+      maxclans.command.main: true
+      maxclans.command.help: true
+      maxclans.command.list: true
+      maxclans.command.info: true
+      maxclans.command.flags: true
+      maxclans.command.settings: true
+      maxclans.command.create: true
+      maxclans.command.disband: true
+      maxclans.command.invite: true
+      maxclans.command.accept: true
+      maxclans.command.deny: true
+      maxclans.command.leave: true
+      maxclans.command.kick: true
+      maxclans.command.promote: true
+      maxclans.command.demote: true
+      maxclans.command.request: true
+      maxclans.command.acceptrequest: true
+      maxclans.command.denyrequest: true
+      maxclans.command.chat: true
+      maxclans.command.top: true
+      maxclans.command.tag: true
+      maxclans.command.decor: true
+      maxclans.command.home: true
+      maxclans.command.sethome: true
+      maxclans.command.delhome: true
+      maxclans.command.homes: true
+      maxclans.command.level: true
+      maxclans.command.chest: true
+      maxclans.command.bank: true
+      maxclans.command.ally: true
+      maxclans.command.quests: true
+  maxclans.command.main:
     description: Open the main clan menu.
     default: true
-  onlyclans.command.help:
+  maxclans.command.help:
     description: View the clan help command.
     default: true
-  onlyclans.command.list:
+  maxclans.command.list:
     description: Browse all server clans.
     default: true
-  onlyclans.command.info:
+  maxclans.command.info:
     description: View clan info and member roster.
     default: true
-  onlyclans.command.create:
+  maxclans.command.create:
     description: Create a new clan.
     default: true
-  onlyclans.command.disband:
+  maxclans.command.disband:
     description: Disband a clan.
     default: true
-  onlyclans.command.invite:
+  maxclans.command.invite:
     description: Invite players to the clan.
     default: true
-  onlyclans.command.accept:
+  maxclans.command.accept:
     description: Accept clan invitations.
     default: true
-  onlyclans.command.deny:
+  maxclans.command.deny:
     description: Deny clan invitations.
     default: true
-  onlyclans.command.leave:
+  maxclans.command.leave:
     description: Leave current clan.
     default: true
-  onlyclans.command.kick:
+  maxclans.command.kick:
     description: Kick a member from the clan.
     default: true
-  onlyclans.command.promote:
+  maxclans.command.promote:
     description: Promote a clan member.
     default: true
-  onlyclans.command.demote:
+  maxclans.command.demote:
     description: Demote a clan moderator.
     default: true
-  onlyclans.command.request:
+  maxclans.command.request:
     description: Send a request to join a clan.
     default: true
-  onlyclans.command.acceptrequest:
+  maxclans.command.acceptrequest:
     description: Accept join requests.
     default: true
-  onlyclans.command.denyrequest:
+  maxclans.command.denyrequest:
     description: Deny join requests.
     default: true
-  onlyclans.command.chat:
+  maxclans.command.chat:
     description: Use clan chat (/clan chat or /c).
     default: true
-  onlyclans.command.reload:
+  maxclans.command.reload:
     description: Reload the plugin configuration.
     default: op
-  onlyclans.spy:
+  maxclans.spy:
     description: Spy on clan chat messages.
     default: op
-  onlyclans.command.flags:
+  maxclans.command.flags:
     description: Access and toggle clan flags.
     default: true
-  onlyclans.command.settings:
+  maxclans.command.settings:
     description: Access clan settings menu.
     default: true
-  onlyclans.command.top:
+  maxclans.command.top:
     description: Access top clan rankings and leaderboard menu.
     default: true
-  onlyclans.command.tag:
+  maxclans.command.tag:
     description: Change clan tag.
     default: true
-  onlyclans.command.decor:
+  maxclans.command.decor:
     description: Decorate or color clan name.
     default: true
-  onlyclans.command.home:
+  maxclans.command.home:
     description: Teleport to clan home or base.
     default: true
-  onlyclans.command.sethome:
+  maxclans.command.sethome:
     description: Set clan base spawn point.
     default: true
-  onlyclans.command.delhome:
+  maxclans.command.delhome:
     description: Delete a clan home or base.
     default: true
-  onlyclans.command.homes:
+  maxclans.command.homes:
     description: List all clan homes.
     default: true
-  onlyclans.command.level:
+  maxclans.command.level:
     description: View clan level, EXP progress, and unlocked perks.
     default: true
-  onlyclans.command.chest:
+  maxclans.command.chest:
     description: Access the shared clan chest.
     default: true
-  onlyclans.command.bank:
+  maxclans.command.bank:
     description: Access the clan bank.
     default: true
-  onlyclans.command.ally:
+  maxclans.command.ally:
     description: Manage clan alliances.
     default: true
-  onlyclans.command.quests:
+  maxclans.command.quests:
     description: View daily clan missions and progress.
     default: true
-  onlyclans.bypass.warmup:
+  maxclans.bypass.warmup:
     description: Bypass clan teleport warmup delay.
     default: op
-  onlyclans.bypass.cooldown:
+  maxclans.bypass.cooldown:
     description: Bypass clan teleport cooldown.
     default: op
-

@@ -3,7 +3,7 @@ package org.zkaleejoo.managers;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.config.CustomConfig;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanQuest;
@@ -18,14 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClanQuestManager {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private CustomConfig questsFile;
     private final Map<String, ClanQuest> registeredQuests = new LinkedHashMap<>();
     private final Map<String, Map<String, ClanQuestProgress>> progressCache = new ConcurrentHashMap<>();
     private boolean enabled = true;
     private int dailyQuestsAmount = 3;
 
-    public ClanQuestManager(OnlyClans plugin) {
+    public ClanQuestManager(MaxClans plugin) {
         this.plugin = plugin;
         this.questsFile = new CustomConfig("quests.yml", null, plugin, false);
         this.questsFile.registerConfig();

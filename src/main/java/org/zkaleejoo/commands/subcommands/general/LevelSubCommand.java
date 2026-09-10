@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.config.MainConfigManager;
 import org.zkaleejoo.managers.ClanLevelManager;
@@ -15,13 +15,13 @@ import java.util.Locale;
 
 public class LevelSubCommand extends SubCommand {
 
-    public LevelSubCommand(OnlyClans plugin) {
+    public LevelSubCommand(MaxClans plugin) {
         super(plugin, "level", "perks", "nivel", "niveles", "exp");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.level";
+        return "maxclans.command.level";
     }
 
     @Override

@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanHome;
@@ -15,13 +15,13 @@ import java.util.List;
 
 public class HomeSubCommand extends SubCommand {
 
-    public HomeSubCommand(OnlyClans plugin) {
+    public HomeSubCommand(MaxClans plugin) {
         super(plugin, "home", "base");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.home";
+        return "maxclans.command.home";
     }
 
     @Override
@@ -82,7 +82,7 @@ public class HomeSubCommand extends SubCommand {
                 if (otherClan != null) {
                     boolean isAlly = playerClan.isAlly(otherClan.getName());
                     boolean isPublic = otherClan.isPublicHome();
-                    boolean isAdmin = player.hasPermission("onlyclans.admin");
+                    boolean isAdmin = player.hasPermission("maxclans.admin");
 
                     if ((isAlly && isPublic && plugin.getMainConfigManager().isHomeAllowAlliesIfPublic()) || isAdmin) {
                         targetClan = otherClan;
@@ -183,7 +183,7 @@ public class HomeSubCommand extends SubCommand {
 
         if (args.length == 3) {
             Clan otherClan = plugin.getClanManager().getClanByName(args[1]);
-            if (otherClan != null && (clan.isAlly(otherClan.getName()) || player.hasPermission("onlyclans.admin"))) {
+            if (otherClan != null && (clan.isAlly(otherClan.getName()) || player.hasPermission("maxclans.admin"))) {
                 return filterCompletions(new ArrayList<>(otherClan.getHomeNames()), args[2]);
             }
         }

@@ -1,7 +1,7 @@
 package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.utils.MessageUtils;
 
@@ -9,13 +9,13 @@ import java.util.List;
 
 public class HelpSubCommand extends SubCommand {
 
-    public HelpSubCommand(OnlyClans plugin) {
+    public HelpSubCommand(MaxClans plugin) {
         super(plugin, "help");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.help";
+        return "maxclans.command.help";
     }
 
     @Override

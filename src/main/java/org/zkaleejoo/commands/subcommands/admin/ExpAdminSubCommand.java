@@ -1,7 +1,7 @@
 package org.zkaleejoo.commands.subcommands.admin;
 
 import org.bukkit.command.CommandSender;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
@@ -11,13 +11,13 @@ import java.util.List;
 
 public class ExpAdminSubCommand extends SubCommand {
 
-    public ExpAdminSubCommand(OnlyClans plugin) {
+    public ExpAdminSubCommand(MaxClans plugin) {
         super(plugin, "admin", "a");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.admin";
+        return "maxclans.admin";
     }
 
     @Override

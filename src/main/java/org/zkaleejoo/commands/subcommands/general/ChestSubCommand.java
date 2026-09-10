@@ -2,20 +2,20 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class ChestSubCommand extends SubCommand {
 
-    public ChestSubCommand(OnlyClans plugin) {
+    public ChestSubCommand(MaxClans plugin) {
         super(plugin, "chest", "baul", "cbaul");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.chest";
+        return "maxclans.command.chest";
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.zkaleejoo.database;
 
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 
 import java.io.File;
 import java.sql.Connection;
@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class DatabaseManager {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private Connection connection;
     private DatabaseType type;
 
@@ -19,7 +19,7 @@ public class DatabaseManager {
         SQLITE, MYSQL
     }
 
-    public DatabaseManager(OnlyClans plugin) {
+    public DatabaseManager(MaxClans plugin) {
         this.plugin = plugin;
     }
 

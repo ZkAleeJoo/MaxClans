@@ -2,7 +2,7 @@ package org.zkaleejoo.config;
 
 import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import java.util.Arrays;
 
 public class MainConfigManager {
@@ -11,7 +11,7 @@ public class MainConfigManager {
     private CustomConfig langFile;
     private CustomConfig menusFile;
     private CustomConfig placeholdersFile;
-    private OnlyClans plugin;
+    private MaxClans plugin;
 
     private String selectedLanguage;
     private String prefix;
@@ -43,7 +43,7 @@ public class MainConfigManager {
     private int homeDefaultMax;
     private final java.util.NavigableMap<Integer, Integer> homeLevelMax = new java.util.TreeMap<>();
 
-    public MainConfigManager(OnlyClans plugin) {
+    public MainConfigManager(MaxClans plugin) {
         this.plugin = plugin;
         configFile = new CustomConfig("config.yml", null, plugin, false);
         configFile.registerConfig();
@@ -72,14 +72,14 @@ public class MainConfigManager {
         langFile.registerConfig();
         FileConfiguration lang = langFile.getConfig();
 
-        prefix = config.getString("general.prefix", "&#7DD3FC&lOnlyClans &#94A3B8» ");
+        prefix = config.getString("general.prefix", "&#7DD3FC&lMaxClans &#94A3B8» ");
         updateCheckEnabled = config.getBoolean("general.update-check", true);
         bStatsEnabled = config.getBoolean("general.bstats", true);
 
         databaseType = config.getString("database.type", "sqlite");
         databaseHost = config.getString("database.host", "localhost");
         databasePort = config.getInt("database.port", 3306);
-        databaseName = config.getString("database.name", "onlyclans");
+        databaseName = config.getString("database.name", "maxclans");
         databaseUsername = config.getString("database.username", "root");
         databasePassword = config.getString("database.password", "");
 
@@ -87,7 +87,7 @@ public class MainConfigManager {
         pluginReload = lang.getString("messages.plugin-reload", "&aPlugin reloaded.");
         msgConsole = lang.getString("messages.message-console", "&cOnly players!");
         subcommandInvalid = lang.getString("messages.subcommand-invalid", "&cInvalid subcommand.");
-        helpTitle = lang.getString("messages.command-help-title", "&6OnlyClans Help");
+        helpTitle = lang.getString("messages.command-help-title", "&6MaxClans Help");
         helpLines = lang.getStringList("messages.command-help-list");
         if (helpLines == null || helpLines.isEmpty()) {
             helpLines = Arrays.asList("&a/clan help", "&a/clan create <name>", "&a/clan invite <player>");

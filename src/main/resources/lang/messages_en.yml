@@ -5,9 +5,9 @@ messages:
   plugin-reload: '&aPlugin successfully reloaded.'
   message-console: '&cThis command can only be executed by players.'
   subcommand-invalid: '&cInvalid subcommand.'
-  command-help-title: '&#94A3B8&m---------------- &#7DD3FC&lOnlyClans v{version} &#94A3B8&m----------------'
+  command-help-title: '&#94A3B8&m---------------- &#7DD3FC&lMaxClans v{version} &#94A3B8&m----------------'
   command-help-list:
-    - '&#7DD3FC> https://github.com/ZkAleeJoo/OnlyClans/blob/main/README.md' 
+    - '&#7DD3FC> https://github.com/ZkAleeJoo/MaxClans/blob/main/README.md' 
   update-available: '&eA new version is available! (&b{version}&e)'
   update-current: '&7Your current version: &c{version}'
   update-download: '&eDownload it to get improvements and fixes.'

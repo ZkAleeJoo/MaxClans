@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanHome;
 import org.zkaleejoo.models.ClanLevelConfig;
@@ -12,9 +12,9 @@ import org.zkaleejoo.utils.FoliaCompat;
 
 public class ClanBaseEffectTask implements Runnable {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public ClanBaseEffectTask(OnlyClans plugin) {
+    public ClanBaseEffectTask(MaxClans plugin) {
         this.plugin = plugin;
     }
 

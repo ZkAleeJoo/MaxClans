@@ -3,7 +3,7 @@ package org.zkaleejoo.commands.subcommands.management;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanHome;
@@ -22,13 +22,13 @@ public class SetHomeSubCommand extends SubCommand {
 
     private static final Pattern HOME_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{1,16}$");
 
-    public SetHomeSubCommand(OnlyClans plugin) {
+    public SetHomeSubCommand(MaxClans plugin) {
         super(plugin, "sethome", "createsetpoint");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.sethome";
+        return "maxclans.command.sethome";
     }
 
     @Override

@@ -1,24 +1,24 @@
 package org.zkaleejoo.commands.subcommands.admin;
 
 import org.bukkit.command.CommandSender;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class ReloadSubCommand extends SubCommand {
 
-    public ReloadSubCommand(OnlyClans plugin) {
+    public ReloadSubCommand(MaxClans plugin) {
         super(plugin, "reload");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.reload";
+        return "maxclans.command.reload";
     }
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("onlyclans.command.reload") || sender.hasPermission("onlyclans.admin");
+        return sender.hasPermission("maxclans.command.reload") || sender.hasPermission("maxclans.admin");
     }
 
     @Override

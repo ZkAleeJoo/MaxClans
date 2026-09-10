@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
@@ -32,11 +32,11 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class MenuBuilder {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final NamespacedKey menuItemKey;
     private final NamespacedKey menuIdKey;
 
-    public MenuBuilder(OnlyClans plugin) {
+    public MenuBuilder(MaxClans plugin) {
         this.plugin = plugin;
         this.menuItemKey = new NamespacedKey(plugin, "gui_item");
         this.menuIdKey = new NamespacedKey(plugin, "gui_menu_id");
@@ -45,7 +45,7 @@ public class MenuBuilder {
     public List<Clan> getVisibleClansFor(Player player) {
         List<Clan> result = new ArrayList<>();
         Clan playerClan = player != null ? plugin.getClanManager().getClanByPlayer(player.getUniqueId()) : null;
-        boolean isAdmin = player != null && player.hasPermission("onlyclans.admin");
+        boolean isAdmin = player != null && player.hasPermission("maxclans.admin");
 
         for (Clan c : plugin.getClanManager().getAllClans()) {
             if (c.isVisibleInList() || isAdmin

@@ -2,7 +2,7 @@ package org.zkaleejoo.managers;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanHome;
 import org.zkaleejoo.utils.FoliaCompat;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClanTeleportManager {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final Map<UUID, Long> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, PendingTeleport> pendingTeleports = new ConcurrentHashMap<>();
 
@@ -79,7 +79,7 @@ public class ClanTeleportManager {
         }
     }
 
-    public ClanTeleportManager(OnlyClans plugin) {
+    public ClanTeleportManager(MaxClans plugin) {
         this.plugin = plugin;
     }
 
@@ -92,7 +92,7 @@ public class ClanTeleportManager {
     }
 
     public boolean isOnCooldown(Player player) {
-        if (player.hasPermission("onlyclans.bypass.cooldown")) {
+        if (player.hasPermission("maxclans.bypass.cooldown")) {
             return false;
         }
         Long expiry = cooldowns.get(player.getUniqueId());
@@ -153,7 +153,7 @@ public class ClanTeleportManager {
         }
 
         int warmupSeconds = plugin.getMainConfigManager().getHomeWarmupSeconds();
-        boolean bypassWarmup = player.hasPermission("onlyclans.bypass.warmup");
+        boolean bypassWarmup = player.hasPermission("maxclans.bypass.warmup");
 
         if (warmupSeconds <= 0 || bypassWarmup) {
             executeTeleport(player, targetLocation, home.getName());

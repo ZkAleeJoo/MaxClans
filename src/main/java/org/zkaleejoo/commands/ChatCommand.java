@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.managers.ClanManager;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
@@ -15,9 +15,9 @@ import java.util.List;
 
 public class ChatCommand implements CommandExecutor, TabCompleter {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public ChatCommand(OnlyClans plugin) {
+    public ChatCommand(MaxClans plugin) {
         this.plugin = plugin;
     }
 
@@ -29,7 +29,7 @@ public class ChatCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!player.hasPermission("onlyclans.command.chat")) {
+        if (!player.hasPermission("maxclans.command.chat")) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager().getNoPermission()));
             return true;

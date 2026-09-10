@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanPlayer;
@@ -19,13 +19,13 @@ import java.util.Locale;
 
 public class BankSubCommand extends SubCommand {
 
-    public BankSubCommand(OnlyClans plugin) {
+    public BankSubCommand(MaxClans plugin) {
         super(plugin, "bank", "banco");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.bank";
+        return "maxclans.command.bank";
     }
 
     @Override

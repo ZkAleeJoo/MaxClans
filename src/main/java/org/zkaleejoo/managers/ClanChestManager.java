@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClanChestManager implements Listener {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final Map<String, Inventory> activeInventories = new ConcurrentHashMap<>();
 
     public static class ClanChestHolder implements InventoryHolder {
@@ -46,7 +46,7 @@ public class ClanChestManager implements Listener {
         }
     }
 
-    public ClanChestManager(OnlyClans plugin) {
+    public ClanChestManager(MaxClans plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

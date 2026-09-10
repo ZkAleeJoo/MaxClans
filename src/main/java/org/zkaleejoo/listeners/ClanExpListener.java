@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanQuest;
 
@@ -25,7 +25,7 @@ import java.util.UUID;
 
 public class ClanExpListener implements Listener {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final Set<BlockPosition> placedBlocks = Collections.newSetFromMap(
             CacheBuilder.newBuilder()
                     .maximumSize(50_000)
@@ -34,7 +34,7 @@ public class ClanExpListener implements Listener {
                     .asMap()
     );
 
-    public ClanExpListener(OnlyClans plugin) {
+    public ClanExpListener(MaxClans plugin) {
         this.plugin = plugin;
     }
 

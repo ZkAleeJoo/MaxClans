@@ -6,15 +6,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.managers.ClanManager;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class ClanChatListener implements Listener {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public ClanChatListener(OnlyClans plugin) {
+    public ClanChatListener(MaxClans plugin) {
         this.plugin = plugin;
     }
 

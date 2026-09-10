@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.management;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanPlayer;
@@ -14,27 +14,27 @@ import java.util.List;
 
 public class FlagsSubCommand extends SubCommand {
 
-    public FlagsSubCommand(OnlyClans plugin) {
+    public FlagsSubCommand(MaxClans plugin) {
         super(plugin, "flags", "settings");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.flags";
+        return "maxclans.command.flags";
     }
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("onlyclans.command.flags") || sender.hasPermission("onlyclans.command.settings");
+        return sender.hasPermission("maxclans.command.flags") || sender.hasPermission("maxclans.command.settings");
     }
 
     @Override
     public List<String> getTabSuggestions(CommandSender sender) {
         List<String> list = new ArrayList<>();
-        if (sender.hasPermission("onlyclans.command.flags")) {
+        if (sender.hasPermission("maxclans.command.flags")) {
             list.add("flags");
         }
-        if (sender.hasPermission("onlyclans.command.settings")) {
+        if (sender.hasPermission("maxclans.command.settings")) {
             list.add("settings");
         }
         return list;
@@ -46,7 +46,7 @@ public class FlagsSubCommand extends SubCommand {
         Clan clan = plugin.getClanManager().getClanByPlayer(player.getUniqueId());
         if (clan != null) {
             ClanPlayer cp = clan.getMember(player.getUniqueId());
-            boolean canAccess = player.hasPermission("onlyclans.admin")
+            boolean canAccess = player.hasPermission("maxclans.admin")
                     || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
             if (canAccess) {
                 String sub = args.length > 0 ? args[0].toLowerCase() : "flags";

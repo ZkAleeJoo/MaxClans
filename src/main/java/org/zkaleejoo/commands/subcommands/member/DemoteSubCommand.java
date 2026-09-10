@@ -3,7 +3,7 @@ package org.zkaleejoo.commands.subcommands.member;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.utils.MessageUtils;
 
@@ -12,13 +12,13 @@ import java.util.List;
 
 public class DemoteSubCommand extends SubCommand {
 
-    public DemoteSubCommand(OnlyClans plugin) {
+    public DemoteSubCommand(MaxClans plugin) {
         super(plugin, "demote");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.demote";
+        return "maxclans.command.demote";
     }
 
     @Override

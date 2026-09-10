@@ -3,19 +3,19 @@ package org.zkaleejoo.hooks;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public PlaceholderAPIHook(OnlyClans plugin) {
+    public PlaceholderAPIHook(MaxClans plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public @NotNull String getIdentifier() {
-        return "onlyclans";
+        return "maxclans";
     }
 
     @Override

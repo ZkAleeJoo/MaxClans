@@ -1,5 +1,5 @@
 # ==================================================================== #
-#                      OnlyClans - Main Configuration                  #
+#                      MaxClans - Main Configuration                  #
 # ==================================================================== #
 # Formatting Support across the entire plugin:
 #   - MiniMessage: <red>, <bold>, <gradient:#color1:#color2>text</gradient>, <rainbow>text</rainbow>
@@ -9,7 +9,7 @@
 
 general:
   # Plugin prefix (supports MiniMessage, Gradients, and Legacy)
-  prefix: '&#7DD3FC&lOnlyClans &#94A3B8» '
+  prefix: '&#7DD3FC&lMaxClans &#94A3B8» '
   # Plugin language (options: 'en', 'es', or any custom messages_<lang>.yml)
   language: 'en'
   update-check: true
@@ -21,7 +21,7 @@ database:
   # MySQL settings (only used if type is 'mysql')
   host: 'localhost'
   port: 3306
-  name: 'onlyclans'
+  name: 'maxclans'
   username: 'root'
   password: ''
 
@@ -237,9 +237,9 @@ leveling:
 # Configure all internal placeholders and PlaceholderAPI placeholders.
 # Placeholders adapt automatically according to 'general.language'.
 # You can also explicitly request a specific language placeholder:
-#   %onlyclans_role_formatted_en%, %onlyclans_role_formatted_es%
-#   %onlyclans_ff_badge_en%, %onlyclans_ff_badge_es%
-#   %onlyclans_ff_status_en%, %onlyclans_ff_status_es%
+#   %maxclans_role_formatted_en%, %maxclans_role_formatted_es%
+#   %maxclans_ff_badge_en%, %maxclans_ff_badge_es%
+#   %maxclans_ff_status_en%, %maxclans_ff_status_es%
 # ==================================================================== #
 placeholders:
   # Output format for PlaceholderAPI:
@@ -248,7 +248,7 @@ placeholders:
   #   'legacy'      - Returns Spigot legacy color codes (§a, §x§1§2§3§4§5§6).
   #                   Use this if your scoreboards/tab plugins only support legacy § colors.
   # Note: You can also explicitly request either format by adding _mm or _legacy
-  # to any placeholder (e.g. %onlyclans_tag_mm% or %onlyclans_tag_legacy%).
+  # to any placeholder (e.g. %maxclans_tag_mm% or %maxclans_tag_legacy%).
   format-mode: 'minimessage'
   # Date formatting pattern (e.g. dd/MM/yyyy or MM/dd/yyyy)
   date-format: 'dd/MM/yyyy'

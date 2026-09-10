@@ -4,15 +4,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.config.MainConfigManager;
 
 public class PlayerJoinListener implements Listener {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public PlayerJoinListener(OnlyClans plugin) {
+    public PlayerJoinListener(MaxClans plugin) {
         this.plugin = plugin;
     }
 
@@ -21,7 +21,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         MainConfigManager config = plugin.getMainConfigManager();
 
-        if (player.hasPermission("onlyclans.admin")) {
+        if (player.hasPermission("maxclans.admin")) {
             String latest = plugin.getLatestVersion();
             if (latest != null && !plugin.getPluginMeta().getVersion().equalsIgnoreCase(latest)) {
                 player.sendMessage(" ");

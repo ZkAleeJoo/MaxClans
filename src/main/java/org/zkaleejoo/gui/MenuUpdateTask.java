@@ -4,16 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.FoliaCompat;
 
 public class MenuUpdateTask implements Runnable {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private int tickCounter = 0;
 
-    public MenuUpdateTask(OnlyClans plugin) {
+    public MenuUpdateTask(MaxClans plugin) {
         this.plugin = plugin;
     }
 

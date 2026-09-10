@@ -3,7 +3,7 @@ package org.zkaleejoo.commands.subcommands.member;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.utils.MessageUtils;
 
@@ -12,13 +12,13 @@ import java.util.List;
 
 public class KickSubCommand extends SubCommand {
 
-    public KickSubCommand(OnlyClans plugin) {
+    public KickSubCommand(MaxClans plugin) {
         super(plugin, "kick");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.kick";
+        return "maxclans.command.kick";
     }
 
     @Override

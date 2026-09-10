@@ -10,13 +10,13 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 
 public class ClanTeleportListener implements Listener {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public ClanTeleportListener(OnlyClans plugin) {
+    public ClanTeleportListener(MaxClans plugin) {
         this.plugin = plugin;
     }
 

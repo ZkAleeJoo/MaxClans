@@ -1,7 +1,7 @@
 package org.zkaleejoo.commands;
 
 import org.bukkit.command.CommandSender;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.utils.MessageUtils;
 
 import java.util.ArrayList;
@@ -10,11 +10,11 @@ import java.util.List;
 
 public abstract class SubCommand {
 
-    protected final OnlyClans plugin;
+    protected final MaxClans plugin;
     private final String name;
     private final List<String> aliases;
 
-    public SubCommand(OnlyClans plugin, String name, String... aliases) {
+    public SubCommand(MaxClans plugin, String name, String... aliases) {
         this.plugin = plugin;
         this.name = name;
         this.aliases = aliases != null ? List.of(aliases) : Collections.emptyList();

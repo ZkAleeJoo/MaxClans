@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
@@ -11,13 +11,13 @@ import java.util.Arrays;
 
 public class ChatSubCommand extends SubCommand {
 
-    public ChatSubCommand(OnlyClans plugin) {
+    public ChatSubCommand(MaxClans plugin) {
         super(plugin, "chat", "c");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.chat";
+        return "maxclans.command.chat";
     }
 
     @Override

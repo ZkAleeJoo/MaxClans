@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanFlag;
 import org.zkaleejoo.models.ClanPlayer;
@@ -18,12 +18,12 @@ import java.util.Objects;
 
 public class PlaceholderManager {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String tagFormat = "&#8727F5[{tag}]";
     private String outputFormatMode = "minimessage";
 
-    public PlaceholderManager(OnlyClans plugin) {
+    public PlaceholderManager(MaxClans plugin) {
         this.plugin = plugin;
     }
 

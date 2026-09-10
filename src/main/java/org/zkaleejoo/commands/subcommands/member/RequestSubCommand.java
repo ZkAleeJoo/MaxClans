@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.member;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
@@ -12,13 +12,13 @@ import java.util.List;
 
 public class RequestSubCommand extends SubCommand {
 
-    public RequestSubCommand(OnlyClans plugin) {
+    public RequestSubCommand(MaxClans plugin) {
         super(plugin, "request", "join");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.request";
+        return "maxclans.command.request";
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.zkaleejoo.database;
 
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanHome;
 import org.zkaleejoo.models.ClanPlayer;
@@ -13,10 +13,10 @@ import java.util.logging.Level;
 
 public class ClanStorage {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final DatabaseManager databaseManager;
 
-    public ClanStorage(OnlyClans plugin, DatabaseManager databaseManager) {
+    public ClanStorage(MaxClans plugin, DatabaseManager databaseManager) {
         this.plugin = plugin;
         this.databaseManager = databaseManager;
     }

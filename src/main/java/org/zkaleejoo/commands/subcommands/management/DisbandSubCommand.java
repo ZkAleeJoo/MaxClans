@@ -2,20 +2,20 @@ package org.zkaleejoo.commands.subcommands.management;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class DisbandSubCommand extends SubCommand {
 
-    public DisbandSubCommand(OnlyClans plugin) {
+    public DisbandSubCommand(MaxClans plugin) {
         super(plugin, "disband");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.disband";
+        return "maxclans.command.disband";
     }
 
     @Override

@@ -3,7 +3,7 @@ package org.zkaleejoo.commands.subcommands.management;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanHome;
@@ -19,13 +19,13 @@ import java.util.UUID;
 
 public class DelHomeSubCommand extends SubCommand {
 
-    public DelHomeSubCommand(OnlyClans plugin) {
+    public DelHomeSubCommand(MaxClans plugin) {
         super(plugin, "delhome", "deletehome", "rmhome");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.delhome";
+        return "maxclans.command.delhome";
     }
 
     @Override

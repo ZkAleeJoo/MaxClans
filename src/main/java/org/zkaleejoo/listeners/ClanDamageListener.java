@@ -7,15 +7,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class ClanDamageListener implements Listener {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public ClanDamageListener(OnlyClans plugin) {
+    public ClanDamageListener(MaxClans plugin) {
         this.plugin = plugin;
     }
 

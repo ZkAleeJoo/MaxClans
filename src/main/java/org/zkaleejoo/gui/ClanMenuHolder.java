@@ -6,7 +6,7 @@ import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.MemberSortType;
 import org.zkaleejoo.models.TopSortType;
 
@@ -17,7 +17,7 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class ClanMenuHolder implements InventoryHolder {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final String menuId;
     private int page = 0;
     private MemberSortType memberSortType = MemberSortType.ROLE;
@@ -26,21 +26,21 @@ public class ClanMenuHolder implements InventoryHolder {
     private final Map<Integer, UUID> memberSlots = new HashMap<>();
     private Inventory inventory;
 
-    public ClanMenuHolder(OnlyClans plugin, String menuId) {
+    public ClanMenuHolder(MaxClans plugin, String menuId) {
         this.plugin = plugin;
         this.menuId = menuId;
         this.page = 0;
         this.memberSortType = MemberSortType.ROLE;
     }
 
-    public ClanMenuHolder(OnlyClans plugin, String menuId, int page) {
+    public ClanMenuHolder(MaxClans plugin, String menuId, int page) {
         this.plugin = plugin;
         this.menuId = menuId;
         this.page = page;
         this.memberSortType = MemberSortType.ROLE;
     }
 
-    public ClanMenuHolder(OnlyClans plugin, String menuId, int page, TopSortType topSortType) {
+    public ClanMenuHolder(MaxClans plugin, String menuId, int page, TopSortType topSortType) {
         this.plugin = plugin;
         this.menuId = menuId;
         this.page = page;
@@ -48,7 +48,7 @@ public class ClanMenuHolder implements InventoryHolder {
         this.topSortType = topSortType != null ? topSortType : TopSortType.KDR;
     }
 
-    public ClanMenuHolder(OnlyClans plugin, String menuId, int page, MemberSortType memberSortType) {
+    public ClanMenuHolder(MaxClans plugin, String menuId, int page, MemberSortType memberSortType) {
         this.plugin = plugin;
         this.menuId = menuId;
         this.page = page;
@@ -72,7 +72,7 @@ public class ClanMenuHolder implements InventoryHolder {
         this(null, menuId, page, topSortType);
     }
 
-    public OnlyClans getPlugin() {
+    public MaxClans getPlugin() {
         return plugin;
     }
 

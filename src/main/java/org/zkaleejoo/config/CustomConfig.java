@@ -4,7 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,14 +14,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class CustomConfig {
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final String fileName;
     private FileConfiguration fileConfiguration = null;
     private File file = null;
     private final String folderName;
     private final boolean newFile;
 
-    public CustomConfig(String fileName, String folderName, OnlyClans plugin, boolean newFile) {
+    public CustomConfig(String fileName, String folderName, MaxClans plugin, boolean newFile) {
         this.fileName = fileName;
         this.folderName = folderName;
         this.plugin = plugin;

@@ -2,19 +2,19 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 
 public class ListSubCommand extends SubCommand {
 
-    public ListSubCommand(OnlyClans plugin) {
+    public ListSubCommand(MaxClans plugin) {
         super(plugin, "list", "browse");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.list";
+        return "maxclans.command.list";
     }
 
     @Override

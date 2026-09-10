@@ -24,7 +24,7 @@ import org.zkaleejoo.utils.FoliaCompat.WrappedTask;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.UpdateChecker;
 
-public class OnlyClans extends JavaPlugin {
+public class MaxClans extends JavaPlugin {
 
     private static final int BSTATS_PLUGIN_ID = 33651;
     private static final long UPDATE_CHECK_INTERVAL_TICKS = 20L * 60L * 60L * 5L;
@@ -67,8 +67,8 @@ public class OnlyClans extends JavaPlugin {
         menuBuilder = new MenuBuilder(this);
 
         MainCommand mainCommand = new MainCommand(this);
-        getCommand("onlyclans").setExecutor(mainCommand);
-        getCommand("onlyclans").setTabCompleter(mainCommand);
+        getCommand("maxclans").setExecutor(mainCommand);
+        getCommand("maxclans").setTabCompleter(mainCommand);
 
         ChatCommand chatCommand = new ChatCommand(this);
         getCommand("clanchat").setExecutor(chatCommand);
@@ -90,19 +90,19 @@ public class OnlyClans extends JavaPlugin {
 
         startUpdateChecks();
 
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent("&9&lOnlyClans &8» &fPlugin Enabled!"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent("&9&lMaxClans &8» &fPlugin Enabled!"));
         Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                "&9&lOnlyClans &8» &9________         .__         _________ .__                        "));
+                "&9&lMaxClans &8» &9  __  __              _____ _                 "));
         Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                "&9&lOnlyClans &8» &9\\_____  \\   ____ |  | ___.__.\\_   ___ \\|  | _____    ____   ______"));
+                "&9&lMaxClans &8» &9 |  \\/  |            / ____| |                "));
         Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                "&9&lOnlyClans &8» &9 /   |   \\ /    \\|  |<   |  |/    \\  \\/|  | \\__  \\  /    \\ /  ___/"));
+                "&9&lMaxClans &8» &9 | \\  / | __ ___  __| |    | | __ _ _ __  ___ "));
         Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                "&9&lOnlyClans &8» &9/    |    \\   |  \\  |_\\___  |\\     \\___|  |__/ __ \\|   |  \\\\___ \\ "));
+                "&9&lMaxClans &8» &9 | |\\/| |/ _` \\ \\/ /| |    | |/ _` | '_ \\/ __|"));
         Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                "&9&lOnlyClans &8» &9\\_______  /___|  /____/ ____| \\______  /____(____  /___|  /____  >"));
+                "&9&lMaxClans &8» &9 | |  | | (_| |>  < | |____| | (_| | | | \\__ \\"));
         Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                "&9&lOnlyClans &8» &9        \\/     \\/     \\/             \\/          \\/     \\/     \\/ "));
+                "&9&lMaxClans &8» &9 |_|  |_|\\__,_/_/\\_\\ \\_____|_|\\__,_|_| |_|___/"));
     }
 
     private void checkUpdates() {
@@ -113,14 +113,14 @@ public class OnlyClans extends JavaPlugin {
             if (this.getPluginMeta().getVersion().equalsIgnoreCase(version)) {
                 this.latestVersion = null;
                 Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                        "&5&lOnlyClans &8» &fA check for updates was performed and nothing was found."));
+                        "&5&lMaxClans &8» &fA check for updates was performed and nothing was found."));
             } else {
                 this.latestVersion = version;
                 Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent(
-                        "&9&lOnlyClans &8» &f&lNEW VERSION: &7" + version));
+                        "&9&lMaxClans &8» &f&lNEW VERSION: &7" + version));
                 Bukkit.getConsoleSender().sendMessage(
                         MessageUtils.toComponent(
-                                "&9&lOnlyClans &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/onlyclans"));
+                                "&9&lMaxClans &8» &fDownload it now at the following link: &7https://modrinth.com/plugin/maxclans"));
             }
         });
     }
@@ -188,7 +188,7 @@ public class OnlyClans extends JavaPlugin {
             databaseManager.close();
         }
 
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent("&9&lOnlyClans &8» &cPlugin Disabled!"));
+        Bukkit.getConsoleSender().sendMessage(MessageUtils.toComponent("&9&lMaxClans &8» &cPlugin Disabled!"));
     }
 
     public MainConfigManager getMainConfigManager() {
@@ -246,4 +246,3 @@ public class OnlyClans extends JavaPlugin {
         startUpdateChecks();
     }
 }
-

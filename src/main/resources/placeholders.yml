@@ -1,10 +1,10 @@
 # ================================================================================= #
 #                                                                                   #
-#                       OnlyClans - Placeholder Guide & Wiki                        #
+#                       MaxClans - Placeholder Guide & Wiki                        #
 #                                                                                   #
 # ================================================================================= #
 # This file is a complete and detailed reference of all placeholders provided       #
-# by OnlyClans for PlaceholderAPI (PAPI) and for internal menus (menus.yml).        #
+# by MaxClans for PlaceholderAPI (PAPI) and for internal menus (menus.yml).        #
 #                                                                                   #
 # ================================================================================= #
 
@@ -14,8 +14,8 @@
 # To use these placeholders in chat, scoreboards, tablist, holograms, or external   #
 # menus, the PlaceholderAPI (PAPI) plugin must be installed.                        #
 #                                                                                   #
-# Official OnlyClans identifier:                                                    #
-#   %onlyclans_<placeholder>%                                                       #
+# Official MaxClans identifier:                                                    #
+#   %maxclans_<placeholder>%                                                       #
 #                                                                                   #
 # Compatible plugins:                                                               #
 #   - Chat: LPC, EssentialsChat, ChatControl, CarbonChat, etc.                      #
@@ -28,7 +28,7 @@
 # --------------------------------------------------------------------------------- #
 # 2. FORMAT & MULTI-LANGUAGE MODIFIERS                                              #
 # --------------------------------------------------------------------------------- #
-# OnlyClans allows you to customize the output format and language of placeholders  #
+# MaxClans allows you to customize the output format and language of placeholders  #
 # directly by appending suffixes or prefixes:                                       #
 #                                                                                   #
 # A) FORMAT MODIFIERS (MiniMessage vs Legacy):                                      #
@@ -36,26 +36,26 @@
 #    'placeholders.format-mode' ('minimessage' or 'legacy').                        #
 #                                                                                   #
 #    - _mm or _minimessage: Forces output in Adventure MiniMessage format           #
-#      e.g. %onlyclans_tag_formatted_mm% -> <dark_gray>[<#00FF88>ZKL<dark_gray>]    #
+#      e.g. %maxclans_tag_formatted_mm% -> <dark_gray>[<#00FF88>ZKL<dark_gray>]    #
 #      Ideal for LPC, modern Paper Chat, and Adventure-based plugins.               #
 #                                                                                   #
 #    - _legacy: Forces output in classic Spigot color codes (§a, §f, etc.)          #
-#      e.g. %onlyclans_tag_formatted_legacy% -> §8[§aZKL§8]                         #
+#      e.g. %maxclans_tag_formatted_legacy% -> §8[§aZKL§8]                         #
 #      Ideal for TAB, Scoreboards, or plugins that only support § color codes.      #
 #                                                                                   #
 # B) LANGUAGE MODIFIERS:                                                            #
 #    You can request text in a specific language regardless of the server's         #
 #    global language by appending _es or _en (or prefixing es_ or en_):             #
 #                                                                                   #
-#    - %onlyclans_role_formatted_es% -> ★ Líder                                     #
-#    - %onlyclans_role_formatted_en% -> ★ Leader                                    #
-#    - %onlyclans_ff_status_es%      -> ✔ Activado                                  #
-#    - %onlyclans_ff_status_en%      -> ✔ Enabled                                   #
+#    - %maxclans_role_formatted_es% -> ★ Líder                                     #
+#    - %maxclans_role_formatted_en% -> ★ Leader                                    #
+#    - %maxclans_ff_status_es%      -> ✔ Activado                                  #
+#    - %maxclans_ff_status_en%      -> ✔ Enabled                                   #
 #                                                                                   #
 # C) COMBINING MODIFIERS:                                                           #
 #    You can combine language and format modifiers at the same time:                #
-#    - %onlyclans_role_formatted_es_legacy%                                         #
-#    - %onlyclans_ff_badge_en_mm%                                                   #
+#    - %maxclans_role_formatted_es_legacy%                                         #
+#    - %maxclans_ff_badge_en_mm%                                                   #
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
@@ -66,60 +66,60 @@
 # in config.yml (e.g., 'None', '---', '0', etc.).                                   #
 #                                                                                   #
 # Name & Identity:                                                                  #
-#   %onlyclans_clan_name%              - Clan name (e.g., Spartans).                #
-#   %onlyclans_name%                   - Alias for %onlyclans_clan_name%.           #
-#   %onlyclans_clan_displayname%       - Formatted name with colors/decorations     #
+#   %maxclans_clan_name%              - Clan name (e.g., Spartans).                #
+#   %maxclans_name%                   - Alias for %maxclans_clan_name%.           #
+#   %maxclans_clan_displayname%       - Formatted name with colors/decorations     #
 #                                        (MiniMessage format).                      #
-#   %onlyclans_clan_display_name%      - Alias for %onlyclans_clan_displayname%.    #
-#   %onlyclans_clan_name_formatted%    - Alias for %onlyclans_clan_displayname%.    #
-#   %onlyclans_clan_tag%               - Clan tag with its custom colors.           #
-#   %onlyclans_tag%                    - Alias for %onlyclans_clan_tag%.            #
-#   %onlyclans_clan_tag_raw%           - Plain clan tag without color codes.        #
-#   %onlyclans_tag_raw%                - Alias for %onlyclans_clan_tag_raw%.        #
-#   %onlyclans_clan_tag_formatted%     - Clan tag formatted with brackets design    #
+#   %maxclans_clan_display_name%      - Alias for %maxclans_clan_displayname%.    #
+#   %maxclans_clan_name_formatted%    - Alias for %maxclans_clan_displayname%.    #
+#   %maxclans_clan_tag%               - Clan tag with its custom colors.           #
+#   %maxclans_tag%                    - Alias for %maxclans_clan_tag%.            #
+#   %maxclans_clan_tag_raw%           - Plain clan tag without color codes.        #
+#   %maxclans_tag_raw%                - Alias for %maxclans_clan_tag_raw%.        #
+#   %maxclans_clan_tag_formatted%     - Clan tag formatted with brackets design    #
 #                                        defined in config.yml (e.g., [SPART]).     #
-#   %onlyclans_tag_formatted%          - Alias for %onlyclans_clan_tag_formatted%.  #
+#   %maxclans_tag_formatted%          - Alias for %maxclans_clan_tag_formatted%.  #
 #                                                                                   #
 # Leadership & Members:                                                             #
-#   %onlyclans_clan_leader%            - Username of the clan leader.               #
-#   %onlyclans_leader%                 - Alias for %onlyclans_clan_leader%.         #
-#   %onlyclans_clan_members%           - Total member count in the clan.            #
-#   %onlyclans_clan_members_count%     - Alias for %onlyclans_clan_members%.        #
-#   %onlyclans_members%                - Alias for %onlyclans_clan_members%.        #
-#   %onlyclans_clan_members_online%    - Count of clan members currently online.    #
-#   %onlyclans_members_online%         - Alias for %onlyclans_clan_members_online%. #
+#   %maxclans_clan_leader%            - Username of the clan leader.               #
+#   %maxclans_leader%                 - Alias for %maxclans_clan_leader%.         #
+#   %maxclans_clan_members%           - Total member count in the clan.            #
+#   %maxclans_clan_members_count%     - Alias for %maxclans_clan_members%.        #
+#   %maxclans_members%                - Alias for %maxclans_clan_members%.        #
+#   %maxclans_clan_members_online%    - Count of clan members currently online.    #
+#   %maxclans_members_online%         - Alias for %maxclans_clan_members_online%. #
 #                                                                                   #
 # Clan Statistics:                                                                  #
-#   %onlyclans_clan_kills%             - Total clan kills.                          #
-#   %onlyclans_clan_deaths%            - Total clan deaths.                         #
-#   %onlyclans_clan_kdr%               - Clan KDR ratio (e.g., 2.45).               #
-#   %onlyclans_clan_rival_kills%       - Kills against rival clans.                 #
-#   %onlyclans_rival_kills%            - Alias for %onlyclans_clan_rival_kills%.    #
-#   %onlyclans_clan_created%           - Clan creation date                         #
+#   %maxclans_clan_kills%             - Total clan kills.                          #
+#   %maxclans_clan_deaths%            - Total clan deaths.                         #
+#   %maxclans_clan_kdr%               - Clan KDR ratio (e.g., 2.45).               #
+#   %maxclans_clan_rival_kills%       - Kills against rival clans.                 #
+#   %maxclans_rival_kills%            - Alias for %maxclans_clan_rival_kills%.    #
+#   %maxclans_clan_created%           - Clan creation date                         #
 #                                        (per 'placeholders.date-format').          #
-#   %onlyclans_created%                - Alias for %onlyclans_clan_created%.        #
+#   %maxclans_created%                - Alias for %maxclans_clan_created%.        #
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
 # 4. PLAYER ROLE & MEMBERSHIP PLACEHOLDERS                                          #
 # --------------------------------------------------------------------------------- #
-#   %onlyclans_role%                   - Translated player role name                #
+#   %maxclans_role%                   - Translated player role name                #
 #                                        (e.g., Leader, Moderator, Member).         #
-#   %onlyclans_role_raw%               - Internal role enum name                    #
+#   %maxclans_role_raw%               - Internal role enum name                    #
 #                                        (e.g., LEADER, MODERATOR, MEMBER).         #
-#   %onlyclans_role_formatted%         - Formatted role with icon and color         #
+#   %maxclans_role_formatted%         - Formatted role with icon and color         #
 #                                        (e.g., &#FFD700★ Leader).                  #
-#   %onlyclans_joined%                 - Date when the player joined the clan.      #
-#   %onlyclans_joined_clan%            - Alias for %onlyclans_joined%.              #
+#   %maxclans_joined%                 - Date when the player joined the clan.      #
+#   %maxclans_joined_clan%            - Alias for %maxclans_joined%.              #
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
 # 5. FRIENDLY FIRE & CLAN FLAGS PLACEHOLDERS                                        #
 # --------------------------------------------------------------------------------- #
 # Friendly Fire:                                                                    #
-#   %onlyclans_ff%                     - Raw status text (e.g., ON / OFF).          #
-#   %onlyclans_ff_badge%               - Colored badge (e.g., ENABLED / DISABLED).  #
-#   %onlyclans_ff_status%              - Status with icon (✔ Enabled / ✖ Disabled). #
+#   %maxclans_ff%                     - Raw status text (e.g., ON / OFF).          #
+#   %maxclans_ff_badge%               - Colored badge (e.g., ENABLED / DISABLED).  #
+#   %maxclans_ff_status%              - Status with icon (✔ Enabled / ✖ Disabled). #
 #                                                                                   #
 # Clan Flags:                                                                       #
 #   Available flags:                                                                #
@@ -132,51 +132,51 @@
 #     - spy_chat                       - Allows admins to spy on clan chat          #
 #                                                                                   #
 #   Syntax per flag:                                                                #
-#     %onlyclans_flag_<flag>%          - Basic status (e.g., ON / OFF).             #
-#     %onlyclans_flag_<flag>_badge%    - Formatted badge (ENABLED / DISABLED).      #
-#     %onlyclans_flag_<flag>_status%   - Status with icon (✔ Enabled / ✖ Disabled). #
+#     %maxclans_flag_<flag>%          - Basic status (e.g., ON / OFF).             #
+#     %maxclans_flag_<flag>_badge%    - Formatted badge (ENABLED / DISABLED).      #
+#     %maxclans_flag_<flag>_status%   - Status with icon (✔ Enabled / ✖ Disabled). #
 #                                                                                   #
 #   Examples:                                                                       #
-#     %onlyclans_flag_open_join%                                                    #
-#     %onlyclans_flag_open_join_status%                                             #
-#     %onlyclans_flag_member_invites_badge%                                         #
+#     %maxclans_flag_open_join%                                                    #
+#     %maxclans_flag_open_join_status%                                             #
+#     %maxclans_flag_member_invites_badge%                                         #
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
 # 6. PLAYER PERSONAL STATISTICS                                                     #
 # --------------------------------------------------------------------------------- #
 # Based on the player's individual Minecraft statistics:                            #
-#   %onlyclans_player_kills%           - User's player kills.                       #
-#   %onlyclans_kills%                  - Alias for %onlyclans_player_kills%.        #
-#   %onlyclans_player_deaths%          - User's deaths.                             #
-#   %onlyclans_deaths%                 - Alias for %onlyclans_player_deaths%.       #
-#   %onlyclans_player_kdr%             - Individual KDR ratio (e.g., 1.80).         #
-#   %onlyclans_kdr%                    - Alias for %onlyclans_player_kdr%.          #
-#   %onlyclans_player_playtime%        - Formatted playtime (e.g., 4d 12h 30m).     #
-#   %onlyclans_playtime%               - Alias for %onlyclans_player_playtime%.     #
+#   %maxclans_player_kills%           - User's player kills.                       #
+#   %maxclans_kills%                  - Alias for %maxclans_player_kills%.        #
+#   %maxclans_player_deaths%          - User's deaths.                             #
+#   %maxclans_deaths%                 - Alias for %maxclans_player_deaths%.       #
+#   %maxclans_player_kdr%             - Individual KDR ratio (e.g., 1.80).         #
+#   %maxclans_kdr%                    - Alias for %maxclans_player_kdr%.          #
+#   %maxclans_player_playtime%        - Formatted playtime (e.g., 4d 12h 30m).     #
+#   %maxclans_playtime%               - Alias for %maxclans_player_playtime%.     #
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
 # 7. CLAN LEVELING, PERKS, BANK & ALLIANCES                                         #
 # --------------------------------------------------------------------------------- #
-#   %onlyclans_level%                  - Current clan level (1 to 10+).             #
-#   %onlyclans_clan_level%             - Alias for %onlyclans_level%.               #
-#   %onlyclans_exp%                    - Current Clan EXP.                          #
-#   %onlyclans_clan_exp%               - Alias for %onlyclans_exp%.                 #
-#   %onlyclans_exp_next%               - Total Clan EXP required for next level.    #
-#   %onlyclans_exp_needed%             - Alias for %onlyclans_exp_next%.            #
-#   %onlyclans_exp_percent%            - Progression percentage towards next level. #
-#   %onlyclans_exp_bar%                - Visual progress bar with custom colors.    #
-#   %onlyclans_bank%                   - Clan Bank balance (Vault coins).           #
-#   %onlyclans_bank_balance%           - Alias for %onlyclans_bank%.                #
-#   %onlyclans_max_members%            - Member capacity unlocked by current level. #
-#   %onlyclans_allies%                 - Current allied clans count.                #
-#   %onlyclans_allies_count%           - Alias for %onlyclans_allies%.              #
-#   %onlyclans_max_allies%             - Maximum allies allowed for current level.  #
-#   %onlyclans_allies_list%            - Comma-separated list of allied clan names. #
-#   %onlyclans_homes_count%            - Current number of set clan homes.          #
-#   %onlyclans_homes_max%              - Maximum clan homes allowed for clan level. #
-#   %onlyclans_homes_list%             - Comma-separated list of clan home names.   #
+#   %maxclans_level%                  - Current clan level (1 to 10+).             #
+#   %maxclans_clan_level%             - Alias for %maxclans_level%.               #
+#   %maxclans_exp%                    - Current Clan EXP.                          #
+#   %maxclans_clan_exp%               - Alias for %maxclans_exp%.                 #
+#   %maxclans_exp_next%               - Total Clan EXP required for next level.    #
+#   %maxclans_exp_needed%             - Alias for %maxclans_exp_next%.            #
+#   %maxclans_exp_percent%            - Progression percentage towards next level. #
+#   %maxclans_exp_bar%                - Visual progress bar with custom colors.    #
+#   %maxclans_bank%                   - Clan Bank balance (Vault coins).           #
+#   %maxclans_bank_balance%           - Alias for %maxclans_bank%.                #
+#   %maxclans_max_members%            - Member capacity unlocked by current level. #
+#   %maxclans_allies%                 - Current allied clans count.                #
+#   %maxclans_allies_count%           - Alias for %maxclans_allies%.              #
+#   %maxclans_max_allies%             - Maximum allies allowed for current level.  #
+#   %maxclans_allies_list%            - Comma-separated list of allied clan names. #
+#   %maxclans_homes_count%            - Current number of set clan homes.          #
+#   %maxclans_homes_max%              - Maximum clan homes allowed for clan level. #
+#   %maxclans_homes_list%             - Comma-separated list of clan home names.   #
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
@@ -186,7 +186,7 @@
 # (ideal for Scoreboards, Tablist, and Holograms).                                  #
 #                                                                                   #
 # Structure:                                                                        #
-#   %onlyclans_top_<category>_<rank>_<property>%                                    #
+#   %maxclans_top_<category>_<rank>_<property>%                                    #
 #                                                                                   #
 # Categories:                                                                       #
 #   - kdr     : Ranked by highest KDR ratio.                                        #
@@ -211,20 +211,20 @@
 #   - members        : Total clan members count.                                    #
 #                                                                                   #
 # Practical Leaderboard Examples:                                                   #
-#   %onlyclans_top_kdr_1_name%             -> Name of the #1 clan in KDR.           #
-#   %onlyclans_top_kdr_1_val%              -> KDR value of clan #1 (e.g. 4.20).     #
-#   %onlyclans_top_kdr_1_tag_formatted%    -> Bracketed tag of the #1 clan in KDR.  #
-#   %onlyclans_top_kills_1_name%           -> Name of the #1 clan in Kills.         #
-#   %onlyclans_top_kills_1_kills%          -> Total kills of the #1 clan.           #
-#   %onlyclans_top_members_1_name%         -> Name of the clan with most members.   #
-#   %onlyclans_top_members_1_leader%       -> Leader of the clan with most members. #
-#   %onlyclans_top_members_1_members%      -> Member count of the #1 clan.          #
+#   %maxclans_top_kdr_1_name%             -> Name of the #1 clan in KDR.           #
+#   %maxclans_top_kdr_1_val%              -> KDR value of clan #1 (e.g. 4.20).     #
+#   %maxclans_top_kdr_1_tag_formatted%    -> Bracketed tag of the #1 clan in KDR.  #
+#   %maxclans_top_kills_1_name%           -> Name of the #1 clan in Kills.         #
+#   %maxclans_top_kills_1_kills%          -> Total kills of the #1 clan.           #
+#   %maxclans_top_members_1_name%         -> Name of the clan with most members.   #
+#   %maxclans_top_members_1_leader%       -> Leader of the clan with most members. #
+#   %maxclans_top_members_1_members%      -> Member count of the #1 clan.          #
 # --------------------------------------------------------------------------------- #
 
 # --------------------------------------------------------------------------------- #
 # 9. INTERNAL MENU PLACEHOLDERS (menus.yml)                                         #
 # --------------------------------------------------------------------------------- #
-# These placeholders are resolved internally within the OnlyClans menu engine       #
+# These placeholders are resolved internally within the MaxClans menu engine       #
 # (menus.yml). They can be used with %variable% or {variable}:                      #
 #                                                                                   #
 # General Menu Placeholders:                                                        #
@@ -279,93 +279,93 @@
 #    To display the formatted clan tag before or after the player's name:           #
 #                                                                                   #
 #    LPC Format (LPC's config.yml):                                                 #
-#      format: '{group} &r%onlyclans_tag_formatted_mm% {prefix}{name}&r: {message}' #
+#      format: '{group} &r%maxclans_tag_formatted_mm% {prefix}{name}&r: {message}' #
 #                                                                                   #
 #    EssentialsChat Format (Essentials' config.yml):                                #
 #      group-formats:                                                               #
-#        default: '&7[{GROUP}] %onlyclans_tag_formatted_legacy% &r{DISPLAYNAME}: &f{MESSAGE}' #
+#        default: '&7[{GROUP}] %maxclans_tag_formatted_legacy% &r{DISPLAYNAME}: &f{MESSAGE}' #
 #                                                                                   #
 # B) TAB INTEGRATION (NEZNAMY TAB - Tablist & Nametags):                            #
 #    To display the clan tag above the player's head:                               #
 #      tablist-name-formatting:                                                     #
-#        prefix: '%onlyclans_tag_formatted_legacy% %vault_prefix%'                  #
+#        prefix: '%maxclans_tag_formatted_legacy% %vault_prefix%'                  #
 #                                                                                   #
 # C) SCOREBOARD INTEGRATION (TAB Scoreboard):                                       #
 #    lines:                                                                         #
 #      - '&7&m---------------------'                                                #
 #      - '&e&lYour Clan:'                                                           #
-#      - ' &fTag: %onlyclans_tag_formatted_legacy%'                                 #
-#      - ' &fRank: %onlyclans_role_formatted_legacy%'                               #
-#      - ' &fClan KDR: &a%onlyclans_clan_kdr%'                                      #
+#      - ' &fTag: %maxclans_tag_formatted_legacy%'                                 #
+#      - ' &fRank: %maxclans_role_formatted_legacy%'                               #
+#      - ' &fClan KDR: &a%maxclans_clan_kdr%'                                      #
 #      - ''                                                                         #
 #      - '&6&lTop 1 Clan:'                                                          #
-#      - ' &e%onlyclans_top_kdr_1_name% &7(&a%onlyclans_top_kdr_1_val% KDR&7)'      #
+#      - ' &e%maxclans_top_kdr_1_name% &7(&a%maxclans_top_kdr_1_val% KDR&7)'      #
 #      - '&7&m---------------------'                                                #
 #                                                                                   #
 # D) HOLOGRAM INTEGRATION:                                                          #
 #    /dh create topclans                                                            #
 #    /dh line add topclans &e&l🏆 TOP CLANS (KDR) 🏆                                #
 #    /dh line add topclans &7---------------------------------                      #
-#    /dh line add topclans &6#1 &f%onlyclans_top_kdr_1_name% &8» &a%onlyclans_top_kdr_1_val% KDR #
-#    /dh line add topclans &7#2 &f%onlyclans_top_kdr_2_name% &8» &a%onlyclans_top_kdr_2_val% KDR #
-#    /dh line add topclans &c#3 &f%onlyclans_top_kdr_3_name% &8» &a%onlyclans_top_kdr_3_val% KDR #
+#    /dh line add topclans &6#1 &f%maxclans_top_kdr_1_name% &8» &a%maxclans_top_kdr_1_val% KDR #
+#    /dh line add topclans &7#2 &f%maxclans_top_kdr_2_name% &8» &a%maxclans_top_kdr_2_val% KDR #
+#    /dh line add topclans &c#3 &f%maxclans_top_kdr_3_name% &8» &a%maxclans_top_kdr_3_val% KDR #
 #    /dh line add topclans &7---------------------------------                      #
 # ================================================================================= #
 
 # Structured catalog for programmatic query / YAML inspection:
 catalog:
   version: '1.0.0'
-  papi_identifier: 'onlyclans'
+  papi_identifier: 'maxclans'
   categories:
     clan:
-      - '%onlyclans_clan_name%'
-      - '%onlyclans_clan_displayname%'
-      - '%onlyclans_clan_tag%'
-      - '%onlyclans_clan_tag_raw%'
-      - '%onlyclans_clan_tag_formatted%'
-      - '%onlyclans_clan_leader%'
-      - '%onlyclans_clan_members%'
-      - '%onlyclans_clan_members_online%'
-      - '%onlyclans_clan_kills%'
-      - '%onlyclans_clan_deaths%'
-      - '%onlyclans_clan_kdr%'
-      - '%onlyclans_clan_rival_kills%'
-      - '%onlyclans_clan_created%'
+      - '%maxclans_clan_name%'
+      - '%maxclans_clan_displayname%'
+      - '%maxclans_clan_tag%'
+      - '%maxclans_clan_tag_raw%'
+      - '%maxclans_clan_tag_formatted%'
+      - '%maxclans_clan_leader%'
+      - '%maxclans_clan_members%'
+      - '%maxclans_clan_members_online%'
+      - '%maxclans_clan_kills%'
+      - '%maxclans_clan_deaths%'
+      - '%maxclans_clan_kdr%'
+      - '%maxclans_clan_rival_kills%'
+      - '%maxclans_clan_created%'
     role:
-      - '%onlyclans_role%'
-      - '%onlyclans_role_raw%'
-      - '%onlyclans_role_formatted%'
-      - '%onlyclans_joined%'
+      - '%maxclans_role%'
+      - '%maxclans_role_raw%'
+      - '%maxclans_role_formatted%'
+      - '%maxclans_joined%'
     friendly_fire:
-      - '%onlyclans_ff%'
-      - '%onlyclans_ff_badge%'
-      - '%onlyclans_ff_status%'
+      - '%maxclans_ff%'
+      - '%maxclans_ff_badge%'
+      - '%maxclans_ff_status%'
     flags:
-      - '%onlyclans_flag_<flag>%'
-      - '%onlyclans_flag_<flag>_badge%'
-      - '%onlyclans_flag_<flag>_status%'
+      - '%maxclans_flag_<flag>%'
+      - '%maxclans_flag_<flag>_badge%'
+      - '%maxclans_flag_<flag>_status%'
     player_stats:
-      - '%onlyclans_player_kills%'
-      - '%onlyclans_player_deaths%'
-      - '%onlyclans_player_kdr%'
-      - '%onlyclans_player_playtime%'
+      - '%maxclans_player_kills%'
+      - '%maxclans_player_deaths%'
+      - '%maxclans_player_kdr%'
+      - '%maxclans_player_playtime%'
     homes:
-      - '%onlyclans_homes_count%'
-      - '%onlyclans_homes_max%'
-      - '%onlyclans_homes_list%'
+      - '%maxclans_homes_count%'
+      - '%maxclans_homes_max%'
+      - '%maxclans_homes_list%'
     leveling:
-      - '%onlyclans_level%'
-      - '%onlyclans_exp%'
-      - '%onlyclans_exp_next%'
-      - '%onlyclans_exp_percent%'
-      - '%onlyclans_exp_bar%'
-      - '%onlyclans_bank%'
-      - '%onlyclans_max_members%'
-      - '%onlyclans_allies%'
-      - '%onlyclans_max_allies%'
-      - '%onlyclans_allies_list%'
+      - '%maxclans_level%'
+      - '%maxclans_exp%'
+      - '%maxclans_exp_next%'
+      - '%maxclans_exp_percent%'
+      - '%maxclans_exp_bar%'
+      - '%maxclans_bank%'
+      - '%maxclans_max_members%'
+      - '%maxclans_allies%'
+      - '%maxclans_max_allies%'
+      - '%maxclans_allies_list%'
     leaderboard:
-      - '%onlyclans_top_<kdr|kills|members>_<rank>_<property>%'
+      - '%maxclans_top_<kdr|kills|members>_<rank>_<property>%'
     modifiers:
       format:
         - '_mm'

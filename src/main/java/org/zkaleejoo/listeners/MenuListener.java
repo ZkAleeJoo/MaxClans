@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.gui.ClanMenuHolder;
 import org.zkaleejoo.gui.MenuBuilder;
 import org.zkaleejoo.managers.ClanManager;
@@ -31,9 +31,9 @@ import java.util.List;
 
 public class MenuListener implements Listener {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
 
-    public MenuListener(OnlyClans plugin) {
+    public MenuListener(MaxClans plugin) {
         this.plugin = plugin;
     }
 
@@ -78,7 +78,7 @@ public class MenuListener implements Listener {
         if (clanAtSlot != null) {
             Clan targetClan = plugin.getClanManager().getClanByName(clanAtSlot);
             if (targetClan != null) {
-                if (!player.hasPermission("onlyclans.command.request")) {
+                if (!player.hasPermission("maxclans.command.request")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -176,7 +176,7 @@ public class MenuListener implements Listener {
 
         switch (lowerAction) {
             case "open:create" -> {
-                if (!player.hasPermission("onlyclans.command.create")) {
+                if (!player.hasPermission("maxclans.command.create")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -189,7 +189,7 @@ public class MenuListener implements Listener {
                 plugin.getMenuBuilder().openMenu(player, "create", null);
             }
             case "open:clan_list", "open:clans" -> {
-                if (!player.hasPermission("onlyclans.command.list")) {
+                if (!player.hasPermission("maxclans.command.list")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -278,7 +278,7 @@ public class MenuListener implements Listener {
                 }
             }
             case "open:top", "open:clan_top" -> {
-                if (!player.hasPermission("onlyclans.command.top")) {
+                if (!player.hasPermission("maxclans.command.top")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -363,7 +363,7 @@ public class MenuListener implements Listener {
                 }
             }
             case "open:info" -> {
-                if (!player.hasPermission("onlyclans.command.info")) {
+                if (!player.hasPermission("maxclans.command.info")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -383,7 +383,7 @@ public class MenuListener implements Listener {
                 }
             }
             case "open:members" -> {
-                if (!player.hasPermission("onlyclans.command.info")) {
+                if (!player.hasPermission("maxclans.command.info")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -402,7 +402,7 @@ public class MenuListener implements Listener {
             case "open:settings" -> {
                 if (clan != null) {
                     ClanPlayer cp = clan.getMember(player.getUniqueId());
-                    boolean canAccess = player.hasPermission("onlyclans.admin")
+                    boolean canAccess = player.hasPermission("maxclans.admin")
                             || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
                     if (canAccess) {
                         if (!hasCustomSound)
@@ -423,7 +423,7 @@ public class MenuListener implements Listener {
             case "open:flags" -> {
                 if (clan != null) {
                     ClanPlayer cp = clan.getMember(player.getUniqueId());
-                    boolean canAccess = player.hasPermission("onlyclans.admin")
+                    boolean canAccess = player.hasPermission("maxclans.admin")
                             || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
                     if (canAccess) {
                         if (!hasCustomSound)
@@ -442,7 +442,7 @@ public class MenuListener implements Listener {
                 }
             }
             case "open:main" -> {
-                if (!player.hasPermission("onlyclans.command.main")) {
+                if (!player.hasPermission("maxclans.command.main")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -455,7 +455,7 @@ public class MenuListener implements Listener {
                 plugin.getMenuBuilder().openMenu(player, "main", clan);
             }
             case "action:create_clan" -> {
-                if (!player.hasPermission("onlyclans.command.create")) {
+                if (!player.hasPermission("maxclans.command.create")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -494,7 +494,7 @@ public class MenuListener implements Listener {
                 }
             }
             case "action:disband" -> {
-                if (!player.hasPermission("onlyclans.command.disband")) {
+                if (!player.hasPermission("maxclans.command.disband")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -512,7 +512,7 @@ public class MenuListener implements Listener {
                 }
             }
             case "action:confirm_disband" -> {
-                if (!player.hasPermission("onlyclans.command.disband")) {
+                if (!player.hasPermission("maxclans.command.disband")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -530,7 +530,7 @@ public class MenuListener implements Listener {
                 }
             }
             case "action:leave" -> {
-                if (!player.hasPermission("onlyclans.command.leave")) {
+                if (!player.hasPermission("maxclans.command.leave")) {
                     SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     player.sendMessage(MessageUtils.toComponent(
                             plugin.getMainConfigManager().getPrefix()
@@ -575,7 +575,7 @@ public class MenuListener implements Listener {
                         SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                     }
                 } else if (lowerAction.startsWith("action:request_clan:")) {
-                    if (!player.hasPermission("onlyclans.command.request")) {
+                    if (!player.hasPermission("maxclans.command.request")) {
                         SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 0.9f);
                         player.sendMessage(MessageUtils.toComponent(
                                 plugin.getMainConfigManager().getPrefix()

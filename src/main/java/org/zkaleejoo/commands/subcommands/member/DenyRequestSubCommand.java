@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
@@ -15,13 +15,13 @@ import java.util.UUID;
 
 public class DenyRequestSubCommand extends SubCommand {
 
-    public DenyRequestSubCommand(OnlyClans plugin) {
+    public DenyRequestSubCommand(MaxClans plugin) {
         super(plugin, "denyrequest", "denyjoin");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.denyrequest";
+        return "maxclans.command.denyrequest";
     }
 
     @Override

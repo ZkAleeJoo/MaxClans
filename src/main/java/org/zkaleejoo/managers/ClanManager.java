@@ -7,7 +7,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.database.ClanStorage;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanFlag;
@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClanManager {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final ClanStorage storage;
 
     private final Map<String, Clan> clans = new HashMap<>();
@@ -31,7 +31,7 @@ public class ClanManager {
     private final Set<UUID> spyModeUsers = new HashSet<>();
     private final Map<String, Set<String>> pendingAlliances = new ConcurrentHashMap<>();
 
-    public ClanManager(OnlyClans plugin, ClanStorage storage) {
+    public ClanManager(MaxClans plugin, ClanStorage storage) {
         this.plugin = plugin;
         this.storage = storage;
     }
@@ -755,7 +755,7 @@ public class ClanManager {
             return false;
 
         if (flag.isAdminOnly()) {
-            if (!actor.hasPermission("onlyclans.admin") && !actor.hasPermission("onlyclans.spy")) {
+            if (!actor.hasPermission("maxclans.admin") && !actor.hasPermission("maxclans.spy")) {
                 actor.sendMessage(MessageUtils.toComponent(
                         plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
                                 .getMessage("flag-admin-only",
@@ -764,7 +764,7 @@ public class ClanManager {
             }
         } else {
             ClanPlayer cp = clan.getMember(actor.getUniqueId());
-            boolean canModify = actor.hasPermission("onlyclans.admin")
+            boolean canModify = actor.hasPermission("maxclans.admin")
                     || (cp != null && cp.hasRoleAtLeast(ClanRole.MODERATOR));
             if (!canModify) {
                 actor.sendMessage(MessageUtils.toComponent(
@@ -807,7 +807,7 @@ public class ClanManager {
         }
 
         ClanPlayer cp = clan.getMember(player.getUniqueId());
-        boolean isLeader = (cp != null && cp.isLeader()) || player.hasPermission("onlyclans.admin");
+        boolean isLeader = (cp != null && cp.isLeader()) || player.hasPermission("maxclans.admin");
         if (!isLeader) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -856,7 +856,7 @@ public class ClanManager {
         }
 
         ClanPlayer cp = clan.getMember(player.getUniqueId());
-        boolean isLeader = (cp != null && cp.isLeader()) || player.hasPermission("onlyclans.admin");
+        boolean isLeader = (cp != null && cp.isLeader()) || player.hasPermission("maxclans.admin");
         if (!isLeader) {
             player.sendMessage(MessageUtils.toComponent(
                     plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
@@ -938,7 +938,7 @@ public class ClanManager {
         }
 
         for (Player online : Bukkit.getOnlinePlayers()) {
-            if (online.hasPermission("onlyclans.spy") || online.hasPermission("onlyclans.admin")) {
+            if (online.hasPermission("maxclans.spy") || online.hasPermission("maxclans.admin")) {
                 if (!clan.hasMember(online.getUniqueId())) {
                     if (clan.isSpyChat() || isSpyMode(online.getUniqueId())) {
                         String safeClan = MessageUtils.escapeTags(clan.getName());

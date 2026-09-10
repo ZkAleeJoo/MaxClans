@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.subcommands.admin.ReloadSubCommand;
 import org.zkaleejoo.commands.subcommands.admin.SpySubCommand;
 import org.zkaleejoo.commands.subcommands.general.ChatSubCommand;
@@ -42,11 +42,11 @@ import java.util.List;
 
 public class MainCommand implements CommandExecutor, TabCompleter {
 
-    private final OnlyClans plugin;
+    private final MaxClans plugin;
     private final List<SubCommand> subCommands = new ArrayList<>();
     private final HelpSubCommand helpSubCommand;
 
-    public MainCommand(OnlyClans plugin) {
+    public MainCommand(MaxClans plugin) {
         this.plugin = plugin;
         this.helpSubCommand = new HelpSubCommand(plugin);
 
@@ -118,7 +118,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            if (!player.hasPermission("onlyclans.command.main")) {
+            if (!player.hasPermission("maxclans.command.main")) {
                 sendNoPermission(player);
                 return true;
             }

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
  
     <groupId>org.zkaleejoo</groupId>
-    <artifactId>OnlyClans</artifactId>
+    <artifactId>MaxClans</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -55,7 +55,7 @@
     </dependencies>
 
     <build>
-        <finalName>OnlyClans-${project.version}</finalName>
+        <finalName>MaxClans-${project.version}</finalName>
 
         <resources>
             <resource>

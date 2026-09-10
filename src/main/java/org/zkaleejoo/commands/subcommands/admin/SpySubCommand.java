@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.admin;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.managers.ClanManager;
 import org.zkaleejoo.utils.MessageUtils;
@@ -12,18 +12,18 @@ import java.util.List;
 
 public class SpySubCommand extends SubCommand {
 
-    public SpySubCommand(OnlyClans plugin) {
+    public SpySubCommand(MaxClans plugin) {
         super(plugin, "spy");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.spy";
+        return "maxclans.spy";
     }
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("onlyclans.spy") || sender.hasPermission("onlyclans.admin");
+        return sender.hasPermission("maxclans.spy") || sender.hasPermission("maxclans.admin");
     }
 
     @Override

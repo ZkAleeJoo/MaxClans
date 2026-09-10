@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.managers.ClanQuestManager;
 import org.zkaleejoo.models.Clan;
@@ -15,13 +15,13 @@ import java.util.List;
 
 public class QuestsSubCommand extends SubCommand {
 
-    public QuestsSubCommand(OnlyClans plugin) {
+    public QuestsSubCommand(MaxClans plugin) {
         super(plugin, "quests", "quest", "misiones", "mision");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.quests";
+        return "maxclans.command.quests";
     }
 
     @Override

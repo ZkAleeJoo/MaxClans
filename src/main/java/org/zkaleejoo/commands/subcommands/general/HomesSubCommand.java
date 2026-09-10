@@ -5,7 +5,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.ClanHome;
@@ -19,13 +19,13 @@ import java.util.List;
 
 public class HomesSubCommand extends SubCommand {
 
-    public HomesSubCommand(OnlyClans plugin) {
+    public HomesSubCommand(MaxClans plugin) {
         super(plugin, "homes", "listhomes", "homelist");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.home";
+        return "maxclans.command.home";
     }
 
     @Override

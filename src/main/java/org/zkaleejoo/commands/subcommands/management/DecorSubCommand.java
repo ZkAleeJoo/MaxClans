@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.management;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
@@ -14,13 +14,13 @@ import java.util.List;
 
 public class DecorSubCommand extends SubCommand {
 
-    public DecorSubCommand(OnlyClans plugin) {
+    public DecorSubCommand(MaxClans plugin) {
         super(plugin, "decor", "displayname", "color", "namecolor");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.decor";
+        return "maxclans.command.decor";
     }
 
     @Override

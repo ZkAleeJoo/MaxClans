@@ -2,19 +2,19 @@ package org.zkaleejoo.commands.subcommands.management;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class CreateSubCommand extends SubCommand {
 
-    public CreateSubCommand(OnlyClans plugin) {
+    public CreateSubCommand(MaxClans plugin) {
         super(plugin, "create");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.create";
+        return "maxclans.command.create";
     }
 
     @Override

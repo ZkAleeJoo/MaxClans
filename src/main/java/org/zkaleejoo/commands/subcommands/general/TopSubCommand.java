@@ -2,7 +2,7 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.models.TopSortType;
@@ -13,13 +13,13 @@ import java.util.List;
 
 public class TopSubCommand extends SubCommand {
 
-    public TopSubCommand(OnlyClans plugin) {
+    public TopSubCommand(MaxClans plugin) {
         super(plugin, "top", "leaderboard");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.top";
+        return "maxclans.command.top";
     }
 
     @Override

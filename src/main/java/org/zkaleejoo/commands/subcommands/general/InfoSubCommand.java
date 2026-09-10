@@ -2,20 +2,20 @@ package org.zkaleejoo.commands.subcommands.general;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.zkaleejoo.OnlyClans;
+import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.commands.SubCommand;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.MessageUtils;
 
 public class InfoSubCommand extends SubCommand {
 
-    public InfoSubCommand(OnlyClans plugin) {
+    public InfoSubCommand(MaxClans plugin) {
         super(plugin, "info");
     }
 
     @Override
     public String getPermission() {
-        return "onlyclans.command.info";
+        return "maxclans.command.info";
     }
 
     @Override
