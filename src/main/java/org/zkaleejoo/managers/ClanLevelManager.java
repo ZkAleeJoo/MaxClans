@@ -11,6 +11,7 @@ import org.zkaleejoo.utils.SoundUtils;
 
 import java.util.*;
 
+@SuppressWarnings("null")
 public class ClanLevelManager {
 
     private final MaxClans plugin;

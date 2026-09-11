@@ -52,7 +52,7 @@ public class CustomConfig {
                 }
             } else {
                 String resourcePath = (folderName != null) ? folderName + "/" + fileName : fileName;
-                plugin.saveResource(resourcePath, false);
+                plugin.saveResource(Objects.requireNonNull(resourcePath), false);
             }
         }
 

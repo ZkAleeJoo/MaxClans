@@ -19,6 +19,7 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("null")
 public class ClanChestManager implements Listener {
 
     private final MaxClans plugin;

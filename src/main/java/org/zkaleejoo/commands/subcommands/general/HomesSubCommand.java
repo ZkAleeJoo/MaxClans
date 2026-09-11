@@ -17,6 +17,7 @@ import org.zkaleejoo.utils.SoundUtils;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("null")
 public class HomesSubCommand extends SubCommand {
 
     public HomesSubCommand(MaxClans plugin) {

@@ -8,6 +8,7 @@ import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.FoliaCompat;
 
+@SuppressWarnings("null")
 public class MenuUpdateTask implements Runnable {
 
     private final MaxClans plugin;
@@ -25,6 +26,9 @@ public class MenuUpdateTask implements Runnable {
             return;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player == null)
+                continue;
+
             FoliaCompat.runForEntity(plugin, player, () -> {
                 if (!player.isOnline())
                     return;

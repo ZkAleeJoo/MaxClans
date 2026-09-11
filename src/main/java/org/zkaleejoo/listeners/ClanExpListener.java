@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
+@SuppressWarnings("null")
 public class ClanExpListener implements Listener {
 
     private final MaxClans plugin;

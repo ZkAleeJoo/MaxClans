@@ -29,6 +29,7 @@ import org.zkaleejoo.utils.SoundUtils;
 
 import java.util.List;
 
+@SuppressWarnings("null")
 public class MenuListener implements Listener {
 
     private final MaxClans plugin;

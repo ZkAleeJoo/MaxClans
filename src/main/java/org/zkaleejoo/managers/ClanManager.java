@@ -19,6 +19,7 @@ import org.zkaleejoo.utils.MessageUtils;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("null")
 public class ClanManager {
 
     private final MaxClans plugin;

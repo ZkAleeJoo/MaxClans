@@ -5,7 +5,7 @@ import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-@SuppressWarnings({ "removal" })
+@SuppressWarnings({ "removal", "null" })
 public class SoundUtils {
 
     public static void playSound(Player player, String soundName, float volume, float pitch) {
@@ -25,7 +25,9 @@ public class SoundUtils {
             if (sound == null) {
                 sound = Sound.valueOf(soundName.trim().toUpperCase().replace(".", "_").replace(" ", "_"));
             }
-            player.playSound(player.getLocation(), sound, volume, pitch);
+            if (sound != null) {
+                player.playSound(player.getLocation(), sound, volume, pitch);
+            }
         } catch (Exception ignored) {
         }
     }

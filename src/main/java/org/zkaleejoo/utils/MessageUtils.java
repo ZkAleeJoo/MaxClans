@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("null")
 public class MessageUtils {
 
     private static final int CENTER_PX = 154;

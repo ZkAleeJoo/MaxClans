@@ -21,15 +21,20 @@ public class ClanBaseEffectTask implements Runnable {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player == null)
+                continue;
+
             Clan clan = plugin.getClanManager().getClanByPlayer(player.getUniqueId());
-            if (clan == null) continue;
+            if (clan == null)
+                continue;
 
             if (plugin.getClanLevelManager() == null || !plugin.getClanLevelManager().hasBaseEffect(clan.getLevel())) {
                 continue;
             }
 
             ClanLevelConfig config = plugin.getClanLevelManager().getLevelConfig(clan.getLevel());
-            if (!config.hasBaseEffect()) continue;
+            if (config == null || !config.hasBaseEffect())
+                continue;
 
             double radius = config.getBaseEffectRadius();
             double radiusSquared = radius * radius;
@@ -54,7 +59,8 @@ public class ClanBaseEffectTask implements Runnable {
                 if (type != null) {
                     FoliaCompat.runForEntity(plugin, player, () -> {
                         if (player.isOnline()) {
-                            player.addPotionEffect(new PotionEffect(type, 160, config.getBaseEffectAmplifier(), true, false, true));
+                            player.addPotionEffect(
+                                    new PotionEffect(type, 160, config.getBaseEffectAmplifier(), true, false, true));
                         }
                     });
                 }
@@ -63,7 +69,8 @@ public class ClanBaseEffectTask implements Runnable {
     }
 
     private PotionEffectType resolveEffectType(String name) {
-        if (name == null) return PotionEffectType.HASTE;
+        if (name == null)
+            return PotionEffectType.HASTE;
         String clean = name.toUpperCase().trim();
         return switch (clean) {
             case "REGEN", "REGENERATION" -> PotionEffectType.REGENERATION;

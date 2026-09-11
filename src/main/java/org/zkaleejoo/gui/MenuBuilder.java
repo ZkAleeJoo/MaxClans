@@ -29,7 +29,7 @@ import org.zkaleejoo.utils.SoundUtils;
 
 import java.util.*;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "null" })
 public class MenuBuilder {
 
     private final MaxClans plugin;

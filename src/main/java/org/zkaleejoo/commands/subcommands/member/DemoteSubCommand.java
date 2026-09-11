@@ -48,7 +48,9 @@ public class DemoteSubCommand extends SubCommand {
         if (args.length == 2) {
             List<String> completions = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
-                completions.add(p.getName());
+                if (p != null) {
+                    completions.add(p.getName());
+                }
             }
             return filterCompletions(completions, args[1]);
         }

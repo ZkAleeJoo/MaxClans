@@ -1,6 +1,7 @@
 package org.zkaleejoo;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
 import org.zkaleejoo.commands.ChatCommand;
@@ -66,13 +67,23 @@ public class MaxClans extends JavaPlugin {
 
         menuBuilder = new MenuBuilder(this);
 
-        MainCommand mainCommand = new MainCommand(this);
-        getCommand("maxclans").setExecutor(mainCommand);
-        getCommand("maxclans").setTabCompleter(mainCommand);
+        PluginCommand maxclansCmd = getCommand("maxclans");
+        if (maxclansCmd != null) {
+            MainCommand mainCommand = new MainCommand(this);
+            maxclansCmd.setExecutor(mainCommand);
+            maxclansCmd.setTabCompleter(mainCommand);
+        } else {
+            getLogger().severe("Command 'maxclans' not found in plugin.yml!");
+        }
 
-        ChatCommand chatCommand = new ChatCommand(this);
-        getCommand("clanchat").setExecutor(chatCommand);
-        getCommand("clanchat").setTabCompleter(chatCommand);
+        PluginCommand clanChatCmd = getCommand("clanchat");
+        if (clanChatCmd != null) {
+            ChatCommand chatCommand = new ChatCommand(this);
+            clanChatCmd.setExecutor(chatCommand);
+            clanChatCmd.setTabCompleter(chatCommand);
+        } else {
+            getLogger().severe("Command 'clanchat' not found in plugin.yml!");
+        }
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new MenuListener(this), this);
