@@ -9,20 +9,54 @@ import org.zkaleejoo.utils.FoliaCompat;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 public class ClanStorage {
 
     private final MaxClans plugin;
     private final DatabaseManager databaseManager;
+    private final AtomicInteger pendingTasks = new AtomicInteger(0);
 
     public ClanStorage(MaxClans plugin, DatabaseManager databaseManager) {
         this.plugin = plugin;
         this.databaseManager = databaseManager;
     }
 
+    public void runAsync(Runnable runnable) {
+        if (!plugin.isEnabled()) {
+            runnable.run();
+            return;
+        }
+        pendingTasks.incrementAndGet();
+        try {
+            FoliaCompat.runAsync(plugin, () -> {
+                try {
+                    runnable.run();
+                } finally {
+                    pendingTasks.decrementAndGet();
+                }
+            });
+        } catch (Throwable t) {
+            pendingTasks.decrementAndGet();
+            runnable.run();
+        }
+    }
+
+    public void flushAndAwait(long timeoutMs) {
+        long start = System.currentTimeMillis();
+        while (pendingTasks.get() > 0 && (System.currentTimeMillis() - start) < timeoutMs) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+
     public void saveClan(Clan clan) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "INSERT INTO clans (name, tag, display_name, owner, friendly_fire, open_join, ally_damage, member_invites, visible_in_list, public_home, spy_chat, created_at, kills, deaths, rival_kills, level, exp, bank_balance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clan.getName());
@@ -51,7 +85,7 @@ public class ClanStorage {
     }
 
     public void deleteClan(String clanName) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             try {
                 try (PreparedStatement ps = databaseManager.getConnection()
                         .prepareStatement("DELETE FROM clan_allies WHERE LOWER(clan_name) = ? OR LOWER(ally_name) = ?")) {
@@ -91,7 +125,7 @@ public class ClanStorage {
     }
 
     public void updateClan(Clan clan) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "UPDATE clans SET tag = ?, display_name = ?, owner = ?, friendly_fire = ?, open_join = ?, ally_damage = ?, member_invites = ?, visible_in_list = ?, public_home = ?, spy_chat = ?, kills = ?, deaths = ?, rival_kills = ?, level = ?, exp = ?, bank_balance = ? WHERE name = ?";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clan.getTag());
@@ -119,7 +153,7 @@ public class ClanStorage {
     }
 
     public void saveHome(String clanName, ClanHome home) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             try {
                 try (PreparedStatement del = databaseManager.getConnection()
                         .prepareStatement("DELETE FROM clan_homes WHERE LOWER(clan_name) = ? AND LOWER(name) = ?")) {
@@ -148,7 +182,7 @@ public class ClanStorage {
     }
 
     public void deleteHome(String clanName, String homeName) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "DELETE FROM clan_homes WHERE LOWER(clan_name) = ? AND LOWER(name) = ?";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clanName.toLowerCase());
@@ -162,7 +196,7 @@ public class ClanStorage {
     }
 
     public void saveClanPlayer(ClanPlayer clanPlayer) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "INSERT INTO clan_players (uuid, clan_name, role, joined_at) VALUES (?, ?, ?, ?)";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clanPlayer.getUuid().toString());
@@ -177,7 +211,7 @@ public class ClanStorage {
     }
 
     public void removeClanPlayer(UUID uuid) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "DELETE FROM clan_players WHERE uuid = ?";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, uuid.toString());
@@ -189,7 +223,7 @@ public class ClanStorage {
     }
 
     public void updateClanPlayerRole(UUID uuid, ClanRole role) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "UPDATE clan_players SET role = ? WHERE uuid = ?";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, role.name());
@@ -346,7 +380,7 @@ public class ClanStorage {
     }
 
     public void saveAlly(String clanName, String allyName) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "INSERT INTO clan_allies (clan_name, ally_name) VALUES (?, ?)";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clanName);
@@ -359,7 +393,7 @@ public class ClanStorage {
     }
 
     public void removeAlly(String clanName, String allyName) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "DELETE FROM clan_allies WHERE (LOWER(clan_name) = ? AND LOWER(ally_name) = ?) OR (LOWER(clan_name) = ? AND LOWER(ally_name) = ?)";
             try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
                 ps.setString(1, clanName.toLowerCase());
@@ -374,22 +408,31 @@ public class ClanStorage {
     }
 
     public void saveClanChest(String clanName, String serializedData) {
-        FoliaCompat.runAsync(plugin, () -> {
-            String sql = "INSERT INTO clan_chests (clan_name, inventory_data, updated_at) VALUES (?, ?, ?) "
-                    + "ON CONFLICT(clan_name) DO UPDATE SET inventory_data = excluded.inventory_data, updated_at = excluded.updated_at";
-            if (databaseManager.getType() == DatabaseManager.DatabaseType.MYSQL) {
-                sql = "INSERT INTO clan_chests (clan_name, inventory_data, updated_at) VALUES (?, ?, ?) "
-                        + "ON DUPLICATE KEY UPDATE inventory_data = VALUES(inventory_data), updated_at = VALUES(updated_at)";
-            }
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
-                ps.setString(1, clanName);
-                ps.setString(2, serializedData);
-                ps.setLong(3, System.currentTimeMillis());
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                plugin.getLogger().log(Level.SEVERE, "Failed to save clan chest for: " + clanName, e);
-            }
-        });
+        if (!plugin.isEnabled()) {
+            saveClanChestSync(clanName, serializedData);
+            return;
+        }
+        runAsync(() -> saveClanChestSync(clanName, serializedData));
+    }
+
+    public void saveClanChestSync(String clanName, String serializedData) {
+        if (clanName == null || serializedData == null) {
+            return;
+        }
+        String sql = "INSERT INTO clan_chests (clan_name, inventory_data, updated_at) VALUES (?, ?, ?) "
+                + "ON CONFLICT(clan_name) DO UPDATE SET inventory_data = excluded.inventory_data, updated_at = excluded.updated_at";
+        if (databaseManager.getType() == DatabaseManager.DatabaseType.MYSQL) {
+            sql = "INSERT INTO clan_chests (clan_name, inventory_data, updated_at) VALUES (?, ?, ?) "
+                    + "ON DUPLICATE KEY UPDATE inventory_data = VALUES(inventory_data), updated_at = VALUES(updated_at)";
+        }
+        try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            ps.setString(1, clanName);
+            ps.setString(2, serializedData);
+            ps.setLong(3, System.currentTimeMillis());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to save clan chest for: " + clanName, e);
+        }
     }
 
     public String loadClanChest(String clanName) {
@@ -408,7 +451,7 @@ public class ClanStorage {
     }
 
     public void saveQuestProgress(org.zkaleejoo.models.ClanQuestProgress progress) {
-        FoliaCompat.runAsync(plugin, () -> {
+        runAsync(() -> {
             String sql = "INSERT INTO clan_quests (clan_name, quest_id, progress, completed, assigned_date) VALUES (?, ?, ?, ?, ?) "
                     + "ON CONFLICT(clan_name, quest_id, assigned_date) DO UPDATE SET progress = excluded.progress, completed = excluded.completed";
             if (databaseManager.getType() == DatabaseManager.DatabaseType.MYSQL) {

@@ -15,7 +15,9 @@ import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -105,7 +107,11 @@ public class ClanChestManager implements Listener {
 
             String serialized = serializeItems(top.getContents());
             if (serialized != null) {
-                plugin.getClanStorage().saveClanChest(clanName, serialized);
+                if (!plugin.isEnabled()) {
+                    plugin.getClanStorage().saveClanChestSync(clanName, serialized);
+                } else {
+                    plugin.getClanStorage().saveClanChest(clanName, serialized);
+                }
             }
 
             if (top.getViewers().size() <= 1) {
@@ -115,12 +121,26 @@ public class ClanChestManager implements Listener {
     }
 
     public void saveAll() {
-        for (Map.Entry<String, Inventory> entry : activeInventories.entrySet()) {
-            String clanName = entry.getKey();
+        Map<String, Inventory> snapshot = new HashMap<>(activeInventories);
+
+        for (Inventory inv : snapshot.values()) {
+            for (org.bukkit.entity.HumanEntity viewer : new ArrayList<>(inv.getViewers())) {
+                try {
+                    viewer.closeInventory();
+                } catch (Throwable ignored) {
+                }
+            }
+        }
+
+        for (Map.Entry<String, Inventory> entry : snapshot.entrySet()) {
             Inventory inv = entry.getValue();
+            String clanName = entry.getKey();
+            if (inv.getHolder() instanceof ClanChestHolder holder && holder.getClanName() != null) {
+                clanName = holder.getClanName();
+            }
             String serialized = serializeItems(inv.getContents());
             if (serialized != null) {
-                plugin.getClanStorage().saveClanChest(clanName, serialized);
+                plugin.getClanStorage().saveClanChestSync(clanName, serialized);
             }
         }
         activeInventories.clear();

@@ -190,6 +190,10 @@ public class MaxClans extends JavaPlugin {
             clanChestManager.saveAll();
         }
 
+        if (clanStorage != null) {
+            clanStorage.flushAndAwait(3000L);
+        }
+
         if (clanTeleportManager != null) {
             clanTeleportManager.cancelAll();
             clanTeleportManager = null;
