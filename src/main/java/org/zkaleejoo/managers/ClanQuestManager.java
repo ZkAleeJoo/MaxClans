@@ -22,11 +22,13 @@ public class ClanQuestManager {
     private CustomConfig questsFile;
     private final Map<String, ClanQuest> registeredQuests = new LinkedHashMap<>();
     private final Map<String, Map<String, ClanQuestProgress>> progressCache = new ConcurrentHashMap<>();
+    private volatile String cachedDate;
     private boolean enabled = true;
     private int dailyQuestsAmount = 3;
 
     public ClanQuestManager(MaxClans plugin) {
         this.plugin = plugin;
+        this.cachedDate = getCurrentDateString();
         this.questsFile = new CustomConfig("quests.yml", null, plugin, false);
         this.questsFile.registerConfig();
         loadConfig();
@@ -38,6 +40,7 @@ public class ClanQuestManager {
         }
         registeredQuests.clear();
         progressCache.clear();
+        cachedDate = getCurrentDateString();
 
         ConfigurationSection config = questsFile.getConfig();
         if (config == null)
@@ -74,6 +77,17 @@ public class ClanQuestManager {
         return LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
+    private void checkDateRollover(String currentDate) {
+        if (!currentDate.equals(cachedDate)) {
+            synchronized (progressCache) {
+                if (!currentDate.equals(cachedDate)) {
+                    cachedDate = currentDate;
+                    progressCache.clear();
+                }
+            }
+        }
+    }
+
     public List<ClanQuest> getDailyQuests() {
         if (registeredQuests.isEmpty()) {
             return Collections.emptyList();
@@ -97,9 +111,11 @@ public class ClanQuestManager {
         if (clan == null || quest == null)
             return null;
         String date = getCurrentDateString();
+        checkDateRollover(date);
         String clanKey = clan.getName().toLowerCase();
+        String cacheKey = date + ":" + clanKey;
 
-        Map<String, ClanQuestProgress> clanMap = progressCache.computeIfAbsent(clanKey,
+        Map<String, ClanQuestProgress> clanMap = progressCache.computeIfAbsent(cacheKey,
                 k -> plugin.getClanStorage().loadQuestProgressForClan(clan.getName(), date));
 
         return clanMap.computeIfAbsent(quest.getId(),
