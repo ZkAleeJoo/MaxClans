@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
+import org.jetbrains.annotations.Nullable;
 import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
 import org.zkaleejoo.utils.FoliaCompat;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("null")
@@ -27,6 +29,7 @@ public class ClanChestManager implements Listener {
 
     private final MaxClans plugin;
     private final Map<String, Inventory> activeInventories = new ConcurrentHashMap<>();
+    private final Map<String, CompletableFuture<Inventory>> loadingChests = new ConcurrentHashMap<>();
 
     public static class ClanChestHolder implements InventoryHolder {
         private final String clanName;
@@ -80,38 +83,106 @@ public class ClanChestManager implements Listener {
         }
 
         String key = clan.getName().toLowerCase();
-        int rows = levelManager != null ? levelManager.getChestRows(clan.getLevel()) : 3;
-        int size = Math.max(9, Math.min(54, rows * 9));
+        Inventory existing = activeInventories.get(key);
+        if (existing != null) {
+            SoundUtils.playSound(player, "BLOCK_CHEST_OPEN", 0.9f, 1.0f);
+            player.openInventory(existing);
+            return;
+        }
 
-        Inventory inventory = activeInventories.computeIfAbsent(key, k -> {
-            ClanChestHolder holder = new ClanChestHolder(clan.getName());
-            String title = plugin.getMainConfigManager()
-                    .getMessage("chest-title", "&#7DD3FC&lClan Chest &#94A3B8- &f{clan}")
-                    .replace("{clan}", clan.getName());
-            Inventory inv = Bukkit.createInventory(holder, size, MessageUtils.toComponent(title));
-            holder.setInventory(inv);
-
-            String serialized = plugin.getClanStorage().loadClanChest(clan.getName());
-            if (serialized != null && !serialized.trim().isEmpty()) {
-                ItemStack[] items = deserializeItems(serialized);
-                if (items != null) {
-                    for (int i = 0; i < Math.min(items.length, size); i++) {
-                        inv.setItem(i, items[i]);
-                    }
+        getOrLoadChestAsync(clan, levelManager).thenAccept(inv -> {
+            FoliaCompat.runForEntity(plugin, player, () -> {
+                if (!player.isOnline()) {
+                    return;
                 }
-            }
-            return inv;
+                if (plugin.getClanManager() != null && plugin.getClanManager().getClanByName(clan.getName()) == null) {
+                    return;
+                }
+                SoundUtils.playSound(player, "BLOCK_CHEST_OPEN", 0.9f, 1.0f);
+                player.openInventory(inv);
+            });
+        }).exceptionally(ex -> {
+            plugin.getLogger()
+                    .warning("Failed to reactively load clan chest for " + clan.getName() + ": " + ex.getMessage());
+            return null;
         });
+    }
 
-        SoundUtils.playSound(player, "BLOCK_CHEST_OPEN", 0.9f, 1.0f);
-        player.openInventory(inventory);
+    public void preloadChest(Clan clan) {
+        if (clan == null)
+            return;
+        ClanLevelManager levelManager = plugin.getClanLevelManager();
+        if (levelManager != null && !levelManager.hasChestAccess(clan.getLevel())) {
+            return;
+        }
+        String key = clan.getName().toLowerCase();
+        if (!activeInventories.containsKey(key) && !loadingChests.containsKey(key)) {
+            getOrLoadChestAsync(clan, levelManager);
+        }
+    }
+
+    public CompletableFuture<Inventory> getOrLoadChestAsync(Clan clan, @Nullable ClanLevelManager levelManager) {
+        String key = clan.getName().toLowerCase();
+        Inventory cached = activeInventories.get(key);
+        if (cached != null) {
+            return CompletableFuture.completedFuture(cached);
+        }
+
+        return loadingChests.computeIfAbsent(key, k -> {
+            CompletableFuture<Inventory> future = new CompletableFuture<>();
+            FoliaCompat.runAsync(plugin, () -> {
+                try {
+                    String serialized = plugin.getClanStorage().loadClanChest(clan.getName());
+                    ItemStack[] items = (serialized != null && !serialized.trim().isEmpty())
+                            ? deserializeItems(serialized)
+                            : new ItemStack[0];
+
+                    FoliaCompat.runGlobal(plugin, () -> {
+                        try {
+                            Inventory existing = activeInventories.get(key);
+                            if (existing != null) {
+                                future.complete(existing);
+                                return;
+                            }
+
+                            int rows = levelManager != null ? levelManager.getChestRows(clan.getLevel()) : 3;
+                            int size = Math.max(9, Math.min(54, rows * 9));
+                            ClanChestHolder holder = new ClanChestHolder(clan.getName());
+                            String title = plugin.getMainConfigManager()
+                                    .getMessage("chest-title", "&#7DD3FC&lClan Chest &#94A3B8- &f{clan}")
+                                    .replace("{clan}", clan.getName());
+                            Inventory inv = Bukkit.createInventory(holder, size, MessageUtils.toComponent(title));
+                            holder.setInventory(inv);
+
+                            if (items != null) {
+                                for (int i = 0; i < Math.min(items.length, size); i++) {
+                                    inv.setItem(i, items[i]);
+                                }
+                            }
+                            activeInventories.put(key, inv);
+                            future.complete(inv);
+                        } catch (Throwable t) {
+                            future.completeExceptionally(t);
+                        } finally {
+                            loadingChests.remove(key);
+                        }
+                    });
+                } catch (Throwable t) {
+                    loadingChests.remove(key);
+                    future.completeExceptionally(t);
+                }
+            });
+            return future;
+        });
     }
 
     public void purgeClanChest(String clanName) {
         if (clanName == null) {
             return;
         }
-        Inventory inv = activeInventories.remove(clanName.toLowerCase());
+        String key = clanName.toLowerCase();
+        loadingChests.remove(key);
+        Inventory inv = activeInventories.remove(key);
         if (inv != null) {
             if (inv.getHolder() instanceof ClanChestHolder holder) {
                 holder.setPurged(true);

@@ -24,13 +24,18 @@ import org.zkaleejoo.models.ClanPlayer;
 import org.zkaleejoo.models.ClanRole;
 import org.zkaleejoo.models.MemberSortType;
 import org.zkaleejoo.models.TopSortType;
+import org.zkaleejoo.utils.FoliaCompat;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings({ "unused", "null" })
 public class MenuBuilder {
+
+    private static final Map<UUID, PlayerProfile> PROFILE_CACHE_BY_UUID = new ConcurrentHashMap<>();
+    private static final Map<String, PlayerProfile> PROFILE_CACHE_BY_NAME = new ConcurrentHashMap<>();
 
     private final MaxClans plugin;
     private final NamespacedKey menuItemKey;
@@ -40,6 +45,77 @@ public class MenuBuilder {
         this.plugin = plugin;
         this.menuItemKey = new NamespacedKey(plugin, "gui_item");
         this.menuIdKey = new NamespacedKey(plugin, "gui_menu_id");
+    }
+
+    private void setSkullOwner(SkullMeta skullMeta, @Nullable UUID uuid, @Nullable String name) {
+        if (uuid == null && (name == null || name.trim().isEmpty())) {
+            return;
+        }
+
+        Player online = uuid != null ? Bukkit.getPlayer(uuid) : Bukkit.getPlayerExact(name);
+        if (online != null) {
+            PlayerProfile profile = online.getPlayerProfile();
+            skullMeta.setPlayerProfile(profile);
+            if (profile.hasTextures()) {
+                PROFILE_CACHE_BY_UUID.put(online.getUniqueId(), profile);
+                if (online.getName() != null) {
+                    PROFILE_CACHE_BY_NAME.put(online.getName().toLowerCase(), profile);
+                }
+            }
+            return;
+        }
+
+        if (uuid != null) {
+            PlayerProfile cached = PROFILE_CACHE_BY_UUID.get(uuid);
+            if (cached != null) {
+                skullMeta.setPlayerProfile(cached);
+                return;
+            }
+        }
+        if (name != null) {
+            PlayerProfile cached = PROFILE_CACHE_BY_NAME.get(name.toLowerCase());
+            if (cached != null) {
+                skullMeta.setPlayerProfile(cached);
+                return;
+            }
+        }
+
+        PlayerProfile profile;
+        if (uuid != null && name != null && !name.trim().isEmpty()) {
+            profile = Bukkit.createProfile(uuid, name);
+        } else if (uuid != null) {
+            profile = Bukkit.createProfile(uuid);
+        } else {
+            profile = Bukkit.createProfile(name);
+        }
+
+        profile.completeFromCache();
+
+        if (profile.hasTextures()) {
+            if (uuid != null) {
+                PROFILE_CACHE_BY_UUID.put(uuid, profile);
+            }
+            if (name != null && !name.trim().isEmpty()) {
+                PROFILE_CACHE_BY_NAME.put(name.toLowerCase(), profile);
+            }
+        } else {
+            FoliaCompat.runAsync(plugin, () -> {
+                try {
+                    PlayerProfile completed = profile.clone();
+                    if (completed.complete(true)) {
+                        if (uuid != null) {
+                            PROFILE_CACHE_BY_UUID.put(uuid, completed);
+                        }
+                        if (completed.getName() != null) {
+                            PROFILE_CACHE_BY_NAME.put(completed.getName().toLowerCase(), completed);
+                        }
+                    }
+                } catch (Throwable ignored) {
+                }
+            });
+        }
+
+        skullMeta.setPlayerProfile(profile);
     }
 
     public List<Clan> getVisibleClansFor(Player player) {
@@ -110,6 +186,10 @@ public class MenuBuilder {
                                     .replace("{menu}", menuId)));
             SoundUtils.playSound(player, "ENTITY_VILLAGER_NO", 1.0f, 1.0f);
             return;
+        }
+
+        if (clan != null && plugin.getClanChestManager() != null) {
+            plugin.getClanChestManager().preloadChest(clan);
         }
 
         int maxPages = 1;
@@ -440,11 +520,7 @@ public class MenuBuilder {
             SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
             if (skullMeta != null) {
                 markAsMenuItem(skullMeta, "members");
-                if (onlinePlayer != null) {
-                    skullMeta.setPlayerProfile(onlinePlayer.getPlayerProfile());
-                } else {
-                    skullMeta.setOwningPlayer(offPlayer);
-                }
+                setSkullOwner(skullMeta, cp.getUuid(), memberName);
 
                 String roleBadge = plugin.getPlaceholderManager().getRoleFormatted(cp.getRole(), lang, true);
                 String rawRole = plugin.getPlaceholderManager().getRoleName(cp.getRole(), lang);
@@ -590,15 +666,9 @@ public class MenuBuilder {
             if (skullMeta != null) {
                 markAsMenuItem(skullMeta, "clan_list");
                 OfflinePlayer leader = Bukkit.getOfflinePlayer(clan.getOwner());
-                Player leaderOnline = Bukkit.getPlayer(clan.getOwner());
-                if (leaderOnline != null) {
-                    skullMeta.setPlayerProfile(leaderOnline.getPlayerProfile());
-                } else {
-                    skullMeta.setOwningPlayer(leader);
-                }
-
                 String leaderName = leader.getName() != null ? leader.getName()
                         : plugin.getPlaceholderManager().getUnknownText(lang);
+                setSkullOwner(skullMeta, clan.getOwner(), leader.getName());
 
                 long onlineCount = clan.getMembers().keySet().stream()
                         .map(Bukkit::getPlayer)
@@ -754,11 +824,7 @@ public class MenuBuilder {
             SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
             if (skullMeta != null) {
                 markAsMenuItem(skullMeta, "top");
-                if (leaderOnline != null) {
-                    skullMeta.setPlayerProfile(leaderOnline.getPlayerProfile());
-                } else {
-                    skullMeta.setOwningPlayer(leader);
-                }
+                setSkullOwner(skullMeta, clan.getOwner(), leader.getName());
 
                 String rankBadge;
                 if (rank == 1) {
@@ -883,12 +949,8 @@ public class MenuBuilder {
                     skullMeta.setPlayerProfile(player.getPlayerProfile());
                 } else if (rawOwner.equalsIgnoreCase("%clan_leader%") || rawOwner.equalsIgnoreCase("{clan_leader}")) {
                     if (clan != null && clan.getOwner() != null) {
-                        Player leaderOnline = Bukkit.getPlayer(clan.getOwner());
-                        if (leaderOnline != null) {
-                            skullMeta.setPlayerProfile(leaderOnline.getPlayerProfile());
-                        } else {
-                            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(clan.getOwner()));
-                        }
+                        OfflinePlayer leader = Bukkit.getOfflinePlayer(clan.getOwner());
+                        setSkullOwner(skullMeta, clan.getOwner(), leader.getName());
                     } else {
                         skullMeta.setPlayerProfile(player.getPlayerProfile());
                     }
@@ -898,7 +960,12 @@ public class MenuBuilder {
                     if (resolvedOnline != null) {
                         skullMeta.setPlayerProfile(resolvedOnline.getPlayerProfile());
                     } else {
-                        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(resolved));
+                        UUID resolvedUuid = null;
+                        try {
+                            resolvedUuid = UUID.fromString(resolved);
+                        } catch (IllegalArgumentException ignored) {
+                        }
+                        setSkullOwner(skullMeta, resolvedUuid, resolvedUuid == null ? resolved : null);
                     }
                 }
             } else if (base64 != null && !base64.trim().isEmpty()) {
