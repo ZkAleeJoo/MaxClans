@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.zkaleejoo.MaxClans;
 import org.zkaleejoo.models.Clan;
+import org.zkaleejoo.utils.FoliaCompat;
 import org.zkaleejoo.utils.MessageUtils;
 import org.zkaleejoo.utils.SoundUtils;
 
@@ -30,6 +31,7 @@ public class ClanChestManager implements Listener {
     public static class ClanChestHolder implements InventoryHolder {
         private final String clanName;
         private Inventory inventory;
+        private volatile boolean purged = false;
 
         public ClanChestHolder(String clanName) {
             this.clanName = clanName;
@@ -37,6 +39,14 @@ public class ClanChestManager implements Listener {
 
         public String getClanName() {
             return clanName;
+        }
+
+        public boolean isPurged() {
+            return purged;
+        }
+
+        public void setPurged(boolean purged) {
+            this.purged = purged;
         }
 
         @Override
@@ -97,13 +107,37 @@ public class ClanChestManager implements Listener {
         player.openInventory(inventory);
     }
 
+    public void purgeClanChest(String clanName) {
+        if (clanName == null) {
+            return;
+        }
+        Inventory inv = activeInventories.remove(clanName.toLowerCase());
+        if (inv != null) {
+            if (inv.getHolder() instanceof ClanChestHolder holder) {
+                holder.setPurged(true);
+            }
+            for (org.bukkit.entity.HumanEntity viewer : new ArrayList<>(inv.getViewers())) {
+                FoliaCompat.runForEntity(plugin, viewer, viewer::closeInventory);
+            }
+        }
+    }
+
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Inventory top = event.getView().getTopInventory();
         if (top.getHolder() instanceof ClanChestHolder holder) {
+            if (holder.isPurged()) {
+                return;
+            }
+
             String clanName = holder.getClanName();
             if (clanName == null)
                 return;
+
+            if (plugin.getClanManager() != null && plugin.getClanManager().getClanByName(clanName) == null) {
+                activeInventories.remove(clanName.toLowerCase());
+                return;
+            }
 
             String serialized = serializeItems(top.getContents());
             if (serialized != null) {
@@ -135,8 +169,16 @@ public class ClanChestManager implements Listener {
         for (Map.Entry<String, Inventory> entry : snapshot.entrySet()) {
             Inventory inv = entry.getValue();
             String clanName = entry.getKey();
-            if (inv.getHolder() instanceof ClanChestHolder holder && holder.getClanName() != null) {
-                clanName = holder.getClanName();
+            if (inv.getHolder() instanceof ClanChestHolder holder) {
+                if (holder.isPurged()) {
+                    continue;
+                }
+                if (holder.getClanName() != null) {
+                    clanName = holder.getClanName();
+                }
+            }
+            if (plugin.getClanManager() != null && plugin.getClanManager().getClanByName(clanName) == null) {
+                continue;
             }
             String serialized = serializeItems(inv.getContents());
             if (serialized != null) {

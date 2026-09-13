@@ -107,6 +107,13 @@ public class ClanQuestManager {
         return shuffled.subList(0, Math.min(dailyQuestsAmount, shuffled.size()));
     }
 
+    public void purgeClan(String clanName) {
+        if (clanName == null)
+            return;
+        String suffix = ":" + clanName.toLowerCase();
+        progressCache.keySet().removeIf(k -> k.endsWith(suffix));
+    }
+
     public ClanQuestProgress getProgress(Clan clan, ClanQuest quest) {
         if (clan == null || quest == null)
             return null;

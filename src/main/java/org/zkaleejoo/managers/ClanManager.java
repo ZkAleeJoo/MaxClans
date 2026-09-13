@@ -119,7 +119,44 @@ public class ClanManager {
                                         .getMessage("clan-disbanded", "&cThe clan '&f{clan}&c' has been disbanded.")
                                         .replace("{clan}", clan.getName())));
             }
+            if (plugin.getClanTeleportManager() != null) {
+                plugin.getClanTeleportManager().cancelSilently(memberUuid);
+            }
             playerClanMap.remove(memberUuid);
+        }
+
+        for (String allyName : new HashSet<>(clan.getAllies())) {
+            Clan allyClan = clans.get(allyName.toLowerCase());
+            if (allyClan != null) {
+                allyClan.removeAlly(clan.getName());
+                String broadcastMsg = plugin.getMainConfigManager().getPrefix() + plugin.getMainConfigManager()
+                        .getMessage("ally-disbanded",
+                                "&cThe alliance between '&f{clan1}&c' and '&f{clan2}&c' has ended.")
+                        .replace("{clan1}", clan.getName())
+                        .replace("{clan2}", allyClan.getName());
+                broadcastToClan(allyClan, broadcastMsg);
+            }
+        }
+
+        synchronized (pendingInvites) {
+            for (UUID invitedUuid : new HashSet<>(clan.getPendingInvites())) {
+                pendingInvites.remove(invitedUuid);
+            }
+            pendingInvites.values().removeIf(
+                    targetClanName -> targetClanName != null && targetClanName.equalsIgnoreCase(clan.getName()));
+        }
+
+        pendingAlliances.remove(key);
+        for (Set<String> requests : pendingAlliances.values()) {
+            requests.remove(key);
+        }
+
+        if (plugin.getClanChestManager() != null) {
+            plugin.getClanChestManager().purgeClanChest(clan.getName());
+        }
+
+        if (plugin.getClanQuestManager() != null) {
+            plugin.getClanQuestManager().purgeClan(clan.getName());
         }
 
         clans.remove(key);
@@ -1180,7 +1217,7 @@ public class ClanManager {
             return;
         }
 
-        pendingAlliances.computeIfAbsent(targetClan.getName().toLowerCase(), k -> new HashSet<>())
+        pendingAlliances.computeIfAbsent(targetClan.getName().toLowerCase(), k -> ConcurrentHashMap.newKeySet())
                 .add(clan.getName().toLowerCase());
 
         requester.sendMessage(MessageUtils.toComponent(
