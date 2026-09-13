@@ -192,6 +192,7 @@ public class MaxClans extends JavaPlugin {
 
         if (clanStorage != null) {
             clanStorage.flushAndAwait(3000L);
+            clanStorage.close();
         }
 
         if (clanTeleportManager != null) {

@@ -1,10 +1,11 @@
 package org.zkaleejoo.database;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.zkaleejoo.MaxClans;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -12,7 +13,7 @@ import java.util.logging.Level;
 public class DatabaseManager {
 
     private final MaxClans plugin;
-    private Connection connection;
+    private HikariDataSource dataSource;
     private DatabaseType type;
 
     public enum DatabaseType {
@@ -43,8 +44,28 @@ public class DatabaseManager {
             if (!dbFile.exists()) {
                 plugin.getDataFolder().mkdirs();
             }
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getAbsolutePath());
-            plugin.getLogger().info("SQLite database connected successfully.");
+
+            HikariConfig config = new HikariConfig();
+            config.setPoolName("MaxClans-SQLite-Pool");
+            config.setDriverClassName("org.sqlite.JDBC");
+            config.setJdbcUrl("jdbc:sqlite:" + dbFile.getAbsolutePath());
+            config.setConnectionTestQuery("SELECT 1");
+            config.setMaximumPoolSize(1);
+            config.setMinimumIdle(1);
+            config.setConnectionTimeout(10000);
+            config.setIdleTimeout(600000);
+            config.setMaxLifetime(1800000);
+
+            dataSource = new HikariDataSource(config);
+
+            try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
+                stmt.execute("PRAGMA journal_mode = WAL;");
+                stmt.execute("PRAGMA synchronous = NORMAL;");
+                stmt.execute("PRAGMA busy_timeout = 5000;");
+                stmt.execute("PRAGMA foreign_keys = ON;");
+            }
+
+            plugin.getLogger().info("SQLite database pool connected successfully with WAL mode.");
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to connect to SQLite database!", e);
         }
@@ -58,11 +79,34 @@ public class DatabaseManager {
             String username = plugin.getMainConfigManager().getDatabaseUsername();
             String password = plugin.getMainConfigManager().getDatabasePassword();
 
+            HikariConfig config = new HikariConfig();
+            config.setPoolName("MaxClans-MySQL-Pool");
+            config.setDriverClassName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://" + host + ":" + port + "/" + database
-                    + "?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8";
-            connection = DriverManager.getConnection(url, username, password);
-            plugin.getLogger().info("MySQL database connected successfully.");
-        } catch (SQLException e) {
+                    + "?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true";
+            config.setJdbcUrl(url);
+            config.setUsername(username);
+            config.setPassword(password);
+
+            org.bukkit.configuration.file.FileConfiguration fileConfig = plugin.getMainConfigManager().getConfigFile();
+            int maxPoolSize = (fileConfig != null) ? fileConfig.getInt("database.pool.maximum-pool-size", 10) : 10;
+            int minIdle = (fileConfig != null) ? fileConfig.getInt("database.pool.minimum-idle", 2) : 2;
+            long timeout = (fileConfig != null) ? fileConfig.getLong("database.pool.connection-timeout", 10000L) : 10000L;
+
+            config.setMaximumPoolSize(Math.max(2, maxPoolSize));
+            config.setMinimumIdle(Math.max(1, minIdle));
+            config.setConnectionTimeout(Math.max(1000L, timeout));
+            config.setIdleTimeout(600000);
+            config.setMaxLifetime(1800000);
+
+            config.addDataSourceProperty("cachePrepStmts", "true");
+            config.addDataSourceProperty("prepStmtCacheSize", "250");
+            config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+            config.addDataSourceProperty("useServerPrepStmts", "true");
+
+            dataSource = new HikariDataSource(config);
+            plugin.getLogger().info("MySQL HikariCP database pool connected successfully.");
+        } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to connect to MySQL database! Falling back to SQLite.", e);
             type = DatabaseType.SQLITE;
             connectSQLite();
@@ -72,7 +116,7 @@ public class DatabaseManager {
     private void createTables() {
         String engine = (type == DatabaseType.MYSQL) ? " ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" : "";
 
-        try (Statement stmt = connection.createStatement()) {
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS clans ("
                     + "name VARCHAR(64) PRIMARY KEY,"
                     + "tag VARCHAR(64) NOT NULL,"
@@ -210,29 +254,22 @@ public class DatabaseManager {
         }
     }
 
-    public Connection getConnection() {
-        try {
-            if (connection == null || connection.isClosed()) {
-                if (type == DatabaseType.MYSQL) {
-                    connectMySQL();
-                } else {
-                    connectSQLite();
-                }
-            }
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to check database connection!", e);
+    public Connection getConnection() throws SQLException {
+        if (dataSource == null || dataSource.isClosed()) {
+            initialize();
         }
-        return connection;
+        return dataSource.getConnection();
     }
 
     public void close() {
         try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                plugin.getLogger().info("Database connection closed.");
+            if (dataSource != null && !dataSource.isClosed()) {
+                dataSource.close();
+                dataSource = null;
+                plugin.getLogger().info("Database connection pool closed.");
             }
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to close database connection!", e);
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to close database connection pool!", e);
         }
     }
 

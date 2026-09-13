@@ -9,6 +9,9 @@ import org.zkaleejoo.utils.FoliaCompat;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
@@ -17,10 +20,20 @@ public class ClanStorage {
     private final MaxClans plugin;
     private final DatabaseManager databaseManager;
     private final AtomicInteger pendingTasks = new AtomicInteger(0);
+    private final ExecutorService sqliteWriteExecutor;
 
     public ClanStorage(MaxClans plugin, DatabaseManager databaseManager) {
         this.plugin = plugin;
         this.databaseManager = databaseManager;
+        if (databaseManager.getType() == DatabaseManager.DatabaseType.SQLITE) {
+            this.sqliteWriteExecutor = Executors.newSingleThreadExecutor(r -> {
+                Thread t = new Thread(r, "MaxClans-SQLite-Writer");
+                t.setDaemon(true);
+                return t;
+            });
+        } else {
+            this.sqliteWriteExecutor = null;
+        }
     }
 
     public void runAsync(Runnable runnable) {
@@ -30,13 +43,23 @@ public class ClanStorage {
         }
         pendingTasks.incrementAndGet();
         try {
-            FoliaCompat.runAsync(plugin, () -> {
-                try {
-                    runnable.run();
-                } finally {
-                    pendingTasks.decrementAndGet();
-                }
-            });
+            if (databaseManager.getType() == DatabaseManager.DatabaseType.SQLITE && sqliteWriteExecutor != null && !sqliteWriteExecutor.isShutdown()) {
+                sqliteWriteExecutor.submit(() -> {
+                    try {
+                        runnable.run();
+                    } finally {
+                        pendingTasks.decrementAndGet();
+                    }
+                });
+            } else {
+                FoliaCompat.runAsync(plugin, () -> {
+                    try {
+                        runnable.run();
+                    } finally {
+                        pendingTasks.decrementAndGet();
+                    }
+                });
+            }
         } catch (Throwable t) {
             pendingTasks.decrementAndGet();
             runnable.run();
@@ -55,10 +78,25 @@ public class ClanStorage {
         }
     }
 
+    public void close() {
+        if (sqliteWriteExecutor != null && !sqliteWriteExecutor.isShutdown()) {
+            sqliteWriteExecutor.shutdown();
+            try {
+                if (!sqliteWriteExecutor.awaitTermination(3, TimeUnit.SECONDS)) {
+                    sqliteWriteExecutor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                sqliteWriteExecutor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
     public void saveClan(Clan clan) {
         runAsync(() -> {
             String sql = "INSERT INTO clans (name, tag, display_name, owner, friendly_fire, open_join, ally_damage, member_invites, visible_in_list, public_home, spy_chat, created_at, kills, deaths, rival_kills, level, exp, bank_balance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, clan.getName());
                 ps.setString(2, clan.getTag());
                 ps.setString(3, clan.getRawDisplayName());
@@ -86,34 +124,34 @@ public class ClanStorage {
 
     public void deleteClan(String clanName) {
         runAsync(() -> {
-            try {
-                try (PreparedStatement ps = databaseManager.getConnection()
+            try (Connection conn = databaseManager.getConnection()) {
+                try (PreparedStatement ps = conn
                         .prepareStatement("DELETE FROM clan_allies WHERE LOWER(clan_name) = ? OR LOWER(ally_name) = ?")) {
                     ps.setString(1, clanName.toLowerCase());
                     ps.setString(2, clanName.toLowerCase());
                     ps.executeUpdate();
                 }
-                try (PreparedStatement ps = databaseManager.getConnection()
+                try (PreparedStatement ps = conn
                         .prepareStatement("DELETE FROM clan_chests WHERE LOWER(clan_name) = ?")) {
                     ps.setString(1, clanName.toLowerCase());
                     ps.executeUpdate();
                 }
-                try (PreparedStatement ps = databaseManager.getConnection()
+                try (PreparedStatement ps = conn
                         .prepareStatement("DELETE FROM clan_quests WHERE LOWER(clan_name) = ?")) {
                     ps.setString(1, clanName.toLowerCase());
                     ps.executeUpdate();
                 }
-                try (PreparedStatement ps = databaseManager.getConnection()
+                try (PreparedStatement ps = conn
                         .prepareStatement("DELETE FROM clan_homes WHERE LOWER(clan_name) = ?")) {
                     ps.setString(1, clanName.toLowerCase());
                     ps.executeUpdate();
                 }
-                try (PreparedStatement ps = databaseManager.getConnection()
+                try (PreparedStatement ps = conn
                         .prepareStatement("DELETE FROM clan_players WHERE clan_name = ?")) {
                     ps.setString(1, clanName);
                     ps.executeUpdate();
                 }
-                try (PreparedStatement ps = databaseManager.getConnection()
+                try (PreparedStatement ps = conn
                         .prepareStatement("DELETE FROM clans WHERE name = ?")) {
                     ps.setString(1, clanName);
                     ps.executeUpdate();
@@ -127,7 +165,8 @@ public class ClanStorage {
     public void updateClan(Clan clan) {
         runAsync(() -> {
             String sql = "UPDATE clans SET tag = ?, display_name = ?, owner = ?, friendly_fire = ?, open_join = ?, ally_damage = ?, member_invites = ?, visible_in_list = ?, public_home = ?, spy_chat = ?, kills = ?, deaths = ?, rival_kills = ?, level = ?, exp = ?, bank_balance = ? WHERE name = ?";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, clan.getTag());
                 ps.setString(2, clan.getRawDisplayName());
                 ps.setString(3, clan.getOwner().toString());
@@ -154,15 +193,15 @@ public class ClanStorage {
 
     public void saveHome(String clanName, ClanHome home) {
         runAsync(() -> {
-            try {
-                try (PreparedStatement del = databaseManager.getConnection()
+            try (Connection conn = databaseManager.getConnection()) {
+                try (PreparedStatement del = conn
                         .prepareStatement("DELETE FROM clan_homes WHERE LOWER(clan_name) = ? AND LOWER(name) = ?")) {
                     del.setString(1, clanName.toLowerCase());
                     del.setString(2, home.getName().toLowerCase());
                     del.executeUpdate();
                 }
                 String sql = "INSERT INTO clan_homes (clan_name, name, world, x, y, z, yaw, pitch, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setString(1, clanName);
                     ps.setString(2, home.getName());
                     ps.setString(3, home.getWorldName());
@@ -184,7 +223,8 @@ public class ClanStorage {
     public void deleteHome(String clanName, String homeName) {
         runAsync(() -> {
             String sql = "DELETE FROM clan_homes WHERE LOWER(clan_name) = ? AND LOWER(name) = ?";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, clanName.toLowerCase());
                 ps.setString(2, homeName.toLowerCase());
                 ps.executeUpdate();
@@ -198,7 +238,8 @@ public class ClanStorage {
     public void saveClanPlayer(ClanPlayer clanPlayer) {
         runAsync(() -> {
             String sql = "INSERT INTO clan_players (uuid, clan_name, role, joined_at) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, clanPlayer.getUuid().toString());
                 ps.setString(2, clanPlayer.getClanName());
                 ps.setString(3, clanPlayer.getRole().name());
@@ -213,7 +254,8 @@ public class ClanStorage {
     public void removeClanPlayer(UUID uuid) {
         runAsync(() -> {
             String sql = "DELETE FROM clan_players WHERE uuid = ?";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, uuid.toString());
                 ps.executeUpdate();
             } catch (SQLException e) {
@@ -225,7 +267,8 @@ public class ClanStorage {
     public void updateClanPlayerRole(UUID uuid, ClanRole role) {
         runAsync(() -> {
             String sql = "UPDATE clan_players SET role = ? WHERE uuid = ?";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, role.name());
                 ps.setString(2, uuid.toString());
                 ps.executeUpdate();
@@ -238,8 +281,8 @@ public class ClanStorage {
     public Map<String, Clan> loadAllClans() {
         Map<String, Clan> clans = new HashMap<>();
 
-        try {
-            try (Statement stmt = databaseManager.getConnection().createStatement();
+        try (Connection conn = databaseManager.getConnection()) {
+            try (Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT * FROM clans")) {
 
                 while (rs.next()) {
@@ -307,7 +350,7 @@ public class ClanStorage {
                 }
             }
 
-            try (Statement stmt = databaseManager.getConnection().createStatement();
+            try (Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT * FROM clan_players")) {
 
                 while (rs.next()) {
@@ -331,7 +374,7 @@ public class ClanStorage {
                 }
             }
 
-            try (Statement stmt = databaseManager.getConnection().createStatement();
+            try (Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT * FROM clan_homes")) {
 
                 while (rs.next()) {
@@ -355,7 +398,7 @@ public class ClanStorage {
                 plugin.getLogger().log(Level.WARNING, "Failed to load clan homes from database: " + e.getMessage());
             }
 
-            try (Statement stmt = databaseManager.getConnection().createStatement();
+            try (Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT * FROM clan_allies")) {
 
                 while (rs.next()) {
@@ -382,7 +425,8 @@ public class ClanStorage {
     public void saveAlly(String clanName, String allyName) {
         runAsync(() -> {
             String sql = "INSERT INTO clan_allies (clan_name, ally_name) VALUES (?, ?)";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, clanName);
                 ps.setString(2, allyName);
                 ps.executeUpdate();
@@ -395,7 +439,8 @@ public class ClanStorage {
     public void removeAlly(String clanName, String allyName) {
         runAsync(() -> {
             String sql = "DELETE FROM clan_allies WHERE (LOWER(clan_name) = ? AND LOWER(ally_name) = ?) OR (LOWER(clan_name) = ? AND LOWER(ally_name) = ?)";
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, clanName.toLowerCase());
                 ps.setString(2, allyName.toLowerCase());
                 ps.setString(3, allyName.toLowerCase());
@@ -425,7 +470,8 @@ public class ClanStorage {
             sql = "INSERT INTO clan_chests (clan_name, inventory_data, updated_at) VALUES (?, ?, ?) "
                     + "ON DUPLICATE KEY UPDATE inventory_data = VALUES(inventory_data), updated_at = VALUES(updated_at)";
         }
-        try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+        try (Connection conn = databaseManager.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, clanName);
             ps.setString(2, serializedData);
             ps.setLong(3, System.currentTimeMillis());
@@ -437,7 +483,8 @@ public class ClanStorage {
 
     public String loadClanChest(String clanName) {
         String sql = "SELECT inventory_data FROM clan_chests WHERE LOWER(clan_name) = ?";
-        try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+        try (Connection conn = databaseManager.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, clanName.toLowerCase());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -458,7 +505,8 @@ public class ClanStorage {
                 sql = "INSERT INTO clan_quests (clan_name, quest_id, progress, completed, assigned_date) VALUES (?, ?, ?, ?, ?) "
                         + "ON DUPLICATE KEY UPDATE progress = VALUES(progress), completed = VALUES(completed)";
             }
-            try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+            try (Connection conn = databaseManager.getConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, progress.getClanName());
                 ps.setString(2, progress.getQuestId());
                 ps.setInt(3, progress.getProgress());
@@ -474,7 +522,8 @@ public class ClanStorage {
     public Map<String, org.zkaleejoo.models.ClanQuestProgress> loadQuestProgressForClan(String clanName, String date) {
         Map<String, org.zkaleejoo.models.ClanQuestProgress> result = new HashMap<>();
         String sql = "SELECT quest_id, progress, completed, assigned_date FROM clan_quests WHERE LOWER(clan_name) = ? AND assigned_date = ?";
-        try (PreparedStatement ps = databaseManager.getConnection().prepareStatement(sql)) {
+        try (Connection conn = databaseManager.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, clanName.toLowerCase());
             ps.setString(2, date);
             try (ResultSet rs = ps.executeQuery()) {
